@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+### v0.1.1 - ???
+
+- Latest pre-release ???
+- Fixed non-critical Core issue
+
+```diff
+! Fixed stopwatch issue with Core.mapNetwork()
+```
+
 #### v0.1.0 - 22 October 2019
 
 - Initial pre-release v0.1.0 [`4e81341`](https://github.com/chrisdigity/mochimo-nodejs/commit/4e8134110e06f450348e82ec00c321e4461ce244)

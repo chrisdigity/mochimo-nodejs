@@ -433,8 +433,8 @@ function Core() {
   let Cbits = 0;
   let Running = false; /* eslint-disable-line prefer-const */
   let Ltime = (Date.now() / 1000) >>> 0; /* eslint-disable-line prefer-const */
-  let Mtime = VEOK;
   let Mtimeout = null;
+  let Mstopwatch = VEOK;
   let dstPort = PORT;
   let maxSockets = 32;
   let curSockets = 0;
@@ -945,8 +945,8 @@ function Core() {
   this.mapNetwork = function(callback, startPeer, reset) {
     const fid = 'Core.mapNetwork()-> ';
     /* intial map reset */
-    if (Mtime === VEOK) {
-      Mtime = Date.now();
+    if (Mstopwatch === VEOK) {
+      Mstopwatch = Date.now();
       CurrentPeers.length = 0;
       Mapping.length = 0;
       Mapped.length = 0;
@@ -985,12 +985,12 @@ function Core() {
     } else if (callback) {
       /* ... otherwise finish and bind CurrentPeers with callback */
       if (Debug) {
-        logn('%s%dms, Current: %d, Recent: %d', fid, Date.now() - Mtime,
+        logn('%s%dms, Current: %d, Recent: %d', fid, Date.now() - Mstopwatch,
             CurrentPeers.length, RecentPeers.length);
       }
-      clearTimeout(Mtimeout);
-      Mtimeout = setTimeout(callback.bind(null, CurrentPeers), 0);
-      MNtime = VEOK;
+      setTimeout(callback.bind(null, CurrentPeers), 0);
+      Mtimeout = null;
+      Mstopwatch = VEOK;
     }
     return VEOK;
   };
