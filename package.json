@@ -1,0 +1,21 @@
+{
+  "name": "mochimo",
+  "version": "0.1.0",
+  "description": "Mochimo module for integration with the Mochimo Cryptocurrency Network",
+  "main": "mochimo.js",
+  "scripts": {
+    "test": "echo \"Map Network Test...\" && cd examples && node mapnetwork.js",
+    "docs": "cd docs && jsdoc2md --separators sep.hbs --files ../mochimo.js > README.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chrisdigity/mochimo-nodejs.git"
+  },
+  "author": "Chrisdigity <chrisdigity@gmail.com>",
+  "license": "SEE LICENSE IN LICENSE.PDF",
+  "bugs": {
+    "url": "https://github.com/chrisdigity/mochimo-nodejs/issues"
+  },
+  "homepage": "https://github.com/chrisdigity/mochimo-nodejs#readme",
+  "dependencies": {}
+}
