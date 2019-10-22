@@ -27,6 +27,8 @@ var OP_GETIPL = Mochimo.OP_GETIPL;
 ### More Information
 See the [documentation](docs/README.md) for more information on the module and
 how you can best utilize it.  
+The [changelog](docs/CHANGELOG.md) contains a list version changes... *pfft
+boring...*   
 Otherwise, checkout some [examples](examples).  
 <sup>(*SPOILER ALERT: There's only one example* :P)</sup>
 
