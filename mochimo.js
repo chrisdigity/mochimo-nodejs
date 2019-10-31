@@ -755,14 +755,14 @@ function Core() {
   this.callserver = function(callback, peer, opcode) {
     const fid = util.format('Core.callserver(%s, %d)-> ', peer, opcode);
     if (curSockets >= maxSockets) {
-      if (Debug > 1) {
+      if (Debug > 2) {
         error('%sSocket limit reached...', fid);
       }
       return VERROR;
     }
     const node = new Node(peer);
     try {
-      if (Debug > 1) {
+      if (Debug > 2) {
         logn('%sCreate new socket...', fid);
       }
       node.socket = new net.Socket();
@@ -775,14 +775,14 @@ function Core() {
     node.socket.on('ready', function() {
       node.id1 = rand16();
       prepareTx(node, OP_HELLO);
-      if (Debug) {
+      if (Debug > 1) {
         logn('%sSend, OP_HELLO', fid);
       }
       node.socket.setTimeout(10000);
       node.socket.write(node.tx);
     });
     node.socket.on('data', function(data) {
-      if (Debug > 1) {
+      if (Debug > 2) {
         logn('%sRecv, id1=%d id2=%d...', fid, node.id1, node.id2);
       }
       /* collect data from socket */
@@ -853,7 +853,7 @@ function Core() {
       } /* end for (let i = 0 ... */
     }); /* end node.socket.on('data' ... */
     node.socket.on('connect', function() {
-      if (Debug > 1) {
+      if (Debug > 2) {
         logn('%sConnected', fid);
       }
     });
@@ -871,7 +871,7 @@ function Core() {
       node.status = VERROR;
     });
     node.socket.on('close', function(err) {
-      if (Debug > 1) {
+      if (Debug > 2) {
         logn('%sDisconnected', fid);
       }
       if (err) {
@@ -883,7 +883,7 @@ function Core() {
       /* bind resulting node to callback function */
       setTimeout(callback.bind(null, node), 0);
     });
-    if (Debug > 1) {
+    if (Debug > 2) {
       logn('%sConnecting...', fid);
     }
     node.socket.setTimeout(3000);
