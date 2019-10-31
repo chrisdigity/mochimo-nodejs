@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+### [v0.1.1](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.1.1) - 31 October 2019
+
+Introduces:
+- various bug fixes and updates to Debug logging for `Core()` functions
+
+```diff
+! Fixed stopwatch issue with Core.mapNetwork()
+! Fixed reset functionality in Core.mapNetwork()
+! Fixed incorrect return value for Core.addPeer()*
+# Changed Debug logging for Core.addPeer()*
+# Changed Debug logging for Core.callserver()
+
+# (*) asteriks indicates private
+```
+
 #### v0.1.0 - 22 October 2019
 
 - Initial pre-release v0.1.0 [`4e81341`](https://github.com/chrisdigity/mochimo-nodejs/commit/4e8134110e06f450348e82ec00c321e4461ce244)

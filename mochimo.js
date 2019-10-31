@@ -433,8 +433,8 @@ function Core() {
   let Cbits = 0;
   let Running = false; /* eslint-disable-line prefer-const */
   let Ltime = (Date.now() / 1000) >>> 0; /* eslint-disable-line prefer-const */
-  let Mtime = VEOK;
   let Mtimeout = null;
+  let Mstopwatch = VEOK;
   let dstPort = PORT;
   let maxSockets = 32;
   let curSockets = 0;
@@ -545,8 +545,8 @@ function Core() {
   };
   /* peer management */
   const addPeer = function(peer, peerlist) {
-    const fid = util.format('Core.addPeer(%s)-> ', peer);
-    let result = VEOK;
+    const fid = 'Core.addPeer()-> ';
+    let result = 0;
     /* check parameter is valid */
     if (typeof peer !== 'undefined' && peer) {
       /* determine peer type */
@@ -561,8 +561,11 @@ function Core() {
             if (peerlist.indexOf(peer) == (-1)) {
               /* add peer to list */
               peerlist.push(peer);
+              result++;
             }
-            return result;
+            if (Debug > 1) {
+              logn('%s%s added to list', fid, peer);
+            }
           }
           break;
         case 'object':
@@ -572,12 +575,17 @@ function Core() {
             for (let i = 0; i < peer.length; i++) {
               result += addPeer(peer[i], peerlist);
             }
-            return result;
+            if (Debug) {
+              logn('%s%d peers added to list', fid, result);
+            }
+          }
+        default:
+          if (Debug) {
+            error('%sIgnoring invalid IPv4 address', fid);
           }
       } /* end switch (typeof peer... */
     }
-    error('%sIgnoring invalid IPv4 address', fid);
-    return VERROR;
+    return result;
   };
   const removePeer = function(peer, peerlist) {
     /* check parameter is valid */
@@ -747,14 +755,14 @@ function Core() {
   this.callserver = function(callback, peer, opcode) {
     const fid = util.format('Core.callserver(%s, %d)-> ', peer, opcode);
     if (curSockets >= maxSockets) {
-      if (Debug > 1) {
+      if (Debug > 2) {
         error('%sSocket limit reached...', fid);
       }
       return VERROR;
     }
     const node = new Node(peer);
     try {
-      if (Debug > 1) {
+      if (Debug > 2) {
         logn('%sCreate new socket...', fid);
       }
       node.socket = new net.Socket();
@@ -767,14 +775,14 @@ function Core() {
     node.socket.on('ready', function() {
       node.id1 = rand16();
       prepareTx(node, OP_HELLO);
-      if (Debug) {
+      if (Debug > 1) {
         logn('%sSend, OP_HELLO', fid);
       }
       node.socket.setTimeout(10000);
       node.socket.write(node.tx);
     });
     node.socket.on('data', function(data) {
-      if (Debug > 1) {
+      if (Debug > 2) {
         logn('%sRecv, id1=%d id2=%d...', fid, node.id1, node.id2);
       }
       /* collect data from socket */
@@ -845,7 +853,7 @@ function Core() {
       } /* end for (let i = 0 ... */
     }); /* end node.socket.on('data' ... */
     node.socket.on('connect', function() {
-      if (Debug > 1) {
+      if (Debug > 2) {
         logn('%sConnected', fid);
       }
     });
@@ -863,7 +871,7 @@ function Core() {
       node.status = VERROR;
     });
     node.socket.on('close', function(err) {
-      if (Debug > 1) {
+      if (Debug > 2) {
         logn('%sDisconnected', fid);
       }
       if (err) {
@@ -875,7 +883,7 @@ function Core() {
       /* bind resulting node to callback function */
       setTimeout(callback.bind(null, node), 0);
     });
-    if (Debug > 1) {
+    if (Debug > 2) {
       logn('%sConnecting...', fid);
     }
     node.socket.setTimeout(3000);
@@ -945,8 +953,12 @@ function Core() {
   this.mapNetwork = function(callback, startPeer, reset) {
     const fid = 'Core.mapNetwork()-> ';
     /* intial map reset */
-    if (Mtime === VEOK) {
-      Mtime = Date.now();
+    if (Mstopwatch === VEOK) {
+      Mstopwatch = Date.now();
+      if (reset) {
+        RecentPeers.length = 0;
+        RecentPeers = CurrentPeers.slice(0);
+      }
       CurrentPeers.length = 0;
       Mapping.length = 0;
       Mapped.length = 0;
@@ -985,12 +997,12 @@ function Core() {
     } else if (callback) {
       /* ... otherwise finish and bind CurrentPeers with callback */
       if (Debug) {
-        logn('%s%dms, Current: %d, Recent: %d', fid, Date.now() - Mtime,
+        logn('%s%dms, Current: %d, Recent: %d', fid, Date.now() - Mstopwatch,
             CurrentPeers.length, RecentPeers.length);
       }
-      clearTimeout(Mtimeout);
-      Mtimeout = setTimeout(callback.bind(null, CurrentPeers), 0);
-      MNtime = VEOK;
+      setTimeout(callback.bind(null, CurrentPeers), 0);
+      Mtimeout = null;
+      Mstopwatch = VEOK;
     }
     return VEOK;
   };
