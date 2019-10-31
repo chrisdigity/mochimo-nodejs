@@ -545,8 +545,8 @@ function Core() {
   };
   /* peer management */
   const addPeer = function(peer, peerlist) {
-    const fid = util.format('Core.addPeer(%s)-> ', peer);
-    let result = VEOK;
+    const fid = 'Core.addPeer()-> ';
+    let result = 0;
     /* check parameter is valid */
     if (typeof peer !== 'undefined' && peer) {
       /* determine peer type */
@@ -561,8 +561,11 @@ function Core() {
             if (peerlist.indexOf(peer) == (-1)) {
               /* add peer to list */
               peerlist.push(peer);
+              result++;
             }
-            return result;
+            if (Debug > 1) {
+              logn('%s%s added to list', fid, peer);
+            }
           }
           break;
         case 'object':
@@ -572,12 +575,17 @@ function Core() {
             for (let i = 0; i < peer.length; i++) {
               result += addPeer(peer[i], peerlist);
             }
-            return result;
+            if (Debug) {
+              logn('%s%d peers added to list', fid, result);
+            }
+          }
+        default:
+          if (Debug) {
+            error('%sIgnoring invalid IPv4 address', fid);
           }
       } /* end switch (typeof peer... */
     }
-    error('%sIgnoring invalid IPv4 address', fid);
-    return VERROR;
+    return result;
   };
   const removePeer = function(peer, peerlist) {
     /* check parameter is valid */
