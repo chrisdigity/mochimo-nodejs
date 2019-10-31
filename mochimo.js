@@ -955,6 +955,10 @@ function Core() {
     /* intial map reset */
     if (Mstopwatch === VEOK) {
       Mstopwatch = Date.now();
+      if (reset) {
+        RecentPeers.length = 0;
+        RecentPeers = CurrentPeers.slice(0);
+      }
       CurrentPeers.length = 0;
       Mapping.length = 0;
       Mapped.length = 0;
