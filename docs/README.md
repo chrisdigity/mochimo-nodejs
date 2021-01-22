@@ -1,5 +1,5 @@
 # Documentation
-[![npm](https://img.shields.io/npm/v/mochimo?style=plastic)](https://www.npmjs.org/package/mochimo)
+[![npm](https://img.shields.io/badge/npm-v0.2.0-orange?style=plastic)](https://www.npmjs.org/package/mochimo/v/0.2.0)
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=plastic)](https://github.com/standard/semistandard)
 ![chrisdigity](https://img.shields.io/static/v1?label=%C2%A9%202019-2021&message=Chrisdigity&color=blue&style=plastic)
 

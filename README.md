@@ -1,8 +1,7 @@
-# Welcome to Mochimo for NodeJs.
+# Welcome to Mochimo for NodeJs. <img align="right" src="https://raw.githubusercontent.com/standard/semistandard/master/badge.svg">
 [![npm (tag)](https://img.shields.io/npm/v/mochimo/latest?style=plastic)](https://www.npmjs.com/package/mochimo)
 ![npm](https://img.shields.io/npm/dw/mochimo?style=plastic)
-[![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-blue.svg?style=plastic)](https://github.com/standard/semistandard)
-![license](https://img.shields.io/badge/License-Modified%20MPL%202.0-lightgrey)
+![license](https://img.shields.io/badge/License-Modified%20MPL%202.0-blue)
 
 **This module is still under development.**<br>
 *Please report issues here on Github...*
