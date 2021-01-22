@@ -1,0 +1,44 @@
+# Documentation
+[![npm](https://img.shields.io/npm/v/mochimo?style=plastic)](https://www.npmjs.org/package/mochimo)
+[![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=plastic)](https://github.com/standard/semistandard)
+![chrisdigity](https://img.shields.io/static/v1?label=%C2%A9%202019-2021&message=Chrisdigity&color=blue&style=plastic)
+
+## Before you begin...
+You might want to familiarise yourself with some Mochimo codebase *lingo*...
+
+**Transaction Buffer**<br>
+The entire TX object used for communication between nodes
+
+**Transaction Data**<br>
+The data contained within the Transaction Buffer (usually a Network Transaction)
+
+**Capability Bits**<br>
+The bits of a byte after the version byte of a transaction buffer, indicating a
+Node's capabilities on the network
+
+**Operation Codes**<br>
+Number codes used during socket connection to request certain operations with
+the Mochimo Network
+
+**Transaction Address**<br>
+The full quantum resistant address used by the Mochimo Cryptocurrency Network
+
+**Source/Destination/Change Addresses**<br>
+Due to the security concern of using "One Time Signatures" (see WOTS+), a
+standard transaction consists of 3 addressable parts:
+ - The source address; the address where funds are transferred from,
+ - The destination address; the address where funds are transferred to (the
+amount of funds that are transferred to this address is determined by the value
+of an associated "sendtotal" property), and
+ - The change address; the address where the remaining funds that weren't sent
+to the destination address are received (the amount of funds that are
+transferred to this address is determined by the value of an associated
+"changetotal" property)
+
+With that out of the way, let's begin...
+
+{{>main}}
+
+// END OF DOCUMENTATION...
+
+---

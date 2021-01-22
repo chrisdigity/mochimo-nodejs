@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+### [v0.2.0](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.2.0) - 22 January 2021
+
+The big ES6 Module Overhaul. "Big Arrow" type functions, promises and async/await compatibility.
+Introduces:
+- the Mochimo module as the basis for all things great and delicious, replacing silly names like Core or MochimoCore
+- async/await [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) behavior throughout the module
+- standard get&ast; functions for common network requests, directly accesible in the Mochimo module
+- internal LOG module for easier management of API debugging
+
+```diff
++ Added LOG* class to module
++ Added LEntry*, TXReference*, and TXEntry* blockchain related classes to module
++ Added BlockTrailer, Block, and Tfile blockchain related classes to module
++ Added Trigg class with limited functionality to module (not documented)
+! Fixed potential duplicate peer handling in node.socket "data" event
+# Changed Node class format to hold static functions handling peer communication
+# Changed commenting style for ability to easily comment out segments of code
+# Changed scope of certain internal functions to suit multiple top level classes
+- Removed unnecessary peer handling in Mochimo module
+- Removed erroneous functions in Mochimo module
+
+! Fixed spelling of asterisk in DOCS/CHANGELOG
+! Fixed some descriptions in DOCS/README.MD
+
+# (*) asterisk indicates private
+```
+
 ### [v0.1.1](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.1.1) - 31 October 2019
 
 Introduces:
@@ -14,7 +41,7 @@ Introduces:
 # Changed Debug logging for Core.addPeer()*
 # Changed Debug logging for Core.callserver()
 
-# (*) asteriks indicates private
+# (*) asterisk indicates private
 ```
 
 #### v0.1.0 - 22 October 2019
@@ -44,4 +71,3 @@ Introduces:
 + Added Initial Documentation
 + Added Example mapnetwork.js
 ```
-

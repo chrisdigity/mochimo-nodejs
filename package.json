@@ -1,21 +1,24 @@
 {
   "name": "mochimo",
-  "version": "0.1.1",
-  "description": "Mochimo module for integration with the Mochimo Cryptocurrency Network",
-  "main": "mochimo.js",
+  "version": "0.2.0",
+  "description": "Integrate with the Mochimo Cryptocurrency Network",
+  "main": "src/mochimo.js",
   "scripts": {
-    "test": "echo \"Map Network Test...\" && cd examples && node mapnetwork.js",
-    "docs": "cd docs && jsdoc2md --separators sep.hbs --files ../mochimo.js > README.md"
+    "test": "echo \"No tests configured...\"",
+    "build:docs": "jsdoc2md --template docs/hbs/template --separators docs/hbs/sep --files src/blockchain.js src/tx.js src/node.js src/mochimo.js > docs/README.md"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chrisdigity/mochimo-nodejs.git"
   },
   "author": "Chrisdigity <chrisdigity@gmail.com>",
-  "license": "SEE LICENSE IN LICENSE.PDF",
+  "license": "Modified MPL 2.0",
   "bugs": {
     "url": "https://github.com/chrisdigity/mochimo-nodejs/issues"
   },
   "homepage": "https://github.com/chrisdigity/mochimo-nodejs#readme",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "jsdoc-to-markdown": "^6.0.1"
+  }
 }
