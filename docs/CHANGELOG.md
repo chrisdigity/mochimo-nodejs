@@ -1,6 +1,14 @@
 ### Changelog
 
-All notable changes to this project will be documented in this file. Dates are displayed in UTC.
+All notable changes to this project will be documented in this file.
+
+### [latest](https://github.com/chrisdigity/mochimo-nodejs/) - 30 January 2021
+
+Found a need to Summarize a Block class to block header and trailer info, excluding block contents.
+
+```diff
++ Added toSummary() to Block class
+```
 
 ### [v0.2.0](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.2.0) - 22 January 2021
 

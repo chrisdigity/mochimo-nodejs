@@ -1,5 +1,5 @@
 # Documentation
-[![npm](https://img.shields.io/badge/npm-v0.2.0-orange?style=plastic)](https://www.npmjs.org/package/mochimo/v/0.2.0)
+[![npm](https://img.shields.io/npm/v/mochimo?style=plastic)](https://www.npmjs.org/package/mochimo)
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=plastic)](https://github.com/standard/semistandard)
 ![chrisdigity](https://img.shields.io/static/v1?label=%C2%A9%202019-2021&message=Chrisdigity&color=blue&style=plastic)
 
@@ -993,6 +993,7 @@ The Block class is a Uint8Array consisting of 3 main parts; ablock header, bloc
         * [.stime](#Block+stime) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.bhash](#Block+bhash) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
         * [.toJSON()](#Block+toJSON) ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
+        * [.toSummary()](#Block+toSummary) ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
     * _static_
         * [.INVALID](#Block.INVALID) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.NORMAL](#Block.NORMAL) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
@@ -1184,6 +1185,33 @@ A BlockTrailer object associated with the block
 | mreward | [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | *not always present* |
 | transactions | [<code>Array.&lt;TXEntry&gt;</code>](#TXEntry) | *not always present* |
 | ledger | [<code>Array.&lt;LEntry&gt;</code>](#LEntry) | *not always present* |
+
+
+* * *
+
+<a name="Block+toSummary"></a>
+
+### block.toSummary() ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
+**Kind**: instance method of [<code>Block</code>](#Block)  
+**Returns**: [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects) - Block class object, in JSON format (excludingtransactions and/or ledger entries)  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| type | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | *refer to Block class properties* |
+| phash | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
+| bnum | [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) |  |
+| mfee | [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) |  |
+| tcount | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
+| time0 | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
+| difficulty | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
+| mroot | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
+| nonce | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
+| stime | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
+| bhash | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
+| hdrlen | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
+| maddr | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | *not always present* |
+| mreward | [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | *not always present* |
 
 
 * * *

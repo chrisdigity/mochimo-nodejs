@@ -977,6 +977,45 @@ class Block extends Uint8Array {
    * @prop {Array.<external:LEntry>} ledger *not always present*
    * @return {external:Object} Block class object, in JSON format */
   toJSON () {
+    const json = this.toSummary();
+    // add transaction data for 'normal' Block types
+    if (json.type === Block.NORMAL) {
+      json.transactions = [];
+      const transactions = this.transactions;
+      for (let i = 0; i < transactions.length; i++) {
+        json.transactions.push(transactions[i].getDetails());
+      }
+    }
+    // add ledger data for 'neogenesis' blocks
+    if (json.type === Block.NEOGENESIS) {
+      json.ledger = [];
+      const ledger = this.ledger;
+      for (let i = 0; i < ledger.length; i++) {
+        json.ledger.push(ledger[i].toJSON());
+      }
+    }
+    // return completed json block
+    return json;
+  }
+
+  /**
+   * @prop {external:Number} type *refer to Block class properties*
+   * @prop {external:String} phash
+   * @prop {external:BigInt} bnum
+   * @prop {external:BigInt} mfee
+   * @prop {external:Number} tcount
+   * @prop {external:Number} time0
+   * @prop {external:Number} difficulty
+   * @prop {external:String} mroot
+   * @prop {external:String} nonce
+   * @prop {external:String} stime
+   * @prop {external:String} bhash
+   * @prop {external:Number} hdrlen
+   * @prop {external:String} maddr *not always present*
+   * @prop {external:BigInt} mreward *not always present*
+   * @return {external:Object} Block class object, in JSON format (excluding
+   * transactions and/or ledger entries) */
+  toSummary () {
     const json = {};
     // add block type
     json.type = this.type;
@@ -997,23 +1036,7 @@ class Block extends Uint8Array {
       json.maddr = this.maddr;
       json.mreward = this.mreward;
     }
-    // add transaction data for 'normal' Block types
-    if (json.type === Block.NORMAL) {
-      json.transactions = [];
-      const transactions = this.transactions;
-      for (let i = 0; i < transactions.length; i++) {
-        json.transactions.push(transactions[i].getDetails());
-      }
-    }
-    // add ledger data for 'neogenesis' blocks
-    if (json.type === Block.NEOGENESIS) {
-      json.ledger = [];
-      const ledger = this.ledger;
-      for (let i = 0; i < ledger.length; i++) {
-        json.ledger.push(ledger[i].toJSON());
-      }
-    }
-    // return completed json block
+    // return summarized json block
     return json;
   }
 
