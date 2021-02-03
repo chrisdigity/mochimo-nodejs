@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-### [latest](https://github.com/chrisdigity/mochimo-nodejs/) - 30 January 2021
+### [v0.2.1](https://github.com/chrisdigity/mochimo-nodejs/) - 4 February 2021-02-04
 
 Found a need to Summarize a Block class to block header and trailer info, excluding block contents.
 
