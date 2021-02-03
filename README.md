@@ -22,6 +22,7 @@ const Mochimo = require('mochimo')
 ### More Information
  - [changelog](docs/CHANGELOG.md)... *pfft boring...*
  - [documentation](docs/README.md)... also contains minor usage examples
+ - for an extensive usage example, checkout the [MochiMap](https://github.com/chrisdigity/mochimap.com) codebase
 
 ## License
 This module is released under an MPL 2.0 derivative Open Source license.  
