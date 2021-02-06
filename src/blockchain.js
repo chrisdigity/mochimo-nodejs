@@ -1,7 +1,13 @@
 
 /* requirements */
 const { array2string } = require('./util');
-const { HASHLEN, TXADDRLEN, TXSIGLEN, UNTAGGED_BYTES } = require('./constants');
+const {
+  HASHLEN,
+  TXADDRLEN,
+  TXSIGLEN,
+  UNTAGGED_BYTES,
+  DEFAULT_TAG
+} = require('./constants');
 
 /**
  * @typicalname lentry
@@ -34,7 +40,8 @@ class LEntry extends Uint8Array {
    * @type {external:String}
    * @desc The tag attached to the ledger address, in hexadecimal format */
   get tag () {
-    return array2string(this.subarray(2196, TXADDRLEN));
+    const tag = array2string(this.subarray(2196, TXADDRLEN));
+    return tag === DEFAULT_TAG ? null : tag;
   }
 
   /**
@@ -252,8 +259,9 @@ class TXEntry extends Uint8Array {
    * @desc The tag attached to the source address, in
    * hexadecimal format */
   get srctag () {
-    return array2string(
+    const tag = array2string(
       this.subarray(TXEntry.SRCADDRp + 2196, TXEntry.SRCADDRp + TXADDRLEN));
+    return tag === DEFAULT_TAG ? null : tag;
   }
 
   /**
@@ -269,8 +277,9 @@ class TXEntry extends Uint8Array {
    * @desc The tag attached to the destination address, in
    * hexadecimal format */
   get dsttag () {
-    return array2string(
+    const tag = array2string(
       this.subarray(TXEntry.DSTADDRp + 2196, TXEntry.DSTADDRp + TXADDRLEN));
+    return tag === DEFAULT_TAG ? null : tag;
   }
 
   /**
@@ -286,8 +295,9 @@ class TXEntry extends Uint8Array {
    * @desc The tag attached to the change address, in
    * hexadecimal format */
   get chgtag () {
-    return array2string(
+    const tag = array2string(
       this.subarray(TXEntry.CHGADDRp + 2196, TXEntry.CHGADDRp + TXADDRLEN));
+    return tag === DEFAULT_TAG ? null : tag;
   }
 
   /**
