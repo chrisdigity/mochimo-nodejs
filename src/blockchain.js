@@ -1163,4 +1163,4 @@ class Tfile extends Uint8Array {
   }
 }
 
-module.exports = { Tfile, Block, BlockTrailer };
+module.exports = { Tfile, Block, BlockTrailer, TXReference };
