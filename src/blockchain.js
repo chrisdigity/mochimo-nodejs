@@ -105,10 +105,10 @@ class TXReference extends Uint8Array {
 
   /**
    * @type {external:String}
-   * @desc The destination address, in hexadecimal format */
-  get dstaddr () {
-    // determine destination address length
-    const type = this[TXReference.DSTTYPEp];
+   * @desc The source address, in hexadecimal format */
+  get srcaddr () {
+    // determine source address length
+    const type = this[TXReference.SRCTYPEp];
     const length = type === 0xff ? 12 : type > 0 ? TXADDRLEN : 32;
     // return address as String
     return array2string(this.subarray(
@@ -117,12 +117,29 @@ class TXReference extends Uint8Array {
 
   /**
    * @type {external:String}
+   * @desc The destination address, in hexadecimal format */
+  get dstaddr () {
+    // determine destination address pointer
+    const srcType = this[TXReference.SRCTYPEp];
+    const srcLength = srcType === 0xff ? 12 : srcType > 0 ? TXADDRLEN : 32;
+    const DSTADDRp = TXReference.ADDRp + srcLength;
+    // determine destination address length
+    const type = this[TXReference.DSTTYPEp];
+    const length = type === 0xff ? 12 : type > 0 ? TXADDRLEN : 32;
+    // return address as String
+    return array2string(this.subarray(DSTADDRp, DSTADDRp + length));
+  }
+
+  /**
+   * @type {external:String}
    * @desc The change address, in hexadecimal format */
   get chgaddr () {
     // determine change address pointer
+    const srcType = this[TXReference.SRCTYPEp];
+    const srcLength = srcType === 0xff ? 12 : srcType > 0 ? TXADDRLEN : 32;
     const dstType = this[TXReference.DSTTYPEp];
     const dstLength = dstType === 0xff ? 12 : dstType > 0 ? TXADDRLEN : 32;
-    const CHGADDRp = TXReference.ADDRp + dstLength;
+    const CHGADDRp = TXReference.ADDRp + srcLength + dstLength;
     // determine change address length
     const type = this[TXReference.CHGTYPEp];
     const length = type === 0xff ? 12 : type > 0 ? TXADDRLEN : 32;
@@ -174,17 +191,25 @@ class TXReference extends Uint8Array {
   /**
    * @return {external:Number}
    * @constant_value `24`
-   * @desc *FOR ADVANCED USE ONLY!*<br>Array pointer tonation address */
-  static get DSTTYPEp () {
+   * @desc *FOR ADVANCED USE ONLY!*<br>Array pointer to src address type */
+  static get SRCTYPEp () {
     return 24;
   }
 
   /**
    * @return {external:Number}
    * @constant_value `25`
-   * @desc *FOR ADVANCED USE ONLY!*<br>Array pointer toe address */
-  static get CHGTYPEp () {
+   * @desc *FOR ADVANCED USE ONLY!*<br>Array pointer to dst address type */
+  static get DSTTYPEp () {
     return 25;
+  }
+
+  /**
+   * @return {external:Number}
+   * @constant_value `26`
+   * @desc *FOR ADVANCED USE ONLY!*<br>Array pointer to chg address type */
+  static get CHGTYPEp () {
+    return 26;
   }
 
   /**
@@ -192,7 +217,7 @@ class TXReference extends Uint8Array {
    * @constant_value `26`
    * @desc *FOR ADVANCED USE ONLY!*<br>Array pointer to address */
   static get ADDRp () {
-    return 26;
+    return 27;
   }
 
   // Overwrite TXReference species with Uint8Array constructor
@@ -333,32 +358,40 @@ class TXEntry extends Uint8Array {
    * transaction entry object */
   toReference () {
     // determine address types - 0xff indicates a tagged address
+    const srcType = UNTAGGED_BYTES.includes(this[TXEntry.SRCADDRp + 2196])
+      ? this[TXEntry.SRCADDRp + 2197] : 0xff;
     const dstType = UNTAGGED_BYTES.includes(this[TXEntry.DSTADDRp + 2196])
       ? this[TXEntry.DSTADDRp + 2197] : 0xff;
     const chgType = UNTAGGED_BYTES.includes(this[TXEntry.CHGADDRp + 2196])
       ? this[TXEntry.CHGADDRp + 2197] : 0xff;
     // calculate extra length for addresses
+    const srcaddrLength = srcType === 0xff ? 12 : srcType > 0 ? TXADDRLEN : 32;
+    const srcaddrPointer = TXEntry.SRCADDRp + (srcType === 0xff ? 2196 : 0);
     const dstaddrLength = dstType === 0xff ? 12 : dstType > 0 ? TXADDRLEN : 32;
     const dstaddrPointer = TXEntry.DSTADDRp + (dstType === 0xff ? 2196 : 0);
     const chgaddrLength = chgType === 0xff ? 12 : chgType > 0 ? TXADDRLEN : 32;
     const chgaddrPointer = TXEntry.CHGADDRp + (chgType === 0xff ? 2196 : 0);
+    const addrLengths = srcaddrLength + dstaddrLength + chgaddrLength;
     // create TXReference of suitable length
-    const len = dstaddrLength + chgaddrLength + 26; /*
-    const len = ( 2208 or 12 ) + ( 2208 or 12 ) + amounts + fee + addrTypes */
+    const len = addrLengths + TXReference.ADDRp; /*
+    const len = 3*( 2208 or 12 ) + amounts + fee + 3*addrTypes */
     const ref = new TXReference(len);
     // minify data
-    ref.set(this.subarray(
-      TXEntry.SENDTOTALp, TXEntry.SENDTOTALp + 8), TXReference.SENDTOTALp);
-    ref.set(this.subarray(TXEntry.CHANGETOTALp,
-      TXEntry.CHANGETOTALp + 8), TXReference.CHANGETOTALp);
-    ref.set(this.subarray(
-      TXEntry.TXFEEp, TXEntry.TXFEEp + 8), TXReference.TXFEEp);
+    ref.set(this.subarray(TXEntry.SENDTOTALp, TXEntry.SENDTOTALp + 8),
+      TXReference.SENDTOTALp);
+    ref.set(this.subarray(TXEntry.CHANGETOTALp, TXEntry.CHANGETOTALp + 8),
+      TXReference.CHANGETOTALp);
+    ref.set(this.subarray(TXEntry.TXFEEp, TXEntry.TXFEEp + 8),
+      TXReference.TXFEEp);
+    ref[TXReference.SRCTYPEp] = srcType;
     ref[TXReference.DSTTYPEp] = dstType;
     ref[TXReference.CHGTYPEp] = chgType;
-    ref.set(this.subarray(dstaddrPointer, dstaddrPointer + dstaddrLength),
+    ref.set(this.subarray(srcaddrPointer, srcaddrPointer + srcaddrLength),
       TXReference.ADDRp);
+    ref.set(this.subarray(dstaddrPointer, dstaddrPointer + dstaddrLength),
+      TXReference.ADDRp + srcaddrLength);
     ref.set(this.subarray(chgaddrPointer, chgaddrPointer + chgaddrLength),
-      TXReference.ADDRp + dstaddrLength);
+      TXReference.ADDRp + srcaddrLength + dstaddrLength);
     // return completed TXReference
     return ref;
   }
