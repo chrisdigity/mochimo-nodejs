@@ -72,13 +72,12 @@ class LEntry extends Uint8Array {
  * @classdesc *TXReference class objects are only accessible via the
  * {@link Block} class.*<br>The Transaction Reference class is a heavily
  * minified transaction type object, represented as a Uint8Array and designed
- * with transaction history in mind. The source address, transaction signature,
- * transaction ID, and any block identifiers are purposely omitted, with the
- * intention of use in a key, filename, or database, depending on application
- * requirements. Furthermore, the destination and change address get truncated
- * to either an associated tag, the first 32 bytes of a WOTS+ address, or, in
- * the case of an extended TX transaction, the whole 2208 bytes of a destination
- * address. */
+ * with transaction history in mind. The transaction signature, transaction ID,
+ * and any block identifiers are purposely omitted, with the intention of use in
+ * a key, filename, or database, depending on application requirements.
+ * Additionally, addresses get truncated to either an associated tag, the first
+ * 32 bytes of a WOTS+ address, or, in the case of an extended TX transaction,
+ * the whole 2208 bytes of a destination address. */
 class TXReference extends Uint8Array {
   /**
    * @type {external:BigInt}
@@ -836,11 +835,9 @@ class Block extends Uint8Array {
     // no transactions in (neo)genesis blocks
     if (this.type !== Block.NORMAL) return transactions;
     // begin building block transaction list
-    let offset = this.hdrlen;
-    const len = this.tcount;
-    for (let i = 0; i < len; i++) {
+    const len = this.hdrlen + (this.tcount * TXEntry.length);
+    for (let offset = this.hdrlen; offset < len; offset += TXEntry.length) {
       transactions.push(new TXEntry(this.buffer, offset));
-      offset += TXEntry.BYTES;
     }
     return transactions;
   }
@@ -854,7 +851,7 @@ class Block extends Uint8Array {
     // no ledger data in non-neogenesis blocks
     if (this.type !== Block.NEOGENESIS) return ledger;
     // begin building block transaction list
-    const len = this.hdrlen - 4;
+    const len = this.hdrlen;
     for (let offset = 4; offset < len; offset += LEntry.length) {
       ledger.push(new LEntry(this.buffer, offset));
     }
