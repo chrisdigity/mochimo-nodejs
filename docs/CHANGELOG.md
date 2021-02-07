@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-### [v0.2.1](https://github.com/chrisdigity/mochimo-nodejs/) - 4 February 2021-02-04
+### [v0.2.1](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.2.1) - 2021-02-04
 
 Found a need to Summarize a Block class to block header and trailer info, excluding block contents.
 
@@ -10,7 +10,7 @@ Found a need to Summarize a Block class to block header and trailer info, exclud
 + Added toSummary() to Block class
 ```
 
-### [v0.2.0](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.2.0) - 22 January 2021
+### [v0.2.0](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.2.0) - 202-01-22
 
 The big ES6 Module Overhaul. "Big Arrow" type functions, promises and async/await compatibility.
 Introduces:
@@ -37,7 +37,7 @@ Introduces:
 # (*) asterisk indicates private
 ```
 
-### [v0.1.1](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.1.1) - 31 October 2019
+### [v0.1.1](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.1.1) - 2019-10-31
 
 Introduces:
 - various bug fixes and updates to Debug logging for `Core()` functions
@@ -52,7 +52,7 @@ Introduces:
 # (*) asterisk indicates private
 ```
 
-#### v0.1.0 - 22 October 2019
+#### v0.1.0 - 2019-10-22
 
 - Initial pre-release v0.1.0 [`4e81341`](https://github.com/chrisdigity/mochimo-nodejs/commit/4e8134110e06f450348e82ec00c321e4461ce244)
 - Introduces base Mochimo Network integration class `Core()`
