@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+### [v0.2.2](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.2.2) - 2021-02-07
+
+There were some unnoticed artifacts from old code in the Block class causing
+transactions and ledger entries to be misread. This has been addressed and
+access to transaction and ledger properties now result in a valid outcome.
+PLEASE NOTE! This release includes BREAKING CHANGES to the specification for the TXReference class.
+
+```diff
+! Fixed the way transactions and ledger entries are derived from the Block class
+# Changed the TXReference class specification to include the source address
+```
+
 ### [v0.2.1](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.2.1) - 2021-02-04
 
 Found a need to Summarize a Block class to block header and trailer info, excluding block contents.

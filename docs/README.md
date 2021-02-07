@@ -1,5 +1,5 @@
 # Documentation
-[![npm](https://img.shields.io/npm/v/mochimo?style=plastic)](https://www.npmjs.org/package/mochimo)
+[![https://img.shields.io/static/v1?label=npm&message=v0.2.2&color=orange](https://www.npmjs.com/package/mochimo/v/0.2.2)]
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=plastic)](https://github.com/standard/semistandard)
 ![chrisdigity](https://img.shields.io/static/v1?label=%C2%A9%202019-2021&message=Chrisdigity&color=blue&style=plastic)
 
@@ -57,13 +57,12 @@ a full WOTS+ address and a 64-bit balance.</p>
 <dd><p><em>TXReference class objects are only accessible via the
 <a href="#Block">Block</a> class.</em><br>The Transaction Reference class is a heavily
 minified transaction type object, represented as a Uint8Array and designed
-with transaction history in mind. The source address, transaction signature,
-transaction ID, and any block identifiers are purposely omitted, with the
-intention of use in a key, filename, or database, depending on application
-requirements. Furthermore, the destination and change address get truncated
-to either an associated tag, the first 32 bytes of a WOTS+ address, or, in
-the case of an extended TX transaction, the whole 2208 bytes of a destination
-address.</p>
+with transaction history in mind. The transaction signature, transaction ID,
+and any block identifiers are purposely omitted, with the intention of use in
+a key, filename, or database, depending on application requirements.
+Additionally, addresses get truncated to either an associated tag, the first
+32 bytes of a WOTS+ address, or, in the case of an extended TX transaction,
+the whole 2208 bytes of a destination address.</p>
 </dd>
 <dt><a href="#TXEntry">TXEntry</a> ⇐ <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a></code></dt>
 <dd><p><em>TXEntry class objects are only accessible via the <a href="#Block">Block</a>
@@ -303,7 +302,7 @@ Breakdown:- WOTS+ address, 2208 bytes- Balance (64bit), 8 bytes
 <a name="TXReference"></a>
 
 ## TXReference ⇐ [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
-*TXReference class objects are only accessible via the[Block](#Block) class.*<br>The Transaction Reference class is a heavilyminified transaction type object, represented as a Uint8Array and designedwith transaction history in mind. The source address, transaction signature,transaction ID, and any block identifiers are purposely omitted, with theintention of use in a key, filename, or database, depending on applicationrequirements. Furthermore, the destination and change address get truncatedto either an associated tag, the first 32 bytes of a WOTS+ address, or, inthe case of an extended TX transaction, the whole 2208 bytes of a destinationaddress.
+*TXReference class objects are only accessible via the[Block](#Block) class.*<br>The Transaction Reference class is a heavilyminified transaction type object, represented as a Uint8Array and designedwith transaction history in mind. The transaction signature, transaction ID,and any block identifiers are purposely omitted, with the intention of use ina key, filename, or database, depending on application requirements.Additionally, addresses get truncated to either an associated tag, the first32 bytes of a WOTS+ address, or, in the case of an extended TX transaction,the whole 2208 bytes of a destination address.
 
 **Kind**: global class  
 **Extends**: [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)  
@@ -313,6 +312,7 @@ Breakdown:- WOTS+ address, 2208 bytes- Balance (64bit), 8 bytes
         * [.sendtotal](#TXReference+sendtotal) : [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
         * [.changetotal](#TXReference+changetotal) : [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
         * [.txfee](#TXReference+txfee) : [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+        * [.srcaddr](#TXReference+srcaddr) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
         * [.dstaddr](#TXReference+dstaddr) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
         * [.chgaddr](#TXReference+chgaddr) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
         * [.toJSON()](#TXReference+toJSON) ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
@@ -320,6 +320,7 @@ Breakdown:- WOTS+ address, 2208 bytes- Balance (64bit), 8 bytes
         * [.SENDTOTALp](#TXReference.SENDTOTALp) ⇒ [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.CHANGETOTALp](#TXReference.CHANGETOTALp) ⇒ [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.TXFEEp](#TXReference.TXFEEp) ⇒ [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
+        * [.SRCTYPEp](#TXReference.SRCTYPEp) ⇒ [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.DSTTYPEp](#TXReference.DSTTYPEp) ⇒ [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.CHGTYPEp](#TXReference.CHGTYPEp) ⇒ [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.ADDRp](#TXReference.ADDRp) ⇒ [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
@@ -349,6 +350,15 @@ The transaction change amount, in nanoMochimo
 
 ### txreference.txfee : [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
 The transaction fee, in nanoMochimo
+
+**Kind**: instance property of [<code>TXReference</code>](#TXReference)  
+
+* * *
+
+<a name="TXReference+srcaddr"></a>
+
+### txreference.srcaddr : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+The source address, in hexadecimal format
 
 **Kind**: instance property of [<code>TXReference</code>](#TXReference)  
 
@@ -420,23 +430,33 @@ The change address, in hexadecimal format
 
 * * *
 
-<a name="TXReference.DSTTYPEp"></a>
+<a name="TXReference.SRCTYPEp"></a>
 
-### TXReference.DSTTYPEp ⇒ [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
-*FOR ADVANCED USE ONLY!*<br>Array pointer tonation address
+### TXReference.SRCTYPEp ⇒ [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
+*FOR ADVANCED USE ONLY!*<br>Array pointer to src address type
 
 **Kind**: static property of [<code>TXReference</code>](#TXReference)  
 **Constant_value**: `24`  
 
 * * *
 
-<a name="TXReference.CHGTYPEp"></a>
+<a name="TXReference.DSTTYPEp"></a>
 
-### TXReference.CHGTYPEp ⇒ [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
-*FOR ADVANCED USE ONLY!*<br>Array pointer toe address
+### TXReference.DSTTYPEp ⇒ [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
+*FOR ADVANCED USE ONLY!*<br>Array pointer to dst address type
 
 **Kind**: static property of [<code>TXReference</code>](#TXReference)  
 **Constant_value**: `25`  
+
+* * *
+
+<a name="TXReference.CHGTYPEp"></a>
+
+### TXReference.CHGTYPEp ⇒ [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
+*FOR ADVANCED USE ONLY!*<br>Array pointer to chg address type
+
+**Kind**: static property of [<code>TXReference</code>](#TXReference)  
+**Constant_value**: `26`  
 
 * * *
 
