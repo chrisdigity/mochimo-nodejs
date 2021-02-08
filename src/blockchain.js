@@ -8,6 +8,7 @@ const {
   UNTAGGED_BYTES,
   DEFAULT_TAG
 } = require('./constants');
+const Trigg = require('./trigg');
 
 /**
  * @typicalname lentry
@@ -999,27 +1000,29 @@ class Block extends Uint8Array {
   }
 
   /**
-   * @prop {external:Number} type *refer to Block class properties*
+   * @prop {external:String} bhash *refer to Block class properties*
    * @prop {external:String} phash
-   * @prop {external:BigInt} bnum
-   * @prop {external:BigInt} mfee
-   * @prop {external:Number} tcount
-   * @prop {external:Number} time0
-   * @prop {external:Number} difficulty
    * @prop {external:String} mroot
    * @prop {external:String} nonce
+   * @prop {external:String} maddr
+   * @prop {external:BigInt} mreward
+   * @prop {external:BigInt} mfee
+   * @prop {external:Number} tcount
+   * @prop {external:Number} difficulty
+   * @prop {external:Number} time0
    * @prop {external:String} stime
-   * @prop {external:String} bhash
-   * @prop {external:Number} hdrlen
-   * @prop {external:String} maddr *not always present*
-   * @prop {external:BigInt} mreward *not always present*
-   * @prop {Array.<external:TXEntry>} transactions *not always present*
-   * @prop {Array.<external:LEntry>} ledger *not always present*
+   * @prop {external:BigInt} bnum
+   * @prop {external:String} type Human readable block type
+   * @prop {external:String} haiku Haiku expanded from nonce
+   * @prop {Array.<external:TXEntry>} transactions Transactions present in block
+   * @prop {Array.<external:LEntry>} ledger Ledger entries present in block
    * @return {external:Object} Block class object, in JSON format */
   toJSON () {
+    const isNormal = Boolean(this.type === Block.NORMAL);
+    const isNeogenesis = Boolean(this.type === Block.NEOGENESIS);
     const json = this.toSummary();
     // add transaction data for 'normal' Block types
-    if (json.type === Block.NORMAL) {
+    if (isNormal) {
       json.transactions = [];
       const transactions = this.transactions;
       for (let i = 0; i < transactions.length; i++) {
@@ -1027,7 +1030,7 @@ class Block extends Uint8Array {
       }
     }
     // add ledger data for 'neogenesis' blocks
-    if (json.type === Block.NEOGENESIS) {
+    if (isNeogenesis) {
       json.ledger = [];
       const ledger = this.ledger;
       for (let i = 0; i < ledger.length; i++) {
@@ -1039,43 +1042,45 @@ class Block extends Uint8Array {
   }
 
   /**
-   * @prop {external:Number} type *refer to Block class properties*
+   * @prop {external:String} bhash *refer to Block class properties*
    * @prop {external:String} phash
-   * @prop {external:BigInt} bnum
-   * @prop {external:BigInt} mfee
-   * @prop {external:Number} tcount
-   * @prop {external:Number} time0
-   * @prop {external:Number} difficulty
    * @prop {external:String} mroot
    * @prop {external:String} nonce
+   * @prop {external:String} maddr
+   * @prop {external:BigInt} mreward
+   * @prop {external:BigInt} mfee
+   * @prop {external:Number} tcount
+   * @prop {external:Number} difficulty
+   * @prop {external:Number} time0
    * @prop {external:String} stime
-   * @prop {external:String} bhash
-   * @prop {external:Number} hdrlen
-   * @prop {external:String} maddr *not always present*
-   * @prop {external:BigInt} mreward *not always present*
+   * @prop {external:BigInt} bnum
+   * @prop {external:String} type Human readable block type
+   * @prop {external:String} haiku Haiku expanded from nonce
    * @return {external:Object} Block class object, in JSON format (excluding
-   * transactions and/or ledger entries) */
+   * transactions and ledger entries) */
   toSummary () {
+    const isNormal = Boolean(this.type === Block.NORMAL);
+    const isMined = Boolean(isNormal || this.type === Block.GENESIS); // premine
     const json = {};
-    // add block type
-    json.type = this.type;
-    // add all trailer data
+    // add hash data
+    json.bhash = this.bhash;
     json.phash = this.phash;
-    json.bnum = this.bnum;
-    json.mfee = this.mfee;
-    json.tcount = this.tcount;
-    json.time0 = this.time0;
-    json.difficulty = this.difficulty;
-    json.stime = this.stime;
     json.mroot = this.mroot;
     json.nonce = this.nonce;
-    json.bhash = this.bhash;
-    // add header data, depending on Block type
-    json.hdrlen = this.hdrlen;
-    if (json.type === Block.NORMAL || json.type === Block.GENESIS) {
-      json.maddr = this.maddr;
-      json.mreward = this.mreward;
-    }
+    // add mining data
+    json.maddr = isMined ? this.maddr : null;
+    json.mreward = isMined ? this.mreward : null;
+    // add all trailer data
+    json.mfee = this.mfee;
+    json.tcount = this.tcount;
+    json.difficulty = this.difficulty;
+    json.time0 = this.time0;
+    json.stime = this.stime;
+    json.bnum = this.bnum;
+    // add block type
+    json.type = this.type;
+    // expand haiku from nonce
+    json.haiku = isNormal ? Trigg.expand(this.nonce) : null;
     // return summarized json block
     return json;
   }
