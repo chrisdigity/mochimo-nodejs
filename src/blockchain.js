@@ -830,7 +830,7 @@ class Block extends Uint8Array {
    * @type {external:String}
    * @desc The block type as a Human Readable String
    * @see {@link Block.type} */
-  static get typeStr () {
+  get typeStr () {
     const TYPES = ['invalid', 'normal', 'genesis', 'neogenesis', 'pseudo'];
     return TYPES[this.type + 1];
   }
