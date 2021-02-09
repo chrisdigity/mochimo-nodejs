@@ -867,7 +867,7 @@ class Block extends Uint8Array {
     if (this.hdrlen < 2220) return null;
     // return 32 byte mining address as Hexdecimal String
     return new DataView(this.buffer).getBigUint64(
-      this.byteOffset + 2216, true);
+      this.byteOffset + 2212, true);
   }
 
   /**
