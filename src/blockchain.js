@@ -827,6 +827,15 @@ class Block extends Uint8Array {
   }
 
   /**
+   * @type {external:String}
+   * @desc The block type as a Human Readable String
+   * @see {@link Block.type} */
+  static get typeStr () {
+    const TYPES = ['invalid', 'normal', 'genesis', 'neogenesis', 'pseudo'];
+    return TYPES[this.type + 1];
+  }
+
+  /**
    * @type {external:Number}
    * @desc The block header length
    * @null if...
@@ -1078,7 +1087,7 @@ class Block extends Uint8Array {
     json.stime = this.stime;
     json.bnum = this.bnum;
     // add block type
-    json.type = this.type;
+    json.type = this.typeStr;
     // expand haiku from nonce
     json.haiku = isNormal ? Trigg.expand(this.nonce) : null;
     // return summarized json block
