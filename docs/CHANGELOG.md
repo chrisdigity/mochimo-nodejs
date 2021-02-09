@@ -2,7 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
-### [v0.2.2](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.2.3) - 2021-02-08
+### [v0.2.4](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.2.4) - 2021-02-09
+
+Fixes for `Block.toSummary()` and the `mreward` property of the Block class.
+
+```diff
++ Added typeStr getter to Block class
+! Fixed mreward property value in Block class
+! Fixed type property in Block.toSummary()
+```
+
+### [v0.2.3](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.2.3) - 2021-02-08
 
 Updates to the `Block.toSummary()` and (indirectly) `Block.toJSON()` functions.
 
