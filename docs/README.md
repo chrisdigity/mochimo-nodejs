@@ -1,5 +1,5 @@
 # Documentation
-[![npm](https://img.shields.io/static/v1?label=npm&message=v0.2.3&color=orange)](https://www.npmjs.com/package/mochimo/v/0.2.3)
+[![npm](https://img.shields.io/static/v1?label=npm&message=v0.2.4&color=orange)](https://www.npmjs.com/package/mochimo/v/0.2.4)
 [![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=plastic)](https://github.com/standard/semistandard)
 ![chrisdigity](https://img.shields.io/static/v1?label=%C2%A9%202019-2021&message=Chrisdigity&color=blue&style=plastic)
 
@@ -1015,6 +1015,7 @@ The Block class is a Uint8Array consisting of 3 main parts; ablock header, bloc
         * [.toJSON()](#Block+toJSON) ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
         * [.toSummary()](#Block+toSummary) ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
     * _static_
+        * [.typeStr](#Block.typeStr) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
         * [.INVALID](#Block.INVALID) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.NORMAL](#Block.NORMAL) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.GENESIS](#Block.GENESIS) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
@@ -1233,6 +1234,16 @@ A BlockTrailer object associated with the block
 | type | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | Human readable block type |
 | haiku | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | Haiku expanded from nonce |
 
+
+* * *
+
+<a name="Block.typeStr"></a>
+
+### Block.typeStr : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+The block type as a Human Readable String
+
+**Kind**: static property of [<code>Block</code>](#Block)  
+**See**: [Block.type](Block.type)  
 
 * * *
 
