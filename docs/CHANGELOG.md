@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-### [v0.2.4](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.2.4) - 2021-02-09
+### [v0.2.5](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.2.5) - 2021-02-09
 
 Fixes for `Block.toSummary()` and the `mreward` property of the Block class.
 

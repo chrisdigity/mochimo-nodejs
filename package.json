@@ -1,6 +1,6 @@
 {
   "name": "mochimo",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Integrate with the Mochimo Cryptocurrency Network",
   "main": "src/mochimo.js",
   "scripts": {
