@@ -836,6 +836,31 @@ class Block extends Uint8Array {
   }
 
   /**
+   * @type {external:String}
+   * @desc The Haiku representation of the blocks nonce.
+   * @see {@link Block.nonce} */
+  get haiku () {
+    return this.type ? null : Trigg.expand(this.nonce);
+  }
+
+  /**
+   * @type {external:BigInt}
+   * @desc Total amount sent in transactions for a {@link Block.NORMAL} block
+   * type, or total amount stored in ledger entries for a
+   * {@link Block.NEOGENESIS} block type. */
+  get tamount () {
+    const type = this.type;
+    if (type === Block.Normal) {
+      const transactions = this.transactions;
+      return transactions.reduce((acc, cur) => acc.sendtotal + cur, 0n);
+    } else if (type === Block.NEOGENESIS) {
+      const ledger = this.ledger;
+      return ledger.reduce((acc, cur) => acc.balance + cur, 0n);
+    }
+    return null;
+  }
+
+  /**
    * @type {external:Number}
    * @desc The block header length
    * @null if...
@@ -1021,17 +1046,29 @@ class Block extends Uint8Array {
    * @prop {external:Number} time0
    * @prop {external:String} stime
    * @prop {external:BigInt} bnum
-   * @prop {external:String} type Human readable block type
-   * @prop {external:String} haiku Haiku expanded from nonce
    * @prop {Array.<external:TXEntry>} transactions Transactions present in block
    * @prop {Array.<external:LEntry>} ledger Ledger entries present in block
    * @return {external:Object} Block class object, in JSON format */
   toJSON () {
-    const isNormal = Boolean(this.type === Block.NORMAL);
-    const isNeogenesis = Boolean(this.type === Block.NEOGENESIS);
-    const json = this.toSummary();
+    const type = this.type;
+    const json = {};
+    // add hash data
+    json.bhash = this.bhash;
+    json.phash = this.phash;
+    json.mroot = this.mroot;
+    json.nonce = this.nonce;
+    // add mining data
+    json.maddr = this.maddr;
+    json.mreward = this.mreward;
+    // add all trailer data
+    json.mfee = this.mfee;
+    json.tcount = this.tcount;
+    json.difficulty = this.difficulty;
+    json.time0 = this.time0;
+    json.stime = this.stime;
+    json.bnum = this.bnum;
     // add transaction data for 'normal' Block types
-    if (isNormal) {
+    if (type === Block.NORMAL) {
       json.transactions = [];
       const transactions = this.transactions;
       for (let i = 0; i < transactions.length; i++) {
@@ -1039,7 +1076,7 @@ class Block extends Uint8Array {
       }
     }
     // add ledger data for 'neogenesis' blocks
-    if (isNeogenesis) {
+    if (type === Block.NEOGENESIS) {
       json.ledger = [];
       const ledger = this.ledger;
       for (let i = 0; i < ledger.length; i++) {
@@ -1058,18 +1095,17 @@ class Block extends Uint8Array {
    * @prop {external:String} maddr
    * @prop {external:BigInt} mreward
    * @prop {external:BigInt} mfee
+   * @prop {external:BigInt} tamount
    * @prop {external:Number} tcount
    * @prop {external:Number} difficulty
    * @prop {external:Number} time0
    * @prop {external:String} stime
    * @prop {external:BigInt} bnum
-   * @prop {external:String} type Human readable block type
-   * @prop {external:String} haiku Haiku expanded from nonce
+   * @prop {external:String} type Human readable representation of block type
+   * @prop {external:String} haiku
    * @return {external:Object} Block class object, in JSON format (excluding
    * transactions and ledger entries) */
   toSummary () {
-    const isNormal = Boolean(this.type === Block.NORMAL);
-    const isMined = Boolean(isNormal || this.type === Block.GENESIS); // premine
     const json = {};
     // add hash data
     json.bhash = this.bhash;
@@ -1077,10 +1113,12 @@ class Block extends Uint8Array {
     json.mroot = this.mroot;
     json.nonce = this.nonce;
     // add mining data
-    json.maddr = isMined ? this.maddr : null;
-    json.mreward = isMined ? this.mreward : null;
-    // add all trailer data
+    json.maddr = this.maddr;
+    json.mreward = this.mreward;
     json.mfee = this.mfee;
+    // add total amount
+    json.tamount = this.tamount;
+    // add remaining trailer data
     json.tcount = this.tcount;
     json.difficulty = this.difficulty;
     json.time0 = this.time0;
@@ -1089,7 +1127,7 @@ class Block extends Uint8Array {
     // add block type
     json.type = this.typeStr;
     // expand haiku from nonce
-    json.haiku = isNormal ? Trigg.expand(this.nonce) : null;
+    json.haiku = this.haiku;
     // return summarized json block
     return json;
   }
