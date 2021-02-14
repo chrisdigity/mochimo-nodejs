@@ -1050,7 +1050,6 @@ class Block extends Uint8Array {
    * @prop {Array.<external:LEntry>} ledger Ledger entries present in block
    * @return {external:Object} Block class object, in JSON format */
   toJSON () {
-    const type = this.type;
     const json = {};
     // add hash data
     json.bhash = this.bhash;
@@ -1068,15 +1067,15 @@ class Block extends Uint8Array {
     json.stime = this.stime;
     json.bnum = this.bnum;
     // add transaction data for 'normal' Block types
-    if (type === Block.NORMAL) {
+    if (json.type === Block.NORMAL) {
       json.transactions = [];
       const transactions = this.transactions;
       for (let i = 0; i < transactions.length; i++) {
-        json.transactions.push(transactions[i].getDetails());
+        json.transactions.push(transactions[i].toJSON());
       }
     }
     // add ledger data for 'neogenesis' blocks
-    if (type === Block.NEOGENESIS) {
+    if (this.type === Block.NEOGENESIS) {
       json.ledger = [];
       const ledger = this.ledger;
       for (let i = 0; i < ledger.length; i++) {
