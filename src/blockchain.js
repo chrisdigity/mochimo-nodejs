@@ -913,8 +913,9 @@ class Block extends Uint8Array {
     // no transactions in (neo)genesis blocks
     if (this.type !== Block.NORMAL) return transactions;
     // begin building block transaction list
-    const len = this.hdrlen + (this.tcount * TXEntry.length);
-    for (let offset = this.hdrlen; offset < len; offset += TXEntry.length) {
+    let offset = this.hdrlen;
+    const len = offset + (this.tcount * TXEntry.length);
+    for (; offset < len; offset += TXEntry.length) {
       transactions.push(new TXEntry(this.buffer, offset));
     }
     return transactions;
@@ -1050,6 +1051,7 @@ class Block extends Uint8Array {
    * @prop {Array.<external:LEntry>} ledger Ledger entries present in block
    * @return {external:Object} Block class object, in JSON format */
   toJSON () {
+    const type = this.type;
     const json = {};
     // add hash data
     json.bhash = this.bhash;
@@ -1067,7 +1069,7 @@ class Block extends Uint8Array {
     json.stime = this.stime;
     json.bnum = this.bnum;
     // add transaction data for 'normal' Block types
-    if (json.type === Block.NORMAL) {
+    if (type === Block.NORMAL) {
       json.transactions = [];
       const transactions = this.transactions;
       for (let i = 0; i < transactions.length; i++) {
@@ -1075,7 +1077,7 @@ class Block extends Uint8Array {
       }
     }
     // add ledger data for 'neogenesis' blocks
-    if (this.type === Block.NEOGENESIS) {
+    if (type === Block.NEOGENESIS) {
       json.ledger = [];
       const ledger = this.ledger;
       for (let i = 0; i < ledger.length; i++) {
