@@ -850,7 +850,7 @@ class Block extends Uint8Array {
    * {@link Block.NEOGENESIS} block type. */
   get tamount () {
     const type = this.type;
-    if (type === Block.Normal) {
+    if (type === Block.NORMAL) {
       const transactions = this.transactions;
       return transactions.reduce((acc, cur) => acc.sendtotal + cur, 0n);
     } else if (type === Block.NEOGENESIS) {
