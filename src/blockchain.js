@@ -852,10 +852,10 @@ class Block extends Uint8Array {
     const type = this.type;
     if (type === Block.NORMAL) {
       const transactions = this.transactions;
-      return transactions.reduce((acc, cur) => acc.sendtotal + cur, 0n);
+      return transactions.reduce((acc, cur) => acc + cur.sendtotal, 0n);
     } else if (type === Block.NEOGENESIS) {
       const ledger = this.ledger;
-      return ledger.reduce((acc, cur) => acc.balance + cur, 0n);
+      return ledger.reduce((acc, cur) => acc + cur.balance, 0n);
     }
     return null;
   }
