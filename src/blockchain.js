@@ -851,11 +851,25 @@ class Block extends Uint8Array {
   get tamount () {
     const type = this.type;
     if (type === Block.NORMAL) {
-      const transactions = this.transactions;
-      return transactions.reduce((acc, cur) => acc + cur.sendtotal, 0n);
+      // count total transaction send amounts using a dataview
+      const view = new DataView(this.buffer, this.byteOffset, this.byteLength);
+      const tcount = this.tcount;
+      let amount = 0n;
+      let offset = this.hdrlen + TXEntry.SENDTOTALp;
+      for (let i = 0; i < tcount; i++, offset += TXEntry.length) {
+        amount += view.getBigUint64(offset, true);
+      }
+      return amount;
     } else if (type === Block.NEOGENESIS) {
-      const ledger = this.ledger;
-      return ledger.reduce((acc, cur) => acc + cur.balance, 0n);
+      // count total ledger balance amounts using a dataview
+      const view = new DataView(this.buffer, this.byteOffset, this.byteLength);
+      const hdrlen = this.hdrlen;
+      let amount = 0n;
+      let offset = 4 + TXADDRLEN;
+      for (; offset < hdrlen; offset += LEntry.length) {
+        amount += view.getBigUint64(offset, true);
+      }
+      return amount;
     }
     return null;
   }
