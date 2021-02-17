@@ -46,19 +46,6 @@ class LEntry extends Uint8Array {
   }
 
   /**
-   * @prop {external:String} address *refer to LEntry class properties*
-   * @prop {external:String} balance
-   * @prop {external:String} tag
-   * @return {external:Object} LEntry class object, in JSON format */
-  toJSON () {
-    return {
-      addr: this.addr,
-      balance: this.balance,
-      tag: this.tag
-    };
-  }
-
-  /**
    * @type {external:Number}
    * @constant_value `2216`
    * @desc Breakdown:
@@ -153,23 +140,6 @@ class TXReference extends Uint8Array {
     const length = type === 0xff ? 12 : type > 0 ? TXADDRLEN : 32;
     // return address as String
     return array2string(this.subarray(CHGADDRp, CHGADDRp + length));
-  }
-
-  /**
-   * @prop {external:BigInt} sendtotal *refer to TXReference class properties*
-   * @prop {external:BigInt} changetotal
-   * @prop {external:BigInt} txfee
-   * @prop {external:String} dstaddr
-   * @prop {external:String} chgaddr
-   * @return {external:Object} TXReference class object, in JSON format */
-  toJSON () {
-    return {
-      sendtotal: this.sendtotal,
-      changetotal: this.changetotal,
-      txfee: this.txfee,
-      dstaddr: this.dstaddr,
-      chgaddr: this.chgaddr
-    };
   }
 
   /**
@@ -339,29 +309,6 @@ class TXEntry extends Uint8Array {
    * @desc The transaction id, in hexadecimal format */
   get txid () {
     return array2string(this.subarray(TXEntry.TXIDp, TXEntry.TXIDp + HASHLEN));
-  }
-
-  /**
-   * @prop {external:String} srcaddr *refer to TXEntry class properties*
-   * @prop {external:String} dstaddr
-   * @prop {external:String} chgaddr
-   * @prop {external:BigInt} sendtotal
-   * @prop {external:BigInt} changetotal
-   * @prop {external:BigInt} txfee
-   * @prop {external:String} txsig
-   * @prop {external:String} txid
-   * @return {external:Object} TXEntry class object, in JSON format */
-  toJSON () {
-    return {
-      srcaddr: this.srcaddr,
-      dstaddr: this.dstaddr,
-      chgaddr: this.chgaddr,
-      sendtotal: this.sendtotal,
-      changetotal: this.changetotal,
-      txfee: this.txfee,
-      txsig: this.txsig,
-      txid: this.txid
-    };
   }
 
   /**
@@ -571,33 +518,6 @@ class BlockTrailer extends Uint8Array {
    * @desc The current block hash, in hexadecimal format */
   get bhash () {
     return BlockTrailer.bhash(this);
-  }
-
-  /**
-   * @prop {external:String} phash *refer to BlockTrailer class properties*
-   * @prop {external:BigInt} bnum
-   * @prop {external:BigInt} mfee
-   * @prop {external:Number} tcount
-   * @prop {external:Number} time0
-   * @prop {external:Number} difficulty
-   * @prop {external:String} mroot
-   * @prop {external:String} nonce
-   * @prop {external:String} stime
-   * @prop {external:String} bhash
-   * @return {external:Object} BlockTrailer class object, in JSON format */
-  toJSON () {
-    return {
-      phash: this.phash,
-      bnum: this.bnum,
-      mfee: this.mfee,
-      tcount: this.tcount,
-      time0: this.time0,
-      difficulty: this.difficulty,
-      mroot: this.mroot,
-      nonce: this.nonce,
-      stime: this.stime,
-      bhash: this.bhash
-    };
   }
 
   /**
@@ -1038,105 +958,6 @@ class Block extends Uint8Array {
     // return block hash from static BlockTrailer function
     return BlockTrailer.bhash(
       this.subarray(this.byteLength - BlockTrailer.length));
-  }
-
-  /**
-   * @prop {external:String} bhash *refer to Block class properties*
-   * @prop {external:String} phash
-   * @prop {external:String} mroot
-   * @prop {external:String} nonce
-   * @prop {external:String} maddr
-   * @prop {external:BigInt} mreward
-   * @prop {external:BigInt} mfee
-   * @prop {external:Number} tcount
-   * @prop {external:Number} difficulty
-   * @prop {external:Number} time0
-   * @prop {external:String} stime
-   * @prop {external:BigInt} bnum
-   * @prop {Array.<external:TXEntry>} transactions Transactions present in block
-   * @prop {Array.<external:LEntry>} ledger Ledger entries present in block
-   * @return {external:Object} Block class object, in JSON format */
-  toJSON () {
-    const type = this.type;
-    const json = {};
-    // add hash data
-    json.bhash = this.bhash;
-    json.phash = this.phash;
-    json.mroot = this.mroot;
-    json.nonce = this.nonce;
-    // add mining data
-    json.maddr = this.maddr;
-    json.mreward = this.mreward;
-    // add all trailer data
-    json.mfee = this.mfee;
-    json.tcount = this.tcount;
-    json.difficulty = this.difficulty;
-    json.time0 = this.time0;
-    json.stime = this.stime;
-    json.bnum = this.bnum;
-    // add transaction data for 'normal' Block types
-    if (type === Block.NORMAL) {
-      json.transactions = [];
-      const transactions = this.transactions;
-      for (let i = 0; i < transactions.length; i++) {
-        json.transactions.push(transactions[i].toJSON());
-      }
-    }
-    // add ledger data for 'neogenesis' blocks
-    if (type === Block.NEOGENESIS) {
-      json.ledger = [];
-      const ledger = this.ledger;
-      for (let i = 0; i < ledger.length; i++) {
-        json.ledger.push(ledger[i].toJSON());
-      }
-    }
-    // return completed json block
-    return json;
-  }
-
-  /**
-   * @prop {external:String} bhash *refer to Block class properties*
-   * @prop {external:String} phash
-   * @prop {external:String} mroot
-   * @prop {external:String} nonce
-   * @prop {external:String} maddr
-   * @prop {external:BigInt} mreward
-   * @prop {external:BigInt} mfee
-   * @prop {external:BigInt} tamount
-   * @prop {external:Number} tcount
-   * @prop {external:Number} difficulty
-   * @prop {external:Number} time0
-   * @prop {external:String} stime
-   * @prop {external:BigInt} bnum
-   * @prop {external:String} type Human readable representation of block type
-   * @prop {external:String} haiku
-   * @return {external:Object} Block class object, in JSON format (excluding
-   * transactions and ledger entries) */
-  toSummary () {
-    const json = {};
-    // add hash data
-    json.bhash = this.bhash;
-    json.phash = this.phash;
-    json.mroot = this.mroot;
-    json.nonce = this.nonce;
-    // add mining data
-    json.maddr = this.maddr;
-    json.mreward = this.mreward;
-    json.mfee = this.mfee;
-    // add total amount
-    json.tamount = this.tamount;
-    // add remaining trailer data
-    json.tcount = this.tcount;
-    json.difficulty = this.difficulty;
-    json.time0 = this.time0;
-    json.stime = this.stime;
-    json.bnum = this.bnum;
-    // add block type
-    json.type = this.typeStr;
-    // expand haiku from nonce
-    json.haiku = this.haiku;
-    // return summarized json block
-    return json;
   }
 
   /**
