@@ -860,7 +860,7 @@ class Block extends Uint8Array {
         amount += view.getBigUint64(offset, true);
       }
       return amount;
-    } else if (type === Block.NEOGENESIS) {
+    } else if (type === Block.NEOGENESIS || type === Block.GENESIS) {
       // count total ledger balance amounts using a dataview
       const view = new DataView(this.buffer, this.byteOffset, this.byteLength);
       const hdrlen = this.hdrlen;
@@ -877,8 +877,7 @@ class Block extends Uint8Array {
   /**
    * @type {external:Number}
    * @desc The block header length
-   * @null if...
-   * - size of block buffer is < 4 bytes */
+   * @null when size of block buffer is < 4 bytes */
   get hdrlen () {
     // intercept access beyond buffer length
     if (this.buffer.byteLength < this.byteOffset + 4) return null;
@@ -889,30 +888,23 @@ class Block extends Uint8Array {
   /**
    * @type {external:String}
    * @desc The address that receives the mining reward, in hexadecimal format
-   * @null if...
-   * - size of block buffer is < 2212 bytes
-   * - `hdrlen` < 2212 bytes */
+   * @null when block type !== Block.NORMAL
+   * @see {@link Block.NORMAL} */
   get maddr () {
-    const bounds = 4 + TXADDRLEN;
-    // intercept access beyond array length
-    if (this.byteLength < bounds) return null;
-    // intercept access beyond hdrlen
-    if (this.hdrlen < bounds) return null;
+    // check block type is normal
+    if (this.type !== Block.NORMAL) return null;
     // return mining address as Hexdecimal String
-    return array2string(this.subarray(4, bounds));
+    return array2string(this.subarray(4, 4 + TXADDRLEN));
   }
 
   /**
    * @type {external:BigInt}
    * @desc The mining reward, in nanoMochimo
-   * @null if...
-   * - size of block buffer is < 2220 bytes
-   * - `hdrlen` < 2220 bytes */
+   * @null when block type !== Block.NORMAL
+   * @see {@link Block.NORMAL} */
   get mreward () {
-    // intercept access beyond buffer length
-    if (this.buffer.byteLength < this.byteOffset + 2220) return null;
-    // intercept access beyond hdrlen
-    if (this.hdrlen < 2220) return null;
+    // check block type is normal
+    if (this.type !== Block.NORMAL) return null;
     // return 32 byte mining address as Hexdecimal String
     return new DataView(this.buffer).getBigUint64(
       this.byteOffset + 2212, true);
