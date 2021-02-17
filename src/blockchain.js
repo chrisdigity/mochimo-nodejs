@@ -1,4 +1,6 @@
 
+/* global BigInt */
+
 /* requirements */
 const { array2string } = require('./util');
 const {
@@ -774,7 +776,7 @@ class Block extends Uint8Array {
       // count total transaction send amounts using a dataview
       const view = new DataView(this.buffer, this.byteOffset, this.byteLength);
       const tcount = this.tcount;
-      let amount = 0n;
+      let amount = BigInt(0);
       let offset = this.hdrlen + TXEntry.SENDTOTALp;
       for (let i = 0; i < tcount; i++, offset += TXEntry.length) {
         amount += view.getBigUint64(offset, true);
@@ -784,7 +786,7 @@ class Block extends Uint8Array {
       // count total ledger balance amounts using a dataview
       const view = new DataView(this.buffer, this.byteOffset, this.byteLength);
       const hdrlen = this.hdrlen;
-      let amount = 0n;
+      let amount = BigInt(0);
       let offset = 4 + TXADDRLEN;
       for (; offset < hdrlen; offset += LEntry.length) {
         amount += view.getBigUint64(offset, true);
