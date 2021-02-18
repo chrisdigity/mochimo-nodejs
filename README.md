@@ -1,7 +1,10 @@
-# Welcome to Mochimo for NodeJs. <img align="right" src="https://raw.githubusercontent.com/standard/semistandard/master/badge.svg">
-[![npm (tag)](https://img.shields.io/npm/v/mochimo/latest?style=plastic)](https://www.npmjs.com/package/mochimo)
-![npm](https://img.shields.io/npm/dw/mochimo?style=plastic)
-![license](https://img.shields.io/badge/License-Modified%20MPL%202.0-blue)
+<h1 align="center">
+  Mochimo Cryptocurrency Network Integration<br><sup>for Node.js</sup><br>
+    <a href="https://www.npmjs.com/package/mochimo"><img alt="npm (latest)" src="https://img.shields.io/npm/v/mochimo/latest?style=plastic"></a>
+    <a href="https://www.npmjs.com/package/mochimo"><img alt="npm (downloads)" src="https://img.shields.io/npm/dw/mochimo?style=plastic"></a>
+    <a href="./LICENSE.PDF"><img alt="license" src="https://img.shields.io/badge/License-Modified%20MPL%202.0-06f"></a>
+    <a href="https://github.com/standard/semistandard"><img alt="js-semistandard-style" src="https://img.shields.io/badge/code%20style-semistandard-fff.svg?style=plastic"></a>
+</h1>
 
 **This module is still under development.**<br>
 *Please report issues here on Github...*
@@ -23,6 +26,10 @@ const Mochimo = require('mochimo')
  - [changelog](docs/CHANGELOG.md)... *pfft boring...*
  - [documentation](docs/README.md)... also contains minor usage examples
  - for an extensive usage example, checkout the [MochiMap](https://github.com/chrisdigity/mochimap.com) codebase
+
+## Need to get in contact? ~ [![Discord](https://img.shields.io/discord/460867662977695765?logo=discord&style=plastic)](https://discord.gg/7ma6Bk2)
+More often than not, you can find me online in the [Mochimo Official](https://discord.gg/7ma6Bk2) Discord Server.<br>
+Otherwise, checkout my [Github profile](https://github.com/chrisdigity) for other forms of contact.
 
 ## License
 This module is released under an MPL 2.0 derivative Open Source license.  
