@@ -1,7 +1,6 @@
 # Documentation
-[![npm](https://img.shields.io/static/v1?label=npm&message=v0.2.5&color=orange)](https://www.npmjs.com/package/mochimo/v/0.2.5)
-[![js-semistandard-style](https://img.shields.io/badge/code%20style-semistandard-brightgreen.svg?style=plastic)](https://github.com/standard/semistandard)
-![chrisdigity](https://img.shields.io/static/v1?label=%C2%A9%202019-2021&message=Chrisdigity&color=blue&style=plastic)
+[![npm](https://img.shields.io/static/v1?label=npm&message=v0.2.6&color=orange)](https://www.npmjs.com/package/mochimo/v/0.2.6)
+[![chrisdigity](https://img.shields.io/static/v1?label=%C2%A9%202019-2021&message=Chrisdigity&color=blue&style=plastic)](https://github.com/chrisdigity)
 
 ## Before you begin...
 You might want to familiarise yourself with some Mochimo codebase *lingo*...
@@ -229,7 +228,9 @@ const Mochimo = require('mochimo');// get list of peers and write to stdout, e
 <a name="LEntry"></a>
 
 ## LEntry ⇐ [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
-*LEntry class objects are only accessible via the [Block](#Block)class.*<br>The Ledger Entry class is a Uint8Array of static size containinga full WOTS+ address and a 64-bit balance.
+*LEntry class objects are only accessible via the [Block](#Block)
+class.*<br>The Ledger Entry class is a Uint8Array of static size containing
+a full WOTS+ address and a 64-bit balance.
 
 **Kind**: global class  
 **Extends**: [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)  
@@ -239,7 +240,6 @@ const Mochimo = require('mochimo');// get list of peers and write to stdout, e
         * [.address](#LEntry+address) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
         * [.balance](#LEntry+balance) : [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
         * [.tag](#LEntry+tag) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
-        * [.toJSON()](#LEntry+toJSON) ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
     * _static_
         * [.length](#LEntry.length) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
 
@@ -273,26 +273,12 @@ The tag attached to the ledger address, in hexadecimal format
 
 * * *
 
-<a name="LEntry+toJSON"></a>
-
-### lentry.toJSON() ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
-**Kind**: instance method of [<code>LEntry</code>](#LEntry)  
-**Returns**: [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects) - LEntry class object, in JSON format  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| address | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | *refer to LEntry class properties* |
-| balance | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-| tag | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-
-
-* * *
-
 <a name="LEntry.length"></a>
 
 ### LEntry.length : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
-Breakdown:- WOTS+ address, 2208 bytes- Balance (64bit), 8 bytes
+Breakdown:
+- WOTS+ address, 2208 bytes
+- Balance (64bit), 8 bytes
 
 **Kind**: static property of [<code>LEntry</code>](#LEntry)  
 **Constant_value**: `2216`  
@@ -302,7 +288,15 @@ Breakdown:- WOTS+ address, 2208 bytes- Balance (64bit), 8 bytes
 <a name="TXReference"></a>
 
 ## TXReference ⇐ [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
-*TXReference class objects are only accessible via the[Block](#Block) class.*<br>The Transaction Reference class is a heavilyminified transaction type object, represented as a Uint8Array and designedwith transaction history in mind. The transaction signature, transaction ID,and any block identifiers are purposely omitted, with the intention of use ina key, filename, or database, depending on application requirements.Additionally, addresses get truncated to either an associated tag, the first32 bytes of a WOTS+ address, or, in the case of an extended TX transaction,the whole 2208 bytes of a destination address.
+*TXReference class objects are only accessible via the
+[Block](#Block) class.*<br>The Transaction Reference class is a heavily
+minified transaction type object, represented as a Uint8Array and designed
+with transaction history in mind. The transaction signature, transaction ID,
+and any block identifiers are purposely omitted, with the intention of use in
+a key, filename, or database, depending on application requirements.
+Additionally, addresses get truncated to either an associated tag, the first
+32 bytes of a WOTS+ address, or, in the case of an extended TX transaction,
+the whole 2208 bytes of a destination address.
 
 **Kind**: global class  
 **Extends**: [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)  
@@ -315,7 +309,6 @@ Breakdown:- WOTS+ address, 2208 bytes- Balance (64bit), 8 bytes
         * [.srcaddr](#TXReference+srcaddr) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
         * [.dstaddr](#TXReference+dstaddr) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
         * [.chgaddr](#TXReference+chgaddr) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
-        * [.toJSON()](#TXReference+toJSON) ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
     * _static_
         * [.SENDTOTALp](#TXReference.SENDTOTALp) ⇒ [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.CHANGETOTALp](#TXReference.CHANGETOTALp) ⇒ [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
@@ -379,24 +372,6 @@ The destination address, in hexadecimal format
 The change address, in hexadecimal format
 
 **Kind**: instance property of [<code>TXReference</code>](#TXReference)  
-
-* * *
-
-<a name="TXReference+toJSON"></a>
-
-### txreference.toJSON() ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
-**Kind**: instance method of [<code>TXReference</code>](#TXReference)  
-**Returns**: [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects) - TXReference class object, in JSON format  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| sendtotal | [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) | *refer to TXReference class properties* |
-| changetotal | [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) |  |
-| txfee | [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) |  |
-| dstaddr | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-| chgaddr | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-
 
 * * *
 
@@ -473,7 +448,10 @@ The change address, in hexadecimal format
 <a name="TXEntry"></a>
 
 ## TXEntry ⇐ [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
-*TXEntry class objects are only accessible via the [Block](#Block)class.*<br>The Transaction class is a Uint8Array of static size containingall elements required for inclusion in a valid Mochimo Block or TX Object.TXEntry is typically used for reading transactions from a Mochimo Block.
+*TXEntry class objects are only accessible via the [Block](#Block)
+class.*<br>The Transaction class is a Uint8Array of static size containing
+all elements required for inclusion in a valid Mochimo Block or TX Object.
+TXEntry is typically used for reading transactions from a Mochimo Block.
 
 **Kind**: global class  
 **Extends**: [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)  
@@ -491,7 +469,6 @@ The change address, in hexadecimal format
         * [.txfee](#TXEntry+txfee) : [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
         * [.txsig](#TXEntry+txsig) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
         * [.txid](#TXEntry+txid) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
-        * [.toJSON()](#TXEntry+toJSON) ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
         * [.toReference()](#TXEntry+toReference) ⇒ [<code>TXReference</code>](#TXReference)
     * _static_
         * [.SRCADDRp](#TXEntry.SRCADDRp) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
@@ -519,7 +496,8 @@ The source address, in hexadecimal format
 <a name="TXEntry+srctag"></a>
 
 ### txentry.srctag : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
-The tag attached to the source address, inhexadecimal format
+The tag attached to the source address, in
+hexadecimal format
 
 **Kind**: instance property of [<code>TXEntry</code>](#TXEntry)  
 
@@ -537,7 +515,8 @@ The destination address, in hexadecimal format
 <a name="TXEntry+dsttag"></a>
 
 ### txentry.dsttag : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
-The tag attached to the destination address, inhexadecimal format
+The tag attached to the destination address, in
+hexadecimal format
 
 **Kind**: instance property of [<code>TXEntry</code>](#TXEntry)  
 
@@ -555,7 +534,8 @@ The change address, in hexadecimal format
 <a name="TXEntry+chgtag"></a>
 
 ### txentry.chgtag : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
-The tag attached to the change address, inhexadecimal format
+The tag attached to the change address, in
+hexadecimal format
 
 **Kind**: instance property of [<code>TXEntry</code>](#TXEntry)  
 
@@ -606,32 +586,12 @@ The transaction id, in hexadecimal format
 
 * * *
 
-<a name="TXEntry+toJSON"></a>
-
-### txentry.toJSON() ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
-**Kind**: instance method of [<code>TXEntry</code>](#TXEntry)  
-**Returns**: [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects) - TXEntry class object, in JSON format  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| srcaddr | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | *refer to TXEntry class properties* |
-| dstaddr | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-| chgaddr | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-| sendtotal | [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) |  |
-| changetotal | [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) |  |
-| txfee | [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) |  |
-| txsig | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-| txid | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-
-
-* * *
-
 <a name="TXEntry+toReference"></a>
 
 ### txentry.toReference() ⇒ [<code>TXReference</code>](#TXReference)
 **Kind**: instance method of [<code>TXEntry</code>](#TXEntry)  
-**Returns**: [<code>TXReference</code>](#TXReference) - A heavily minified version of thetransaction entry object  
+**Returns**: [<code>TXReference</code>](#TXReference) - A heavily minified version of the
+transaction entry object  
 
 * * *
 
@@ -718,7 +678,11 @@ The transaction id, in hexadecimal format
 <a name="TXEntry.length"></a>
 
 ### TXEntry.length : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
-Breakdown:- 3x WOTS+ (inc. tag), 6624 bytes- 3x Amounts (64bit), 24 bytes- 1x Signature (WOTS+), 2144 bytes- 1x ID Hash (sha256), 32 bytes
+Breakdown:
+- 3x WOTS+ (inc. tag), 6624 bytes
+- 3x Amounts (64bit), 24 bytes
+- 1x Signature (WOTS+), 2144 bytes
+- 1x ID Hash (sha256), 32 bytes
 
 **Kind**: static property of [<code>TXEntry</code>](#TXEntry)  
 **Constant_value**: `8824`  
@@ -728,7 +692,10 @@ Breakdown:- 3x WOTS+ (inc. tag), 6624 bytes- 3x Amounts (64bit), 24 bytes- 1x
 <a name="BlockTrailer"></a>
 
 ## BlockTrailer ⇐ [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
-The BlockTrailer class is a Uint8Array of static size containingthe trailer elements appended to a valid Mochimo Block. BlockTrailers can bejoined together in series to create a historically verifiable chain known asa [Tfile](#Tfile).
+The BlockTrailer class is a Uint8Array of static size containing
+the trailer elements appended to a valid Mochimo Block. BlockTrailers can be
+joined together in series to create a historically verifiable chain known as
+a [Tfile](#Tfile).
 
 **Kind**: global class  
 **Extends**: [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)  
@@ -745,7 +712,6 @@ The BlockTrailer class is a Uint8Array of static size containingthe trailer ele
         * [.nonce](#BlockTrailer+nonce) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
         * [.stime](#BlockTrailer+stime) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
         * [.bhash](#BlockTrailer+bhash) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
-        * [.toJSON()](#BlockTrailer+toJSON) ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
     * _static_
         * [.PHASHp](#BlockTrailer.PHASHp) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.BNUMp](#BlockTrailer.BNUMp) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
@@ -783,7 +749,8 @@ The block number
 <a name="BlockTrailer+mfee"></a>
 
 ### blocktrailer.mfee : [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
-The mining fee (a.k.a. transaction fee), innanoMochimo
+The mining fee (a.k.a. transaction fee), in
+nanoMochimo
 
 **Kind**: instance property of [<code>BlockTrailer</code>](#BlockTrailer)  
 
@@ -849,29 +816,6 @@ The current block's solve time (UTC seconds)
 The current block hash, in hexadecimal format
 
 **Kind**: instance property of [<code>BlockTrailer</code>](#BlockTrailer)  
-
-* * *
-
-<a name="BlockTrailer+toJSON"></a>
-
-### blocktrailer.toJSON() ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
-**Kind**: instance method of [<code>BlockTrailer</code>](#BlockTrailer)  
-**Returns**: [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects) - BlockTrailer class object, in JSON format  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| phash | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | *refer to BlockTrailer class properties* |
-| bnum | [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) |  |
-| mfee | [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) |  |
-| tcount | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
-| time0 | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
-| difficulty | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
-| mroot | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-| nonce | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-| stime | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-| bhash | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-
 
 * * *
 
@@ -978,7 +922,10 @@ The current block hash, in hexadecimal format
 <a name="BlockTrailer.length"></a>
 
 ### BlockTrailer.length : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
-Breakdown:- 4x Hash (sha256), 128 bytes- 2x Number (64-bit), 16 bytes- 4x Number (32-bit), 16 bytes
+Breakdown:
+- 4x Hash (sha256), 128 bytes
+- 2x Number (64-bit), 16 bytes
+- 4x Number (32-bit), 16 bytes
 
 **Kind**: static property of [<code>BlockTrailer</code>](#BlockTrailer)  
 **Constant_value**: `160`  
@@ -988,7 +935,10 @@ Breakdown:- 4x Hash (sha256), 128 bytes- 2x Number (64-bit), 16 bytes- 4x Num
 <a name="Block"></a>
 
 ## Block ⇐ [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
-The Block class is a Uint8Array consisting of 3 main parts; ablock header, block contents, and a block trailer. The contents of a blockcan be either transactions (for a normal block), ledger entries (for aneogenesis block), or empty (for a pseudo block).
+The Block class is a Uint8Array consisting of 3 main parts; a
+block header, block contents, and a block trailer. The contents of a block
+can be either transactions (for a normal block), ledger entries (for a
+neogenesis block), or empty (for a pseudo block).
 
 **Kind**: global class  
 **Extends**: [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)  
@@ -996,6 +946,9 @@ The Block class is a Uint8Array consisting of 3 main parts; ablock header, bloc
 * [Block](#Block) ⇐ [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
     * _instance_
         * [.type](#Block+type) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
+        * [.typeStr](#Block+typeStr) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+        * [.haiku](#Block+haiku) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+        * [.tamount](#Block+tamount) : [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
         * [.hdrlen](#Block+hdrlen) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.maddr](#Block+maddr) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
         * [.mreward](#Block+mreward) : [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
@@ -1012,10 +965,7 @@ The Block class is a Uint8Array consisting of 3 main parts; ablock header, bloc
         * [.nonce](#Block+nonce) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
         * [.stime](#Block+stime) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.bhash](#Block+bhash) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
-        * [.toJSON()](#Block+toJSON) ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
-        * [.toSummary()](#Block+toSummary) ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
     * _static_
-        * [.typeStr](#Block.typeStr) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
         * [.INVALID](#Block.INVALID) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.NORMAL](#Block.NORMAL) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.GENESIS](#Block.GENESIS) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
@@ -1042,13 +992,44 @@ The block type
 
 * * *
 
+<a name="Block+typeStr"></a>
+
+### block.typeStr : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+The block type as a Human Readable String
+
+**Kind**: instance property of [<code>Block</code>](#Block)  
+**See**: [Block.type](Block.type)  
+
+* * *
+
+<a name="Block+haiku"></a>
+
+### block.haiku : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
+The Haiku representation of the blocks nonce.
+
+**Kind**: instance property of [<code>Block</code>](#Block)  
+**See**: [Block.nonce](Block.nonce)  
+
+* * *
+
+<a name="Block+tamount"></a>
+
+### block.tamount : [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+Total amount sent in transactions for a [NORMAL](#Block.NORMAL) block
+type, or total amount stored in ledger entries for a
+[NEOGENESIS](#Block.NEOGENESIS) block type.
+
+**Kind**: instance property of [<code>Block</code>](#Block)  
+
+* * *
+
 <a name="Block+hdrlen"></a>
 
 ### block.hdrlen : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
 The block header length
 
 **Kind**: instance property of [<code>Block</code>](#Block)  
-**Null**: if...- size of block buffer is < 4 bytes  
+**Null**: when size of block buffer is < 4 bytes  
 
 * * *
 
@@ -1058,7 +1039,8 @@ The block header length
 The address that receives the mining reward, in hexadecimal format
 
 **Kind**: instance property of [<code>Block</code>](#Block)  
-**Null**: if...- size of block buffer is < 2212 bytes- `hdrlen` < 2212 bytes  
+**Null**: when block type !== Block.NORMAL  
+**See**: [NORMAL](#Block.NORMAL)  
 
 * * *
 
@@ -1068,7 +1050,8 @@ The address that receives the mining reward, in hexadecimal format
 The mining reward, in nanoMochimo
 
 **Kind**: instance property of [<code>Block</code>](#Block)  
-**Null**: if...- size of block buffer is < 2220 bytes- `hdrlen` < 2220 bytes  
+**Null**: when block type !== Block.NORMAL  
+**See**: [NORMAL](#Block.NORMAL)  
 
 * * *
 
@@ -1181,72 +1164,6 @@ A BlockTrailer object associated with the block
 
 * * *
 
-<a name="Block+toJSON"></a>
-
-### block.toJSON() ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
-**Kind**: instance method of [<code>Block</code>](#Block)  
-**Returns**: [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects) - Block class object, in JSON format  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| bhash | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | *refer to Block class properties* |
-| phash | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-| mroot | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-| nonce | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-| maddr | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-| mreward | [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) |  |
-| mfee | [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) |  |
-| tcount | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
-| difficulty | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
-| time0 | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
-| stime | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-| bnum | [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) |  |
-| type | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | Human readable block type |
-| haiku | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | Haiku expanded from nonce |
-| transactions | [<code>Array.&lt;TXEntry&gt;</code>](#TXEntry) | Transactions present in block |
-| ledger | [<code>Array.&lt;LEntry&gt;</code>](#LEntry) | Ledger entries present in block |
-
-
-* * *
-
-<a name="Block+toSummary"></a>
-
-### block.toSummary() ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
-**Kind**: instance method of [<code>Block</code>](#Block)  
-**Returns**: [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects) - Block class object, in JSON format (excludingtransactions and ledger entries)  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| bhash | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | *refer to Block class properties* |
-| phash | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-| mroot | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-| nonce | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-| maddr | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-| mreward | [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) |  |
-| mfee | [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) |  |
-| tcount | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
-| difficulty | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
-| time0 | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
-| stime | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
-| bnum | [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) |  |
-| type | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | Human readable block type |
-| haiku | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | Haiku expanded from nonce |
-
-
-* * *
-
-<a name="Block.typeStr"></a>
-
-### Block.typeStr : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
-The block type as a Human Readable String
-
-**Kind**: static property of [<code>Block</code>](#Block)  
-**See**: [Block.type](Block.type)  
-
-* * *
-
 <a name="Block.INVALID"></a>
 
 ### Block.INVALID : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
@@ -1300,7 +1217,8 @@ Represents a pseudo block type
 <a name="Tfile"></a>
 
 ## Tfile ⇐ [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
-The Tfile class is a Uint8Array desgined to contain all or part ofthe historically verifiable chain known as a Tfile in the Mochimo ecosystem.
+The Tfile class is a Uint8Array desgined to contain all or part of
+the historically verifiable chain known as a Tfile in the Mochimo ecosystem.
 
 **Kind**: global class  
 **Extends**: [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)  
@@ -1315,7 +1233,10 @@ The Tfile class is a Uint8Array desgined to contain all or part ofthe historica
 <a name="new_Tfile_new"></a>
 
 ### new Tfile(bytes, [offset], [length])
-*FOR ADVANCED USE ONLY!*<br>Although the Tfile class *can* be instantiateddirectly, it is **not recommended.**<br>Instead, consider using[Mochimo.getTfile()](#module_Mochimo..getTfile) to obtain a Tfiledirectly from the Mochimo network.
+*FOR ADVANCED USE ONLY!*<br>Although the Tfile class *can* be instantiated
+directly, it is **not recommended.**<br>Instead, consider using
+[Mochimo.getTfile()](#module_Mochimo..getTfile) to obtain a Tfile
+directly from the Mochimo network.
 
 
 | Param | Type | Description |
@@ -1331,7 +1252,8 @@ The Tfile class is a Uint8Array desgined to contain all or part ofthe historica
 
 ### tfile.trailer(index) ⇒ [<code>BlockTrailer</code>](#BlockTrailer)
 **Kind**: instance method of [<code>Tfile</code>](#Tfile)  
-**Returns**: [<code>BlockTrailer</code>](#BlockTrailer) - A BlockTrailer object representing trailerdata at the specified index.  
+**Returns**: [<code>BlockTrailer</code>](#BlockTrailer) - A BlockTrailer object representing trailer
+data at the specified index.  
 
 | Param | Type | Description |
 | --- | --- | --- |

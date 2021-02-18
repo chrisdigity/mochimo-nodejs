@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+### [v0.2.6](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.2.6) - 2021-02-18
+
+Improvements and fixes to the `Block` class and removal of unnecessary functions in the `Blockchain.js` file.
+
+```diff
++ Added haiku and tamount properties to Block
+! Fixed line endings in Tx.js
+# Changed some conditionals in tamount, maddr, and mreward
+- Removed toJSON(); LEntry, TXReference, TXEntry, Blocktrailer & Block classes
+- Removed toSummary(); Block class
+```
+
 ### [v0.2.5](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.2.5) - 2021-02-09
 
 Fixes for `Block.toSummary()` and the `mreward` property of the Block class.
