@@ -1,92 +1,93 @@
 
 /* The features for the semantic grammar are
  * adapted from systemic grammar (Winograd, 1972). */
+
 const F_ING = 1;
 const F_INF = 2;
 const F_MOTION = 4;
 const F_NS = 8;
 const F_NPL = 16;
-const F_N = (F_NS | F_NPL);
+// const F_N = (F_NS | F_NPL);
 const F_MASS = 32;
 const F_AMB = 64;
 const F_TIMED = 128;
 const F_TIMEY = 256;
-const F_TIME = (F_TIMED | F_TIMEY);
+// const F_TIME = (F_TIMED | F_TIMEY);
 const F_AT = 512;
 const F_ON = 1024;
 const F_IN = 2048;
-const F_LOC = (F_AT | F_ON | F_IN);
-const F_NOUN = (F_NS | F_NPL | F_MASS | F_TIME | F_LOC);
+// const F_LOC = (F_AT | F_ON | F_IN);
+// const F_NOUN = (F_NS | F_NPL | F_MASS | F_TIME | F_LOC);
 
 const F_PREP = 4096;
 const F_ADJ = 8192;
 const F_OP = 16384;
-const F_DETS = 32768;
-const F_DETPL = 0x10000;
-const F_XLIT = 0x20000;
+// const F_DETS = 32768;
+// const F_DETPL = 0x10000;
+// const F_XLIT = 0x20000;
 
-const S_NL = (F_XLIT + 1);
-const S_CO = (F_XLIT + 2);
-const S_MD = (F_XLIT + 3);
-const S_LIKE = (F_XLIT + 4);
-const S_A = (F_XLIT + 5);
-const S_THE = (F_XLIT + 6);
-const S_OF = (F_XLIT + 7);
-const S_NO = (F_XLIT + 8);
-const S_S = (F_XLIT + 9);
-const S_AFTER = (F_XLIT + 10);
-const S_BEFORE = (F_XLIT + 11);
+// const S_NL = (F_XLIT + 1);
+// const S_CO = (F_XLIT + 2);
+// const S_MD = (F_XLIT + 3);
+// const S_LIKE = (F_XLIT + 4);
+// const S_A = (F_XLIT + 5);
+// const S_THE = (F_XLIT + 6);
+// const S_OF = (F_XLIT + 7);
+// const S_NO = (F_XLIT + 8);
+// const S_S = (F_XLIT + 9);
+// const S_AFTER = (F_XLIT + 10);
+// const S_BEFORE = (F_XLIT + 11);
 
-const S_AT = (F_XLIT + 12);
-const S_IN = (F_XLIT + 13);
-const S_ON = (F_XLIT + 14);
-const S_UNDER = (F_XLIT + 15);
-const S_ABOVE = (F_XLIT + 16);
-const S_BELOW = (F_XLIT + 17);
+// const S_AT = (F_XLIT + 12);
+// const S_IN = (F_XLIT + 13);
+// const S_ON = (F_XLIT + 14);
+// const S_UNDER = (F_XLIT + 15);
+// const S_ABOVE = (F_XLIT + 16);
+// const S_BELOW = (F_XLIT + 17);
 
-const MAXDICT = 256;
-const MAXH = 16;
+// const MAXDICT = 256;
+// const MAXH = 16;
 
 /*
  * Case frames for the semantic grammar with a vibe inspired by Basho...
- */
+
 const Frame = [
-  /*  on a quiet moor
-      raindrops
-      fall  */
+  //  on a quiet moor
+  //  raindrops
+  //  fall
   [F_PREP, F_ADJ, F_MASS, S_NL, F_NPL, S_NL, F_INF | F_ING],
   [F_PREP, F_MASS, S_NL, F_ADJ, F_NPL, S_NL, F_INF | F_ING],
   [F_PREP, F_TIMED, S_NL, F_ADJ, F_NPL, S_NL, F_INF | F_ING],
   [F_PREP, F_TIMED, S_NL, S_A, F_NS, S_NL, F_ING],
 
-  /*  morning mist
-      on a worn field--
-      red  */
+  //  morning mist
+  //  on a worn field--
+  //  red
   [F_TIME, F_AMB, S_NL, F_PREP, S_A, F_ADJ, F_NS, S_MD, S_NL, F_ADJ | F_ING],
   [F_TIME, F_AMB, S_NL, F_ADJ, F_MASS, S_NL, F_ING],
 
-  /*  morning mist
-      remains:
-      smoke  */
+  //  morning mist
+  //  remains:
+  //  smoke
   [F_TIME, F_MASS, S_NL, F_INF, S_S, S_CO, S_NL, F_AMB],
 
-  /*  arriving at a parched gate
-      mist rises--
-      a moonlit sandal
+  //  arriving at a parched gate
+  //  mist rises--
+  //  a moonlit sandal
 
-      pausing under a hot tomb
-      firelight shining--
-      a beautiful bon fire  */
+  //  pausing under a hot tomb
+  //  firelight shining--
+  //  a beautiful bon fire
   [F_ING, F_PREP, S_A, F_ADJ, F_NS, S_NL, F_MASS, F_ING, S_MD, S_NL, S_A,
     F_ADJ, F_NS],
   [F_ING, F_PREP, F_TIME, F_MASS, S_NL, F_MASS, F_ING, S_MD, S_NL, S_A, F_ADJ,
     F_NS],
 
-  /*  a wife
-      in afternoon mist--
-      sad  */
+  //  a wife
+  //  in afternoon mist--
+  //  sad
   [S_A, F_NS, S_NL, F_PREP, F_TIMED, F_MASS, S_MD, S_NL, F_ADJ]
-];
+]; */
 
 const dict = [
   /* Adverbs and function words */

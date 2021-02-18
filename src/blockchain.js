@@ -319,11 +319,14 @@ class TXEntry extends Uint8Array {
   toReference () {
     // determine address types - 0xff indicates a tagged address
     const srcType = UNTAGGED_BYTES.includes(this[TXEntry.SRCADDRp + 2196])
-      ? this[TXEntry.SRCADDRp + 2197] : 0xff;
+      ? this[TXEntry.SRCADDRp + 2197]
+      : 0xff;
     const dstType = UNTAGGED_BYTES.includes(this[TXEntry.DSTADDRp + 2196])
-      ? this[TXEntry.DSTADDRp + 2197] : 0xff;
+      ? this[TXEntry.DSTADDRp + 2197]
+      : 0xff;
     const chgType = UNTAGGED_BYTES.includes(this[TXEntry.CHGADDRp + 2196])
-      ? this[TXEntry.CHGADDRp + 2197] : 0xff;
+      ? this[TXEntry.CHGADDRp + 2197]
+      : 0xff;
     // calculate extra length for addresses
     const srcaddrLength = srcType === 0xff ? 12 : srcType > 0 ? TXADDRLEN : 32;
     const srcaddrPointer = TXEntry.SRCADDRp + (srcType === 0xff ? 2196 : 0);
