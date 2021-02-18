@@ -4,21 +4,24 @@
   "description": "Integrate with the Mochimo Cryptocurrency Network",
   "main": "src/mochimo.js",
   "scripts": {
-    "test": "echo \"No tests configured...\"",
-    "build:docs": "jsdoc2md --template docs/hbs/template --separators docs/hbs/sep --files src/blockchain.js src/tx.js src/node.js src/mochimo.js > docs/README.md"
+    "test": "semistandard && echo \"No tests configured...\"",
+    "build:docs": "jsdoc2md --template docs/hbs/template --separators docs/hbs/sep --files src/blockchain.js src/tx.js src/node.js src/mochimo.js > docs/README.md",
+    "prepare": "npm run test && npm run build:docs && echo \"Please update semver in package.json & docs/README.md\"",
+    "release": "read OTP -p \"One-Time-Password:\" && npm login && clear && npm publish -otp=$OTP && npm logout"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chrisdigity/mochimo-nodejs.git"
   },
   "author": "Chrisdigity <chrisdigity@gmail.com>",
-  "license": "Modified MPL 2.0",
+  "license": "See LICENSE.PDF",
   "bugs": {
     "url": "https://github.com/chrisdigity/mochimo-nodejs/issues"
   },
   "homepage": "https://github.com/chrisdigity/mochimo-nodejs#readme",
   "dependencies": {},
   "devDependencies": {
-    "jsdoc-to-markdown": "^6.0.1"
+    "jsdoc-to-markdown": "^6.0.1",
+    "semistandard": "*"
   }
 }
