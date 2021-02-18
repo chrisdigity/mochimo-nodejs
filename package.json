@@ -5,9 +5,7 @@
   "main": "src/mochimo.js",
   "scripts": {
     "test": "semistandard && echo \"No tests configured...\"",
-    "build:docs": "jsdoc2md --template docs/hbs/template --separators docs/hbs/sep --files src/blockchain.js src/tx.js src/node.js src/mochimo.js > docs/README.md",
-    "prepare": "npm run test && npm run build:docs && echo \"Please update semver in package.json & docs/README.md\"",
-    "release": "read OTP -p \"One-Time-Password:\" && npm login && clear && npm publish -otp=$OTP && npm logout"
+    "build:docs": "jsdoc2md --template docs/hbs/template --separators docs/hbs/sep --files src/blockchain.js src/tx.js src/node.js src/mochimo.js > docs/README.md"
   },
   "repository": {
     "type": "git",
