@@ -859,7 +859,9 @@ class Block extends Uint8Array {
   get ledger () {
     const ledger = [];
     // no ledger data in non-neogenesis blocks
-    if (this.type !== Block.NEOGENESIS) return ledger;
+    if (this.type !== Block.NEOGENESIS && this.type !== Block.GENESIS) {
+      return ledger;
+    }
     // begin building block transaction list
     const len = this.hdrlen;
     for (let offset = 4; offset < len; offset += LEntry.length) {
