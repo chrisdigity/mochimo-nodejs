@@ -145,43 +145,6 @@ const Mochimo = {
     return new Blockchain.Block(node.data);
   }, // end getBlock() ...
   /**
-   * @function getPeerlist
-   * @desc Download a peerlist from a network peer.
-   * @param {external:String} peer IPv4 address of network peer
-   * @return {external:Promise}
-   * @fulfil {Array.<external:String>} Array of peers as IPv4 strings
-   * @reject {external:Error} Error indicating a failure
-   * @example
-   * const Mochimo = require('mochimo');
-   *
-   * // request peerlist from network peer
-   * Mochimo.getPeerlist('127.0.0.1').then(peerlist => {
-   *   console.log('Peerlist: %O', peerlist);
-   * }).catch(console.error); */
-  getPeerlist: async (peer) => {
-    const fid = LOG.verbose(`Mochimo.getPeerlist(${peer})=>`);
-    const start = Date.now();
-    // begin network operation
-    const node = await Node.callserver({ ip: peer });
-    // check handshake operation status
-    if (node.status) {
-      LOG.verbose(fid, 'handshake failed with status:', node.status);
-      throw new Error(`${Constants.VENAME(node.status)} during handshake`);
-    }
-    // send operation code for peerlist request
-    LOG.verbose(fid, 'requesting peerlist...');
-    await Node.sendop(node, Constants.OP_GETIPL);
-    // check operation status
-    if (node.status) {
-      LOG.verbose(fid, 'failed operation with status:', node.status);
-      throw new Error(`${Constants.VENAME(node.status)} during operation`);
-    } else LOG.verboseT(start, fid, 'download finished');
-    // extract peerlist data using node.toJSON()
-    const peers = node.toJSON().peers;
-    // return peerlist data
-    return peers;
-  }, // end getPeerlist() ...
-  /**
    * @function getNetworkPeers
    * @desc Get a list of available (non-busy) Mochimo Network peers.
    * @param {(Array.<external:String>|external:String)} startPeers Either a
@@ -280,6 +243,43 @@ const Mochimo = {
       }
     });
   }, // end getNetworkPeers() ...
+  /**
+   * @function getPeerlist
+   * @desc Download a peerlist from a network peer.
+   * @param {external:String} peer IPv4 address of network peer
+   * @return {external:Promise}
+   * @fulfil {Array.<external:String>} Array of peers as IPv4 strings
+   * @reject {external:Error} Error indicating a failure
+   * @example
+   * const Mochimo = require('mochimo');
+   *
+   * // request peerlist from network peer
+   * Mochimo.getPeerlist('127.0.0.1').then(peerlist => {
+   *   console.log('Peerlist: %O', peerlist);
+   * }).catch(console.error); */
+  getPeerlist: async (peer) => {
+    const fid = LOG.verbose(`Mochimo.getPeerlist(${peer})=>`);
+    const start = Date.now();
+    // begin network operation
+    const node = await Node.callserver({ ip: peer });
+    // check handshake operation status
+    if (node.status) {
+      LOG.verbose(fid, 'handshake failed with status:', node.status);
+      throw new Error(`${Constants.VENAME(node.status)} during handshake`);
+    }
+    // send operation code for peerlist request
+    LOG.verbose(fid, 'requesting peerlist...');
+    await Node.sendop(node, Constants.OP_GETIPL);
+    // check operation status
+    if (node.status) {
+      LOG.verbose(fid, 'failed operation with status:', node.status);
+      throw new Error(`${Constants.VENAME(node.status)} during operation`);
+    } else LOG.verboseT(start, fid, 'download finished');
+    // extract peerlist data using node.toJSON()
+    const peers = node.toJSON().peers;
+    // return peerlist data
+    return peers;
+  }, // end getPeerlist() ...
   /**
    * @function getTfile
    * @desc Download partial or full Trailer file from a network peer.
