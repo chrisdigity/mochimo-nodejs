@@ -1,6 +1,7 @@
 
 // sizeof...
 const HASHLEN = 32;
+const TAGLEN = 12;
 // transaction...
 const TXADDRLEN = 2208;
 const TXAMOUNTLEN = 8;
@@ -120,6 +121,7 @@ const CRC16TABLE = new Uint16Array([
 
 module.exports = {
   HASHLEN,
+  TAGLEN,
   // transaction...
   TXADDRLEN,
   TXAMOUNTLEN,
