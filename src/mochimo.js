@@ -182,68 +182,6 @@ const Mochimo = {
     return peers;
   }, // end getPeerlist() ...
   /**
-   * @function getTfile
-   * @desc Download partial or full Trailer file from a network peer.
-   * @param {external:String} peer IPv4 address of network peer
-   * @param {external:Number=} bnum The first trailer to download (max 32bit
-   * number)<br><sup>Omit parameter to download full trailer file (tfile.dat)
-   * @param {external:Number=} count The number of trailers to download (max
-   * 1000)<br><sup>Omit parameter to download one (1) trailer
-   * @return {external:Promise}
-   * @fulfil {external:Tfile} A `new Mochimo.Tfile()` object containing the
-   * downloaded trailer data
-   * @reject {external:Error} Error indicating a failure
-   * @example
-   * const fsp = require('fs').promises;
-   * const Mochimo = require('mochimo');
-   *
-   * // download and write partial tfile to file, else write error to stderr
-   * Mochimo.getTfile('127.0.0.1', 0, 24).then(tfile => {
-   *   return fsp.writeFile('partialt_file.dat', tfile);
-   * }).catch(console.error); */
-  getTfile: async (peer, bnum, count) => {
-    const fid = LOG.verbose(`Mochimo.getTfile(${peer}, ${bnum}, ${count})=>`);
-    const start = Date.now();
-    // begin network operation
-    const node = await Node.callserver({ ip: peer });
-    // check handshake operation status
-    if (node.status) {
-      LOG.verbose(fid, 'failed handshake with status:', node.status);
-      throw new Error(`${Constants.VENAME(node.status)} during handshake`);
-    }
-    if (typeof bnum === 'undefined') {
-      // send operation code for entire Tfile download
-      LOG.verbose(fid, 'downloading Tfile...');
-      await Node.sendop(node, Constants.OP_GET_TFILE);
-    } else {
-      // build 64bit number for partial Tfile download
-      if (typeof count === 'undefined') count = 1;
-      const buffer = new ArrayBuffer(8);
-      const dataview = new DataView(buffer);
-      // set first 4 bytes as bnum
-      dataview.setUint32(0, bnum, true);
-      // set last 4 bytes as count
-      dataview.setUint32(4, count, true);
-      // set I/O blocknumber as bnum/count dual value
-      node.tx.blocknum = dataview.getBigUint64(0, true);
-      // send operation code for partial Tfile download
-      LOG.verbose(fid, `downloading Tfile.0x${bnum.toString(16)}x${count}...`);
-      await Node.sendop(node, Constants.OP_TF);
-    }
-    // check operation status
-    if (node.status) {
-      LOG.verbose(fid, 'failed operation with status:', node.status);
-      throw new Error(`${Constants.VENAME(node.status)} during operation`);
-    } else LOG.verboseT(start, fid, 'download finished');
-    // check returned data
-    if (node.data.length < Blockchain.BlockTrailer.length) {
-      LOG.verbose(fid, 'operation returned unknown data');
-      throw new Error('Unknown data from node operation');
-    }
-    // return partial/full Tfile object
-    return new Blockchain.Tfile(node.data);
-  }, // end getTfile() ...
-  /**
    * @function getNetworkPeers
    * @desc Get a list of available (non-busy) Mochimo Network peers.
    * @param {(Array.<external:String>|external:String)} startPeers Either a
@@ -341,7 +279,69 @@ const Mochimo = {
         continueScan();
       }
     });
-  },
+  }, // end getNetworkPeers() ...
+  /**
+   * @function getTfile
+   * @desc Download partial or full Trailer file from a network peer.
+   * @param {external:String} peer IPv4 address of network peer
+   * @param {external:Number=} bnum The first trailer to download (max 32bit
+   * number)<br><sup>Omit parameter to download full trailer file (tfile.dat)
+   * @param {external:Number=} count The number of trailers to download (max
+   * 1000)<br><sup>Omit parameter to download one (1) trailer
+   * @return {external:Promise}
+   * @fulfil {external:Tfile} A `new Mochimo.Tfile()` object containing the
+   * downloaded trailer data
+   * @reject {external:Error} Error indicating a failure
+   * @example
+   * const fsp = require('fs').promises;
+   * const Mochimo = require('mochimo');
+   *
+   * // download and write partial tfile to file, else write error to stderr
+   * Mochimo.getTfile('127.0.0.1', 0, 24).then(tfile => {
+   *   return fsp.writeFile('partialt_file.dat', tfile);
+   * }).catch(console.error); */
+  getTfile: async (peer, bnum, count) => {
+    const fid = LOG.verbose(`Mochimo.getTfile(${peer}, ${bnum}, ${count})=>`);
+    const start = Date.now();
+    // begin network operation
+    const node = await Node.callserver({ ip: peer });
+    // check handshake operation status
+    if (node.status) {
+      LOG.verbose(fid, 'failed handshake with status:', node.status);
+      throw new Error(`${Constants.VENAME(node.status)} during handshake`);
+    }
+    if (typeof bnum === 'undefined') {
+      // send operation code for entire Tfile download
+      LOG.verbose(fid, 'downloading Tfile...');
+      await Node.sendop(node, Constants.OP_GET_TFILE);
+    } else {
+      // build 64bit number for partial Tfile download
+      if (typeof count === 'undefined') count = 1;
+      const buffer = new ArrayBuffer(8);
+      const dataview = new DataView(buffer);
+      // set first 4 bytes as bnum
+      dataview.setUint32(0, bnum, true);
+      // set last 4 bytes as count
+      dataview.setUint32(4, count, true);
+      // set I/O blocknumber as bnum/count dual value
+      node.tx.blocknum = dataview.getBigUint64(0, true);
+      // send operation code for partial Tfile download
+      LOG.verbose(fid, `downloading Tfile.0x${bnum.toString(16)}x${count}...`);
+      await Node.sendop(node, Constants.OP_TF);
+    }
+    // check operation status
+    if (node.status) {
+      LOG.verbose(fid, 'failed operation with status:', node.status);
+      throw new Error(`${Constants.VENAME(node.status)} during operation`);
+    } else LOG.verboseT(start, fid, 'download finished');
+    // check returned data
+    if (node.data.length < Blockchain.BlockTrailer.length) {
+      LOG.verbose(fid, 'operation returned unknown data');
+      throw new Error('Unknown data from node operation');
+    }
+    // return partial/full Tfile object
+    return new Blockchain.Tfile(node.data);
+  }, // end getTfile() ...
   /**
    * Mochimo constants, used throughout the ecosystem of Mochimo protocols.
    * @constant {external:Object} constants
