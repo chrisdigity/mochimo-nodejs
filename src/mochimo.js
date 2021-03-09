@@ -14,6 +14,94 @@ const Tx = require('./tx');
  * const Mochimo = require('mochimo'); */
 const Mochimo = {
   /**
+   * @function getBalance
+   * @desc Download a ledger entry from a network peer.
+   * @param {external:String} peer IPv4 address of network peer
+   * @param {(external:String|external:Uint8Array)} address A Mochimo WOTS+
+   * address or tagged address to search the ledger for.
+   * @returns {external:Promise}
+   * @fulfil {?(external:Lentry)} When the address or tag is found, promise
+   * resolves a `new Mochimo.Lentry()` object containing the ledger entry data.
+   * When the address or tag is NOT found, promise resolves null.
+   * @reject {external:Error} Error indicating the failure
+   * @example
+   * const Mochimo = require('mochimo');
+   * const taggedAddress = '696c6c616d616e7564690000';
+   *
+   * // request ledger entry balance and print results
+   * Mochimo.getBalance('127.0.0.1', taggedAddress, true).then(lentry => {
+   *   if (lentry === null) console.error('address not found in ledger');
+   *   else {
+   *     console.log('Full address:', lentry.address);
+   *     console.log('Address tag:', lentry.tag);
+   *     console.log('Balance:', lentry.balance);
+   *   }
+   * }).catch(console.error); */
+  getBalance: async (peer, address, isTag) => {
+    const fid = LOG.verbose(`Mochimo.getBalance(${peer},`,
+      `${address.slice(0, 8)}..., ${isTag})=>`);
+    const isTyped = address instanceof Uint8Array;
+    if (!isTyped && typeof address !== 'string') {
+      throw new TypeError('Invalid address type, must be Uint8Array or String');
+    } else {
+      const maxlen = isTyped ? (isTag ? 12 : 2208) : (isTag ? 24 : 4416);
+      if (address.length > maxlen) {
+        throw new TypeError(`Invalid address length, must be <= ${maxlen}`);
+      }
+    }
+    const start = Date.now();
+    // begin network operation
+    const node = await Node.callserver({ ip: peer });
+    // check handshake operation status
+    if (node.status) {
+      LOG.verbose(fid, 'handshake failed with status:', node.status);
+      throw new Error(`${Constants.VENAME(node.status)} during handshake`);
+    }
+    // copy address appropriate position of a controlled Uint8Array
+    const addressArray = new Uint8Array(Constants.TXADDRLEN);
+    let bytes = isTag ? 2196 : 0;
+    if (isTyped) addressArray.set(address, bytes);
+    else {
+      const maxlen = address.length - 1; // drop half-byte hexadecimals
+      for (let i = 0; i < maxlen && bytes < Constants.TXADDRLEN; i += 2) {
+        addressArray[bytes++] = parseInt(address.slice(i, i + 2), 16);
+      }
+    }
+    if (isTag) bytes -= 2196; // remove bytes adjusted for tag copy
+    // update node tx with buffer length and data, and send operation code
+    node.tx.len = bytes;
+    if (isTag) {
+      node.tx.dstaddr = addressArray;
+      LOG.verbose(fid, 'requesting tag address and balance...');
+      await Node.sendop(node, Constants.OP_RESOLVE);
+    } else {
+      node.tx.srcaddr = addressArray;
+      LOG.verbose(fid, 'requesting address balance...');
+      await Node.sendop(node, Constants.OP_BALANCE);
+    }
+    // check operation status
+    if (node.status) {
+      LOG.verbose(fid, 'operation failed with status:', node.status);
+      throw new Error(`${Constants.VENAME(node.status)} during operation`);
+    } else LOG.verboseT(start, fid, 'balance checked');
+    // reconstruct ledger entry from results
+    const lentry = new Blockchain.LEntry();
+    if (node.tx.opcode === Constants.OP_RESOLVE) {
+      if (node.tx.sendtotal === 0n) return null;
+      lentry.address = node.tx.dstaddr;
+      lentry.balance = node.tx.changetotal;
+    } else if (node.tx.opcode === Constants.OP_SEND_BAL) {
+      if (node.tx.changetotal === 0n) return null;
+      lentry.address = node.tx.srcaddr;
+      lentry.balance = node.tx.sendtotal;
+    } else {
+      LOG.verbose(fid, 'operation returned unexpected opcode:', node.tx.opcode);
+      throw new Error(`recv'd unexpected ${Constants.OP_TEXT(node.tx.opcode)}`);
+    }
+    // return Block object
+    return lentry;
+  }, // end getBalance() ...
+  /**
    * @function getBlock
    * @desc Download a Mochimo Block file from a network peer.
    * @param {external:String} peer IPv4 address of network peer
@@ -56,6 +144,43 @@ const Mochimo = {
     // return Block object
     return new Blockchain.Block(node.data);
   }, // end getBlock() ...
+  /**
+   * @function getPeerlist
+   * @desc Download a peerlist from a network peer.
+   * @param {external:String} peer IPv4 address of network peer
+   * @return {external:Promise}
+   * @fulfil {Array.<external:String>} Array of peers as IPv4 strings
+   * @reject {external:Error} Error indicating a failure
+   * @example
+   * const Mochimo = require('mochimo');
+   *
+   * // request peerlist from network peer
+   * Mochimo.getPeerlist('127.0.0.1').then(peerlist => {
+   *   console.log('Peerlist: %O', peerlist);
+   * }).catch(console.error); */
+  getPeerlist: async (peer) => {
+    const fid = LOG.verbose(`Mochimo.getPeerlist(${peer})=>`);
+    const start = Date.now();
+    // begin network operation
+    const node = await Node.callserver({ ip: peer });
+    // check handshake operation status
+    if (node.status) {
+      LOG.verbose(fid, 'handshake failed with status:', node.status);
+      throw new Error(`${Constants.VENAME(node.status)} during handshake`);
+    }
+    // send operation code for peerlist request
+    LOG.verbose(fid, 'requesting peerlist...');
+    await Node.sendop(node, Constants.OP_GETIPL);
+    // check operation status
+    if (node.status) {
+      LOG.verbose(fid, 'failed operation with status:', node.status);
+      throw new Error(`${Constants.VENAME(node.status)} during operation`);
+    } else LOG.verboseT(start, fid, 'download finished');
+    // extract peerlist data using node.toJSON()
+    const peers = node.toJSON().peers;
+    // return peerlist data
+    return peers;
+  }, // end getPeerlist() ...
   /**
    * @function getTfile
    * @desc Download partial or full Trailer file from a network peer.
