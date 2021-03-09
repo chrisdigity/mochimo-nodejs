@@ -2,14 +2,13 @@
 /* global BigInt */
 
 /* requirements */
-const { array2string } = require('./util');
 const {
   HASHLEN,
+  TAGLEN,
   TXADDRLEN,
-  TXSIGLEN,
-  UNTAGGED_BYTES,
-  DEFAULT_TAG
+  TXSIGLEN
 } = require('./constants');
+const { array2string, sanitizeArray } = require('./util');
 const Trigg = require('./trigg');
 
 /**
@@ -20,31 +19,76 @@ const Trigg = require('./trigg');
  * a full WOTS+ address and a 64-bit balance. */
 class LEntry extends Uint8Array {
   constructor (...args) {
+    // defaults
+    args[0] = args[0] || new ArrayBuffer(LEntry.length);
+    args[1] = args[1] || 0;
     // force LEntry.length (2216) array length
     super(args[0], args[1], LEntry.length);
   }
 
   /**
+   * The full 2208 byte Mochimo address, in hexadecimal format
+   * @throws {TypeError} when set an invalid data type&ast;<br><sup>*Valid data
+   * types are hexadecimal {@link external:String}, {@link external:Array} or
+   * {@link external:TypedArray}.
+   * @throws {TypeError} when set a value of invalid length&ast;<br><sup>
+   * &ast;Must be 4416 hexadecimal character String or 2208 byte Array.
    * @type {external:String}
-   * @desc The full 2208 byte Mochimo address, in hexadecimal format */
+   * @default "0000... <4416 characters>" */
   get address () {
-    return array2string(this.subarray(0, TXADDRLEN));
+    return array2string(this.subarray(LEntry.ADDRESSp, TXADDRLEN));
+  }
+
+  set address (address) {
+    this.set(sanitizeArray(address, 'LEntry.address', TXADDRLEN, TXADDRLEN),
+      LEntry.ADDRESSp);
   }
 
   /**
+   * The associated balance, in nanoMochimo
+   * @throws {TypeError} when set value cannot be converted to the original type
    * @type {external:BigInt}
-   * @desc The associated balance, in nanoMochimo */
+   * @default 0n */
   get balance () {
     return new DataView(this.buffer).getBigUint64(
-      this.byteOffset + TXADDRLEN, true);
+      this.byteOffset + LEntry.BALANCEp, true);
+  }
+
+  set balance (balance) {
+    new DataView(this.buffer).setBigUint64(LEntry.BALANCEp, BigInt(balance,
+      'LEntry.balance'), true);
   }
 
   /**
+   * The tag attached to the ledger address, in hexadecimal format
+   * @throws {TypeError} when set an invalid data type&ast;<br><sup>*Valid data
+   * types are hexadecimal {@link external:String}, {@link external:Array} or
+   * {@link external:TypedArray}.
+   * @throws {TypeError} when set a value of invalid length&ast;<br><sup>
+   * &ast;Must be 24 hexadecimal character String or 12 byte Array.
    * @type {external:String}
-   * @desc The tag attached to the ledger address, in hexadecimal format */
+   * @default "0000... <24 characters>" */
   get tag () {
-    const tag = array2string(this.subarray(2196, TXADDRLEN));
-    return tag === DEFAULT_TAG ? null : tag;
+    return array2string(this.subarray(LEntry.TAGp, TXADDRLEN));
+  }
+
+  set tag (tag) {
+    this.set(sanitizeArray(tag, 'LEntry.tag', TAGLEN, TAGLEN), LEntry.TAGp);
+  }
+
+  /**
+   * @property {external:Number} address *refer to LEntry class properties*
+   * @property {external:Number} balance
+   * @property {external:Number} tag
+   * @return {external:Object} LEntry class object, in JSON format */
+  toJSON (minify) {
+    const json = {
+      address: this.address,
+      balance: this.balance,
+      tag: this.tag
+    };
+    if (minify) json.address = json.address.slice(0, 64);
+    return json;
   }
 
   /**
@@ -57,154 +101,35 @@ class LEntry extends Uint8Array {
     return 2216;
   }
 
+  /**
+   * @type {external:Number}
+   * @constant_value `0`
+   * @desc *FOR ADVANCED USE ONLY!*<br>Array pointer to `address` */
+  static get ADDRESSp () {
+    return 0;
+  }
+
+  /**
+   * @type {external:Number}
+   * @constant_value `2196`
+   * @desc *FOR ADVANCED USE ONLY!*<br>Array pointer to `tag` */
+  static get TAGp () {
+    return 2196;
+  }
+
+  /**
+   * @type {external:Number}
+   * @constant_value `2208`
+   * @desc *FOR ADVANCED USE ONLY!*<br>Array pointer to `balance` */
+  static get BALANCEp () {
+    return 2208;
+  }
+
   // Overwrite LEntry species with Uint8Array constructor
   static get [Symbol.species] () {
     return Uint8Array;
   }
 } // end class LEntry...
-
-/**
- * @typicalname txreference
- * @augments {external:Uint8Array}
- * @classdesc *TXReference class objects are only accessible via the
- * {@link Block} class.*<br>The Transaction Reference class is a heavily
- * minified transaction type object, represented as a Uint8Array and designed
- * with transaction history in mind. The transaction signature, transaction ID,
- * and any block identifiers are purposely omitted, with the intention of use in
- * a key, filename, or database, depending on application requirements.
- * Additionally, addresses get truncated to either an associated tag, the first
- * 32 bytes of a WOTS+ address, or, in the case of an extended TX transaction,
- * the whole 2208 bytes of a destination address. */
-class TXReference extends Uint8Array {
-  /**
-   * @type {external:BigInt}
-   * @desc The transaction send amount, in nanoMochimo */
-  get sendtotal () {
-    return new DataView(this.buffer).getBigUint64(
-      this.byteOffset + TXReference.SENDTOTALp, true);
-  }
-
-  /**
-   * @type {external:BigInt}
-   * @desc The transaction change amount, in nanoMochimo */
-  get changetotal () {
-    return new DataView(this.buffer).getBigUint64(
-      this.byteOffset + TXReference.CHANGETOTALp, true);
-  }
-
-  /**
-   * @type {external:BigInt}
-   * @desc The transaction fee, in nanoMochimo */
-  get txfee () {
-    return new DataView(this.buffer).getBigUint64(
-      this.byteOffset + TXReference.TXFEEp, true);
-  }
-
-  /**
-   * @type {external:String}
-   * @desc The source address, in hexadecimal format */
-  get srcaddr () {
-    // determine source address length
-    const type = this[TXReference.SRCTYPEp];
-    const length = type === 0xff ? 12 : type > 0 ? TXADDRLEN : 32;
-    // return address as String
-    return array2string(this.subarray(
-      TXReference.ADDRp, TXReference.ADDRp + length));
-  }
-
-  /**
-   * @type {external:String}
-   * @desc The destination address, in hexadecimal format */
-  get dstaddr () {
-    // determine destination address pointer
-    const srcType = this[TXReference.SRCTYPEp];
-    const srcLength = srcType === 0xff ? 12 : srcType > 0 ? TXADDRLEN : 32;
-    const DSTADDRp = TXReference.ADDRp + srcLength;
-    // determine destination address length
-    const type = this[TXReference.DSTTYPEp];
-    const length = type === 0xff ? 12 : type > 0 ? TXADDRLEN : 32;
-    // return address as String
-    return array2string(this.subarray(DSTADDRp, DSTADDRp + length));
-  }
-
-  /**
-   * @type {external:String}
-   * @desc The change address, in hexadecimal format */
-  get chgaddr () {
-    // determine change address pointer
-    const srcType = this[TXReference.SRCTYPEp];
-    const srcLength = srcType === 0xff ? 12 : srcType > 0 ? TXADDRLEN : 32;
-    const dstType = this[TXReference.DSTTYPEp];
-    const dstLength = dstType === 0xff ? 12 : dstType > 0 ? TXADDRLEN : 32;
-    const CHGADDRp = TXReference.ADDRp + srcLength + dstLength;
-    // determine change address length
-    const type = this[TXReference.CHGTYPEp];
-    const length = type === 0xff ? 12 : type > 0 ? TXADDRLEN : 32;
-    // return address as String
-    return array2string(this.subarray(CHGADDRp, CHGADDRp + length));
-  }
-
-  /**
-   * @return {external:Number}
-   * @constant_value `0`
-   * @desc *FOR ADVANCED USE ONLY!*<br>Array pointer to `sendtotal` */
-  static get SENDTOTALp () {
-    return 0;
-  }
-
-  /**
-   * @return {external:Number}
-   * @constant_value `8`
-   * @desc *FOR ADVANCED USE ONLY!*<br>Array pointer to `changetotal` */
-  static get CHANGETOTALp () {
-    return 8;
-  }
-
-  /**
-   * @return {external:Number}
-   * @constant_value `16`
-   * @desc *FOR ADVANCED USE ONLY!*<br>Array pointer to `txfee` */
-  static get TXFEEp () {
-    return 16;
-  }
-
-  /**
-   * @return {external:Number}
-   * @constant_value `24`
-   * @desc *FOR ADVANCED USE ONLY!*<br>Array pointer to src address type */
-  static get SRCTYPEp () {
-    return 24;
-  }
-
-  /**
-   * @return {external:Number}
-   * @constant_value `25`
-   * @desc *FOR ADVANCED USE ONLY!*<br>Array pointer to dst address type */
-  static get DSTTYPEp () {
-    return 25;
-  }
-
-  /**
-   * @return {external:Number}
-   * @constant_value `26`
-   * @desc *FOR ADVANCED USE ONLY!*<br>Array pointer to chg address type */
-  static get CHGTYPEp () {
-    return 26;
-  }
-
-  /**
-   * @return {external:Number}
-   * @constant_value `26`
-   * @desc *FOR ADVANCED USE ONLY!*<br>Array pointer to address */
-  static get ADDRp () {
-    return 27;
-  }
-
-  // Overwrite TXReference species with Uint8Array constructor
-  static get [Symbol.species] () {
-    return Uint8Array;
-  }
-} // end class TXReference...
 
 /**
  * @typicalname txentry
@@ -232,9 +157,8 @@ class TXEntry extends Uint8Array {
    * @desc The tag attached to the source address, in
    * hexadecimal format */
   get srctag () {
-    const tag = array2string(
+    return array2string(
       this.subarray(TXEntry.SRCADDRp + 2196, TXEntry.SRCADDRp + TXADDRLEN));
-    return tag === DEFAULT_TAG ? null : tag;
   }
 
   /**
@@ -250,9 +174,8 @@ class TXEntry extends Uint8Array {
    * @desc The tag attached to the destination address, in
    * hexadecimal format */
   get dsttag () {
-    const tag = array2string(
+    return array2string(
       this.subarray(TXEntry.DSTADDRp + 2196, TXEntry.DSTADDRp + TXADDRLEN));
-    return tag === DEFAULT_TAG ? null : tag;
   }
 
   /**
@@ -268,9 +191,8 @@ class TXEntry extends Uint8Array {
    * @desc The tag attached to the change address, in
    * hexadecimal format */
   get chgtag () {
-    const tag = array2string(
+    return array2string(
       this.subarray(TXEntry.CHGADDRp + 2196, TXEntry.CHGADDRp + TXADDRLEN));
-    return tag === DEFAULT_TAG ? null : tag;
   }
 
   /**
@@ -314,49 +236,40 @@ class TXEntry extends Uint8Array {
   }
 
   /**
-   * @return {external:TXReference} A heavily minified version of the
-   * transaction entry object */
-  toReference () {
-    // determine address types - 0xff indicates a tagged address
-    const srcType = UNTAGGED_BYTES.includes(this[TXEntry.SRCADDRp + 2196])
-      ? this[TXEntry.SRCADDRp + 2197]
-      : 0xff;
-    const dstType = UNTAGGED_BYTES.includes(this[TXEntry.DSTADDRp + 2196])
-      ? this[TXEntry.DSTADDRp + 2197]
-      : 0xff;
-    const chgType = UNTAGGED_BYTES.includes(this[TXEntry.CHGADDRp + 2196])
-      ? this[TXEntry.CHGADDRp + 2197]
-      : 0xff;
-    // calculate extra length for addresses
-    const srcaddrLength = srcType === 0xff ? 12 : srcType > 0 ? TXADDRLEN : 32;
-    const srcaddrPointer = TXEntry.SRCADDRp + (srcType === 0xff ? 2196 : 0);
-    const dstaddrLength = dstType === 0xff ? 12 : dstType > 0 ? TXADDRLEN : 32;
-    const dstaddrPointer = TXEntry.DSTADDRp + (dstType === 0xff ? 2196 : 0);
-    const chgaddrLength = chgType === 0xff ? 12 : chgType > 0 ? TXADDRLEN : 32;
-    const chgaddrPointer = TXEntry.CHGADDRp + (chgType === 0xff ? 2196 : 0);
-    const addrLengths = srcaddrLength + dstaddrLength + chgaddrLength;
-    // create TXReference of suitable length
-    const len = addrLengths + TXReference.ADDRp; /*
-    const len = 3*( 2208 or 12 ) + amounts + fee + 3*addrTypes */
-    const ref = new TXReference(len);
-    // minify data
-    ref.set(this.subarray(TXEntry.SENDTOTALp, TXEntry.SENDTOTALp + 8),
-      TXReference.SENDTOTALp);
-    ref.set(this.subarray(TXEntry.CHANGETOTALp, TXEntry.CHANGETOTALp + 8),
-      TXReference.CHANGETOTALp);
-    ref.set(this.subarray(TXEntry.TXFEEp, TXEntry.TXFEEp + 8),
-      TXReference.TXFEEp);
-    ref[TXReference.SRCTYPEp] = srcType;
-    ref[TXReference.DSTTYPEp] = dstType;
-    ref[TXReference.CHGTYPEp] = chgType;
-    ref.set(this.subarray(srcaddrPointer, srcaddrPointer + srcaddrLength),
-      TXReference.ADDRp);
-    ref.set(this.subarray(dstaddrPointer, dstaddrPointer + dstaddrLength),
-      TXReference.ADDRp + srcaddrLength);
-    ref.set(this.subarray(chgaddrPointer, chgaddrPointer + chgaddrLength),
-      TXReference.ADDRp + srcaddrLength + dstaddrLength);
-    // return completed TXReference
-    return ref;
+   * @property {external:Number} srcaddr *refer to TXEntry class properties*
+   * @property {external:Number} srctag
+   * @property {external:Number} dstaddr
+   * @property {external:Number} dsttag
+   * @property {external:Number} chgaddr
+   * @property {external:Number} chgtag
+   * @property {external:Number} sendtotal
+   * @property {external:Number} changetotal
+   * @property {external:Number} txfee
+   * @property {external:Number} txsig
+   * @property {external:Number} txid
+   * @param {external:Boolean} minify Limits properties to 64 characters long
+   * @return {external:Object} TXEntry class object, in JSON format */
+  toJSON (minify) {
+    const json = {
+      srcaddr: this.srcaddr,
+      srctag: this.srctag,
+      dstaddr: this.dstaddr,
+      dsttag: this.dsttag,
+      chgaddr: this.chgaddr,
+      chgtag: this.chgtag,
+      sendtotal: this.sendtotal,
+      changetotal: this.changetotal,
+      txfee: this.txfee,
+      txsig: this.txsig,
+      txid: this.txid
+    };
+    if (minify) {
+      json.srcaddr = json.srcaddr.slice(0, 64);
+      json.dstaddr = json.dstaddr.slice(0, 64);
+      json.chgaddr = json.chgaddr.slice(0, 64);
+      json.txsig = json.txsig.slice(0, 64);
+    }
+    return json;
   }
 
   /**
@@ -523,6 +436,33 @@ class BlockTrailer extends Uint8Array {
    * @desc The current block hash, in hexadecimal format */
   get bhash () {
     return BlockTrailer.bhash(this);
+  }
+
+  /**
+   * @property {external:Number} phash *refer to BlockTrailer class properties*
+   * @property {external:Number} bnum
+   * @property {external:Number} mfee
+   * @property {external:Number} tcount
+   * @property {external:Number} time0
+   * @property {external:Number} difficulty
+   * @property {external:Number} mroot
+   * @property {external:Number} nonce
+   * @property {external:Number} stime
+   * @property {external:Number} bhash
+   * @return {external:Object} BlockTrailer class object, in JSON format */
+  toJSON () {
+    return {
+      phash: this.phash,
+      bnum: this.bnum,
+      mfee: this.mfee,
+      tcount: this.tcount,
+      time0: this.time0,
+      difficulty: this.difficulty,
+      mroot: this.mroot,
+      nonce: this.nonce,
+      stime: this.stime,
+      bhash: this.bhash
+    };
   }
 
   /**
@@ -770,10 +710,10 @@ class Block extends Uint8Array {
 
   /**
    * @type {external:BigInt}
-   * @desc Total amount sent in transactions for a {@link Block.NORMAL} block
-   * type, or total amount stored in ledger entries for a
+   * @desc Amount of Mochimo sent in transactions for a {@link Block.NORMAL}
+   * block type, or amount of Mochimo stored in ledger entries for a
    * {@link Block.NEOGENESIS} block type. */
-  get tamount () {
+  get amount () {
     const type = this.type;
     if (type === Block.NORMAL) {
       // count total transaction send amounts using a dataview
@@ -968,6 +908,66 @@ class Block extends Uint8Array {
   }
 
   /**
+   * @property {external:Number} type The block type *as a string*
+   * @property {external:Number} size The size of the Block in bytes
+   * @property {external:Number} bnum *refer to Block class properties*
+   * @property {external:Number} time0
+   * @property {external:Number} stime
+   * @property {external:Number} difficulty
+   * @property {external:Number} bhash
+   * @property {external:Number} phash
+   * @property {external:Number} mroot *Only available on NORMAL block types*
+   * @property {external:Number} nonce *Only available on NORMAL block types*
+   * @property {external:Number} maddr *Only available on NORMAL block types*
+   * @property {external:Number} mreward *Only available on NORMAL block types*
+   * @property {external:Number} mfee *Only available on NORMAL block types*
+   * @property {external:Number} amount *Only available on NORMAL, GENESIS and
+   * NEOGENESIS block types*
+   * @property {external:Number} tcount *Only available on NORMAL block types*
+   * @property {external:Number} transactions *Only available on NORMAL block
+   * types*
+   * @property {external:Number} lcount *Only available on GENESIS and
+   * NEOGENESIS block types*
+   * @property {external:Number} ledger *Only available on GENESIS and
+   * NEOGENESIS block types
+   * @param {external:Boolean} minify Limits string properties to 64 characters
+   * and removes transactions/ledger array.
+   * @return {external:Object} Block class object, in JSON format */
+  toJSON (minify) {
+    const json = {};
+    const type = this.type;
+    // add block type as string
+    json.type = this.typeStr;
+    // add block size, in byte
+    json.size = this.byteLength;
+    // add partial trailer data
+    json.bnum = this.bnum;
+    json.time0 = this.time0;
+    json.stime = this.stime;
+    json.difficulty = this.difficulty;
+    // add hash data
+    json.bhash = this.bhash;
+    json.phash = this.phash;
+    // add associated mining or ledger data on normal or (neo)genesis blocks
+    if (type === Block.NORMAL) {
+      json.mroot = this.mroot;
+      json.nonce = this.nonce;
+      json.maddr = this.maddr;
+      json.mreward = this.mreward;
+      json.mfee = this.mfee;
+      json.amount = this.amount;
+      json.tcount = this.tcount;
+      if (minify) json.maddr = json.maddr.slice(0, 64);
+      else json.transactions = this.transactions;
+    } else if (type === Block.NEOGENESIS || type === Block.GENESIS) {
+      json.amount = this.amount;
+      json.lcount = parseInt((this.hdrlen - 4) / 2216);
+      if (!minify) json.ledger = this.ledger;
+    }
+    return json;
+  }
+
+  /**
    * @type {external:Number}
    * @constant_value `-1`
    * @desc Represents an invalid block type */
@@ -1050,4 +1050,4 @@ class Tfile extends Uint8Array {
   }
 }
 
-module.exports = { Tfile, Block, BlockTrailer, TXReference };
+module.exports = { Tfile, Block, BlockTrailer, TXEntry, LEntry };
