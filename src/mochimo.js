@@ -442,9 +442,11 @@ const Mochimo = {
 /* Expose classes and constants on Mochimo module.exports via Proxy */
 module.exports = new Proxy(Mochimo, {
   get (target, property, receiver) {
-    if (Constants[property]) return Constants[property];
-    if (Blockchain[property]) return Blockchain[property];
-    return Reflect.get(target, property, receiver);
+    if (typeof Constants[property] !== 'undefined') {
+      return Constants[property];
+    } else if (typeof Blockchain[property] !== 'undefined') {
+      return Blockchain[property];
+    } else return Reflect.get(target, property, receiver);
   }
 });
 
