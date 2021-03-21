@@ -136,6 +136,8 @@ class Node {
    * rather than byte by byte
    * @todo Add option to force `[protocol version, network, ...]` data within
    * the Tx object sent to the node (for testing network upgrades, forks, etc.)
+   * @todo Detect operation failure, when an operation expects to receive data
+   * but instead doesn't receive any
    * @example
    * const Mochimo = require('mochimo');
    *
