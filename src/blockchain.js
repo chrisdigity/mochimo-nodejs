@@ -693,15 +693,6 @@ class Block extends Uint8Array {
 
   /**
    * @type {external:String}
-   * @desc The block type as a Human Readable String
-   * @see {@link Block.type} */
-  get typeStr () {
-    const TYPES = ['invalid', 'normal', 'genesis', 'neogenesis', 'pseudo'];
-    return TYPES[this.type + 1];
-  }
-
-  /**
-   * @type {external:String}
    * @desc The Haiku representation of the blocks nonce.
    * @see {@link Block.nonce} */
   get haiku () {
@@ -935,9 +926,8 @@ class Block extends Uint8Array {
    * @return {external:Object} Block class object, in JSON format */
   toJSON (minify) {
     const json = {};
-    const type = this.type;
-    // add block type as string
-    json.type = this.typeStr;
+    // add block type
+    json.type = this.type;
     // add block size, in byte
     json.size = this.byteLength;
     // add partial trailer data
@@ -949,7 +939,7 @@ class Block extends Uint8Array {
     json.bhash = this.bhash;
     json.phash = this.phash;
     // add associated mining or ledger data on normal or (neo)genesis blocks
-    if (type === Block.NORMAL) {
+    if (json.type === Block.NORMAL) {
       json.mroot = this.mroot;
       json.nonce = this.nonce;
       json.maddr = this.maddr;
@@ -959,7 +949,7 @@ class Block extends Uint8Array {
       json.tcount = this.tcount;
       if (minify) json.maddr = json.maddr.slice(0, 64);
       else json.transactions = this.transactions;
-    } else if (type === Block.NEOGENESIS || type === Block.GENESIS) {
+    } else if (json.type === Block.NEOGENESIS || type === Block.GENESIS) {
       json.amount = this.amount;
       json.lcount = parseInt((this.hdrlen - 4) / 2216);
       if (!minify) json.ledger = this.ledger;
@@ -968,43 +958,43 @@ class Block extends Uint8Array {
   }
 
   /**
-   * @type {external:Number}
-   * @constant_value `-1`
+   * @type {external:String}
+   * @constant_value `"invalid"`
    * @desc Represents an invalid block type */
   static get INVALID () {
-    return -1;
+    return 'invalid';
   }
 
   /**
-   * @type {external:Number}
-   * @constant_value `0`
+   * @type {external:String}
+   * @constant_value `"normal"`
    * @desc Represents a normal block type */
   static get NORMAL () {
-    return 0;
+    return 'normal';
   }
 
   /**
-   * @type {external:Number}
-   * @constant_value `1`
+   * @type {external:String}
+   * @constant_value `"genesis"`
    * @desc Represents a genesis block type */
   static get GENESIS () {
-    return 1;
+    return 'genesis';
   }
 
   /**
-   * @type {external:Number}
-   * @constant_value `2`
+   * @type {external:String}
+   * @constant_value `"neogenesis"`
    * @desc Represents a neogenesis block type */
   static get NEOGENESIS () {
-    return 2;
+    return 'neogeneis';
   }
 
   /**
-   * @type {external:Number}
-   * @constant_value `3`
+   * @type {external:String}
+   * @constant_value `"pseudo"`
    * @desc Represents a pseudo block type */
   static get PSEUDO () {
-    return 3;
+    return 'pseudo';
   }
 
   // Overwrite Block species to the parent Uint8Array constructor
