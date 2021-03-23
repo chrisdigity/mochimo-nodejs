@@ -949,7 +949,7 @@ class Block extends Uint8Array {
       json.tcount = this.tcount;
       if (minify) json.maddr = json.maddr.slice(0, 64);
       else json.transactions = this.transactions;
-    } else if (json.type === Block.NEOGENESIS || type === Block.GENESIS) {
+    } else if (json.type === Block.NEOGENESIS || json.type === Block.GENESIS) {
       json.amount = this.amount;
       json.lcount = parseInt((this.hdrlen - 4) / 2216);
       if (!minify) json.ledger = this.ledger;
