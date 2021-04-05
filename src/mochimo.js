@@ -19,6 +19,7 @@ const Mochimo = {
    * @param {external:String} peer IPv4 address of network peer
    * @param {(external:String|external:Uint8Array)} address A Mochimo WOTS+
    * address or tagged address to search the ledger for.
+   * @param {external:Boolean} isTag Indicates that the address is a tag.
    * @returns {external:Promise}
    * @fulfil {?(external:Lentry)} When the address or tag is found, promise
    * resolves a `new Mochimo.Lentry()` object containing the ledger entry data.
