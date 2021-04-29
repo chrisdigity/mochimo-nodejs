@@ -27,8 +27,8 @@ const Mochimo = require('mochimo')
  - [documentation](docs/README.md)... also contains minor usage examples
  - for an extensive usage example, checkout the [MochiMap](https://github.com/chrisdigity/mochimap.com) codebase
 
-## Need to get in contact? ~ [![Discord](https://img.shields.io/discord/460867662977695765?logo=discord&style=plastic)](https://discord.gg/7ma6Bk2)
-More often than not, you can find me online in the [Mochimo Official](https://discord.gg/7ma6Bk2) Discord Server.<br>
+## Need to get in contact? ~ [![Discord](https://img.shields.io/discord/460867662977695765?logo=discord&style=plastic)](https://discord.mochimap.com)
+More often than not, you can find me online in the [Mochimo Official](https://discord.mochimap.com) Discord Server.<br>
 Otherwise, checkout my [Github profile](https://github.com/chrisdigity) for other forms of contact.
 
 ## License
