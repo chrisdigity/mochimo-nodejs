@@ -5,6 +5,7 @@ const Blockchain = require('./blockchain');
 const Constants = require('./constants');
 const Trigg = require('./trigg');
 const Node = require('./node');
+const Wots = require('./wots');
 const Tx = require('./tx');
 
 /**
@@ -436,6 +437,7 @@ const Mochimo = {
   constants: Constants,
   Trigg,
   Node,
+  Wots,
   Tx
 }; // end const Mochimo...
 
@@ -453,7 +455,7 @@ module.exports = new Proxy(Mochimo, {
 
 /************************************/
 /* Display succesful initialization */
-LOG.verbose('Mochimo Module v0.2.0 succesfully initialized!');
+LOG.verbose('Mochimo Module v0.3.0 succesfully initialized!');
 
 /**
  * @external Boolean
@@ -476,6 +478,9 @@ LOG.verbose('Mochimo Module v0.2.0 succesfully initialized!');
 /**
  * @external Array
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array */
+/**
+ * @external Buffer
+ * @see https://nodejs.org/api/buffer.html */
 /**
  * @external TypedArray
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray */
