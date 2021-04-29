@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+### [v0.3.0](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.3.0) - 2021-04-29
+
+Introduces address functions for the Winternitz One-Time Signature (WOTS+) scheme for generating, signing and verifying addresses on the Mochimo Blockchain. Also, introduces simple `getPeerlist()` and `getBalance` functions, as well as various improvements to the entire module and documentation.
+
+```diff
++ Added Wots class to Mochimo module
++ Added test cases to ensure Wots implementation integrity
++ Added getBalance() and getPeerlist to Mochimo module
++ Added improved toJSON(); LEntry, TXEntry, Blocktrailer & Block classes
++ Added setters to LEntry class
++ Added TAGLEN Constant
+! Fixed ledger property for Block.GENESIS type blocks
+! Fixed LEntry class constructor parameter defaults
+! Fixed incorrect conditional check for undefined properties in Mochimo
+# Revert tags properties to output default address tag instead of null
+# Changed values of Block.<types> to appropriate strings
+# Changed tamount to amount in Block class
+# Changed internal function sanitizeArray to sanitizeUint8Array
+# Exposed TXEntry and LEntry on Mochimo module
+- Removed TXReference class
+- Removed Block.typeStr in favor of standardized Block.type
+```
+
 ### [v0.2.6](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.2.6) - 2021-02-18
 
 Improvements and fixes to the `Block` class and removal of unnecessary functions in the `Blockchain.js` file.

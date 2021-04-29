@@ -1,5 +1,5 @@
 # Documentation
-[![npm](https://img.shields.io/static/v1?label=npm&message=v0.0.0&color=orange)](https://www.npmjs.com/package/mochimo/v/0.0.0)
+[![npm](https://img.shields.io/static/v1?label=npm&message=v0.3.0&color=orange)](https://www.npmjs.com/package/mochimo/v/0.3.0)
 [![chrisdigity](https://img.shields.io/static/v1?label=%C2%A9%202019-2021&message=Chrisdigity&color=blue&style=plastic)](https://github.com/chrisdigity)
 
 ## Before you begin...
@@ -74,13 +74,18 @@ neogenesis block), or empty (for a pseudo block).</p>
 <dd><p>The Tfile class is a Uint8Array desgined to contain all or part of
 the historically verifiable chain known as a Tfile in the Mochimo ecosystem.</p>
 </dd>
+<dt><a href="#Node">Node</a></dt>
+<dd><p>The Node class is primarily used to communicate with network peers
+connected to the Mochimo Cryptocurrency Network.</p>
+</dd>
 <dt><a href="#Tx">Tx</a> ⇐ <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a></code></dt>
 <dd><p>The Tx class is a Uint8Array of static size representing the
 Transaction Buffer used to communicate with network peers.</p>
 </dd>
-<dt><a href="#Node">Node</a></dt>
-<dd><p>The Node class is primarily used to communicate with network peers
-connected to the Mochimo Cryptocurrency Network.</p>
+<dt><a href="#Wots">Wots</a></dt>
+<dd><p>The Wots class provides utility functions to generate, sign and
+verify WOTS+ addresses used by the Mochimo Network Blockchain, as well as a
+few pointer constants for positions of intra-address components.</p>
 </dd>
 </dl>
 
@@ -96,7 +101,7 @@ const Mochimo = require('mochimo');
 
 * [Mochimo](#module_Mochimo)
     * [~constants](#module_Mochimo..constants) : [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
-    * [~getBalance(peer, address)](#module_Mochimo..getBalance) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+    * [~getBalance(peer, address, isTag)](#module_Mochimo..getBalance) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
     * [~getBlock(peer, [bnum])](#module_Mochimo..getBlock) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
     * [~getNetworkPeers(startPeers)](#module_Mochimo..getNetworkPeers) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
     * [~getPeerlist(peer)](#module_Mochimo..getPeerlist) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
@@ -155,7 +160,7 @@ const Mochimo = require('mochimo');console.log(`The value of VEOK is available 
 
 <a name="module_Mochimo..getBalance"></a>
 
-### Mochimo~getBalance(peer, address) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+### Mochimo~getBalance(peer, address, isTag) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
 Download a ledger entry from a network peer.
 
 **Kind**: inner method of [<code>Mochimo</code>](#module_Mochimo)  
@@ -166,6 +171,7 @@ Download a ledger entry from a network peer.
 | --- | --- | --- |
 | peer | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | IPv4 address of network peer |
 | address | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) \| [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | A Mochimo WOTS+ address or tagged address to search the ledger for. |
+| isTag | [<code>Boolean</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type) | Indicates that the address is a tag. |
 
 **Example**  
 ```js
@@ -1277,6 +1283,124 @@ data at the specified index.
 
 * * *
 
+<a name="Node"></a>
+
+## Node
+The Node class is primarily used to communicate with network peersconnected to the Mochimo Cryptocurrency Network.
+
+**Kind**: global class  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| ip | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | The IPv4 address used in the peer connection |
+| port | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | The port number used in the peer connection |
+| ping | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | The ping (in ms) associated with the peer connection's response to an OP_HELLO request |
+| baud | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | The baudrate (in bits per sec) associated with the peer connection |
+| status | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | The status of the peer |
+| id1 | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | 3-way handshake verification ID #1 |
+| id2 | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | 3-way handshake verification ID #2 |
+| opcode | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | Operation code transmitted in tx |
+| tx | [<code>Tx</code>](#Tx) | The last transaction packet received from a peer |
+| socket | [<code>Socket</code>](https://nodejs.org/api/net.html#net_class_net_socket) | A Socket object that handles communication with the peer |
+| data | [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | The transaction buffer data |
+| lastTouch | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | UTC Timestamp (in ms), updated on Node creation, after Socket connection and on Socket data event |
+
+
+* [Node](#Node)
+    * [new Node([options])](#new_Node_new)
+    * _instance_
+        * [.toJSON()](#Node+toJSON) ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
+    * _static_
+        * [.callserver(options)](#Node.callserver) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+        * [.sendop(node, opcode)](#Node.sendop) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+
+
+* * *
+
+<a name="new_Node_new"></a>
+
+### new Node([options])
+*FOR ADVANCED USE ONLY!*<br>Although the Node class *can* be instantiateddirectly, it is **not recommended.**<br>Instead, consider using the staticfunction [callserver](#Node.callserver) to obtain a Node object.
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [options] | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | <code>{}</code> | ...see Node.callserver([options]) |
+
+
+* * *
+
+<a name="Node+toJSON"></a>
+
+### node.toJSON() ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
+**Kind**: instance method of [<code>Node</code>](#Node)  
+**Returns**: [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects) - Node class object, in JSON format  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| ip | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | *refer to Node class properties* |
+| port | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
+| status | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
+| lastTouch | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
+| ping | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | *present if status is `VEOK` or `VEBAD`* |
+| baud | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | *present if status is `VEOK` or `VEBAD`* |
+| tx | [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects) | *present if status is `VEOK` or `VEBAD`* <br>... see [Tx.toJSON](Tx.toJSON), excluding properties: `id1`, `id2`, `opcode`, `len`, `srcaddr`, `dstaddr`, `chgaddr`, `sendtotal`, `changetotal`, `txfee`, `txsig`, `crc16`, `trailer`, `data` |
+| peers | [<code>Array.&lt;String&gt;</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | *present if status is `VEOK` and tx.opcode is `OP_SEND_IP`*<br>Array of peers requested with `OP_GETIPL` |
+
+
+* * *
+
+<a name="Node.callserver"></a>
+
+### Node.callserver(options) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+Connect to a network peer and verify the Mochimo handshake protocol.
+
+**Kind**: static method of [<code>Node</code>](#Node)  
+**Fulfil**: [<code>Node</code>](#Node) A Node object with the result of the connectionattempt to a network peer  
+**Reject**: [<code>Error</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) Error indicating a failure to create a Node objector socket connection  
+**Todo**
+
+- [ ] Process the data received by <code>node.socket</code> in chunksrather than byte by byte
+- [ ] Add option to force `[protocol version, network, ...]` data withinthe Tx object sent to the node (for testing network upgrades, forks, etc.)
+- [ ] Detect operation failure, when an operation expects to receive databut instead doesn't receive any
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects) | callserver() options... |
+| options.ip | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | IPv4 address for peer connection |
+| options.port | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | Port number for peer connection |
+
+**Example**  
+```js
+const Mochimo = require('mochimo');Mochimo.Node.callserver('127.0.0.1').then((node) => {  console.log(`Handshake successful, connected to ${node.ip}`);}).catch(console.error);
+```
+
+* * *
+
+<a name="Node.sendop"></a>
+
+### Node.sendop(node, opcode) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+Send an operation code to a connected network peer.
+
+**Kind**: static method of [<code>Node</code>](#Node)  
+**Fulfil**: [<code>Node</code>](#Node) Reference to the Node object that was passed to thefunction, updated with the result of the request.  
+**Reject**: [<code>Error</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) Error indicating and invalid operation code or afailure during the requested operation  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| node | [<code>Node</code>](#Node) | Node object with an active socket connection |
+| opcode | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | Valid operation code |
+
+**Example**  
+```js
+const Mochimo = require('mochimo');Mochimo.Node.callserver('127.0.0.1').then((node) => {  console.log(`Handshake successful, connected to ${node.ip}`);  return Mochimo.sendop(node, Mochimo.constants.OP_GETIPL);}).then((node) => {  console.log(`OP_GETIPL operation result: ${node}`);}).catch(console.error);
+```
+
+* * *
+
 <a name="Tx"></a>
 
 ## Tx ⇐ [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
@@ -1704,120 +1828,144 @@ Breakdown:- 2x Bytes (8bit), 2 bytes- 6x Words (16bit), 12 bytes- 2x Blocknum
 
 * * *
 
-<a name="Node"></a>
+<a name="Wots"></a>
 
-## Node
-The Node class is primarily used to communicate with network peersconnected to the Mochimo Cryptocurrency Network.
+## Wots
+The Wots class provides utility functions to generate, sign andverify WOTS+ addresses used by the Mochimo Network Blockchain, as well as afew pointer constants for positions of intra-address components.
 
 **Kind**: global class  
-**Properties**
 
-| Name | Type | Description |
-| --- | --- | --- |
-| ip | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | The IPv4 address used in the peer connection |
-| port | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | The port number used in the peer connection |
-| ping | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | The ping (in ms) associated with the peer connection's response to an OP_HELLO request |
-| baud | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | The baudrate (in bits per sec) associated with the peer connection |
-| status | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | The status of the peer |
-| id1 | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | 3-way handshake verification ID #1 |
-| id2 | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | 3-way handshake verification ID #2 |
-| opcode | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | Operation code transmitted in tx |
-| tx | [<code>Tx</code>](#Tx) | The last transaction packet received from a peer |
-| socket | [<code>Socket</code>](https://nodejs.org/api/net.html#net_class_net_socket) | A Socket object that handles communication with the peer |
-| data | [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | The transaction buffer data |
-| lastTouch | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | UTC Timestamp (in ms), updated on Node creation, after Socket connection and on Socket data event |
-
-
-* [Node](#Node)
-    * [new Node([options])](#new_Node_new)
-    * _instance_
-        * [.toJSON()](#Node+toJSON) ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
-    * _static_
-        * [.callserver(options)](#Node.callserver) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
-        * [.sendop(node, opcode)](#Node.sendop) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+* [Wots](#Wots)
+    * [.ADDRp](#Wots.ADDRp) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
+    * [.PUBSEEDp](#Wots.PUBSEEDp) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
+    * [.SIGLEN](#Wots.SIGLEN) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
+    * [.generate([seed])](#Wots.generate) ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
+    * [.sign(message, secret)](#Wots.sign) ⇒ [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
+    * [.pkFromSig(signature, message, pubSeed, addr)](#Wots.pkFromSig) ⇒ [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
+    * [.verify(signature, message, address)](#Wots.verify) ⇒ [<code>Boolean</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type)
 
 
 * * *
 
-<a name="new_Node_new"></a>
+<a name="Wots.ADDRp"></a>
 
-### new Node([options])
-*FOR ADVANCED USE ONLY!*<br>Although the Node class *can* be instantiateddirectly, it is **not recommended.**<br>Instead, consider using the staticfunction [callserver](#Node.callserver) to obtain a Node object.
+### Wots.ADDRp : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
+Pointer to the ADDR portion of a WOTS+ address
 
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| [options] | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | <code>{}</code> | ...see Node.callserver([options]) |
-
+**Kind**: static property of [<code>Wots</code>](#Wots)  
+**Constant_value**: `2176`  
 
 * * *
 
-<a name="Node+toJSON"></a>
+<a name="Wots.PUBSEEDp"></a>
 
-### node.toJSON() ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
-**Kind**: instance method of [<code>Node</code>](#Node)  
-**Returns**: [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects) - Node class object, in JSON format  
-**Properties**
+### Wots.PUBSEEDp : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
+Pointer to the Public Seed portion of a WOTS+ address
 
-| Name | Type | Description |
-| --- | --- | --- |
-| ip | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | *refer to Node class properties* |
-| port | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
-| status | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
-| lastTouch | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
-| ping | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | *present if status is `VEOK` or `VEBAD`* |
-| baud | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | *present if status is `VEOK` or `VEBAD`* |
-| tx | [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects) | *present if status is `VEOK` or `VEBAD`* <br>... see [Tx.toJSON](Tx.toJSON), excluding properties: `id1`, `id2`, `opcode`, `len`, `srcaddr`, `dstaddr`, `chgaddr`, `sendtotal`, `changetotal`, `txfee`, `txsig`, `crc16`, `trailer`, `data` |
-| peers | [<code>Array.&lt;String&gt;</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | *present if status is `VEOK` and tx.opcode is `OP_SEND_IP`*<br>Array of peers requested with `OP_GETIPL` |
-
+**Kind**: static property of [<code>Wots</code>](#Wots)  
+**Constant_value**: `2144`  
 
 * * *
 
-<a name="Node.callserver"></a>
+<a name="Wots.SIGLEN"></a>
 
-### Node.callserver(options) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
-Connect to a network peer and verify the Mochimo handshake protocol.
+### Wots.SIGLEN : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
+The byte length of a WOTS+ Signature
 
-**Kind**: static method of [<code>Node</code>](#Node)  
-**Fulfil**: [<code>Node</code>](#Node) A Node object with the result of the connectionattempt to a network peer  
-**Reject**: [<code>Error</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) Error indicating a failure to create a Node objector socket connection  
-**Todo**
+**Kind**: static property of [<code>Wots</code>](#Wots)  
+**Constant_value**: `2144`  
 
-- [ ] Process the data received by <code>node.socket</code> in chunksrather than byte by byte
-- [ ] Add option to force `[protocol version, network, ...]` data withinthe Tx object sent to the node (for testing network upgrades, forks, etc.)
-- [ ] Detect operation failure, when an operation expects to receive databut instead doesn't receive any
+* * *
 
+<a name="Wots.generate"></a>
+
+### Wots.generate([seed]) ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
+Generate a WOTS+ address and secret pair, with or without a seed.
+
+**Kind**: static method of [<code>Wots</code>](#Wots)  
+**Returns**: [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects) - <br>`Object.address`: The generated WOTS+ address,<br>`Object.secret`: The secret key associated with the address  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options | [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects) | callserver() options... |
-| options.ip | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | IPv4 address for peer connection |
-| options.port | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | Port number for peer connection |
+| [seed] | [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | Array of binary data (preferably random) <br><sup>*If no seed is supplied, a 32-byte CSPRNG seed will be provided.* |
 
 **Example**  
 ```js
-const Mochimo = require('mochimo');Mochimo.Node.callserver('127.0.0.1').then((node) => {  console.log(`Handshake successful, connected to ${node.ip}`);}).catch(console.error);
+example fileconst { Wots } = require('mochimo');const { randomBytes } = require('crypto');const wots = Wots.generate(randomBytes(32));console.log('WOTS+ address:', Buffer.from(wots.address).toString('hex'));console.log('WOTS+ secret:', wots.secret);
 ```
 
 * * *
 
-<a name="Node.sendop"></a>
+<a name="Wots.sign"></a>
 
-### Node.sendop(node, opcode) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
-Send an operation code to a connected network peer.
+### Wots.sign(message, secret) ⇒ [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
+Generate a WOTS+ Signature from a message and secret.
 
-**Kind**: static method of [<code>Node</code>](#Node)  
-**Fulfil**: [<code>Node</code>](#Node) Reference to the Node object that was passed to thefunction, updated with the result of the request.  
-**Reject**: [<code>Error</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) Error indicating and invalid operation code or afailure during the requested operation  
+**Kind**: static method of [<code>Wots</code>](#Wots)  
+**Returns**: [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) - A WOTS+ Signature  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| node | [<code>Node</code>](#Node) | Node object with an active socket connection |
-| opcode | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | Valid operation code |
+| message | [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | The message to be signed |
+| secret | [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | A secret&ast;<br><sup>&ast;Must have been generated by `Wots.generate()` |
 
 **Example**  
 ```js
-const Mochimo = require('mochimo');Mochimo.Node.callserver('127.0.0.1').then((node) => {  console.log(`Handshake successful, connected to ${node.ip}`);  return Mochimo.sendop(node, Mochimo.constants.OP_GETIPL);}).then((node) => {  console.log(`OP_GETIPL operation result: ${node}`);}).catch(console.error);
+const { Wots, TRANLEN } = require('mochimo');const { randomBytes } = require('crypto');const pkSecret = Wots.generate();const message = randomBytes(TRANLEN);const signature = Wots.sign(message, pkSecret.secret);console.log('WOTS+ Signature: ' + Buffer.from(signature).toString('hex'));
+```
+
+* * *
+
+<a name="Wots.pkFromSig"></a>
+
+### Wots.pkFromSig(signature, message, pubSeed, addr) ⇒ [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
+Generate&ast; a WOTS+ public address key from a WOTS+ signature.<br><sup>&astMust have access to signed message, and Public Seed and ADDRportions of the full WOTS+ address.
+
+**Kind**: static method of [<code>Wots</code>](#Wots)  
+**Returns**: [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) - Public key portion of WOTS+ address  
+**Throws**:
+
+- <code>TypeError</code> when __signature__ is not 2144 bytes long
+- <code>TypeError</code> when __pubSeed__ is not 32 bytes long
+- <code>TypeError</code> when __addr__ is not 32 bytes long
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| signature | [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | The WOTS+ signature |
+| message | [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | The message used to sign |
+| pubSeed | [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | Public Seed portion of WOTS+ address <br><sup>&ast;32 bytes starting at byte 2144 of WOTS+ address |
+| addr | [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | ADDR portion of WOTS+ address <br><sup>&ast;32 bytes starting at byte 2176 of WOTS+ address |
+
+**Example**  
+```js
+const { Wots, constants } = require('mochimo');const { randomBytes } = require('crypto');const pkSecret = Wots.generate();const message = randomBytes(constants.TRANLEN);const signature = Wots.sign(message, pkSecret.secret);const pubSeed = pkSecret.address.subarray(Wots.PUBSEEDp, 32);const addr = pkSecret.address.subarray(Wots.ADDRp, 32);const pkFromSig = Wots.pkFromSig(signature, message, pubSeed, addr);console.log(pkFromSig.some((curr, i) => curr !== pkSecret.address[i]  ? 'result is different' : 'result is identical');
+```
+
+* * *
+
+<a name="Wots.verify"></a>
+
+### Wots.verify(signature, message, address) ⇒ [<code>Boolean</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type)
+Verify a WOTS+ signature against a known message and WOTS+ address.
+
+**Kind**: static method of [<code>Wots</code>](#Wots)  
+**Returns**: [<code>Boolean</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type) - Verification result  
+**Throws**:
+
+- <code>TypeError</code> when __signature__ is not 2144 bytes long
+- <code>TypeError</code> when __address__ is not 2208 bytes long
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| signature | [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | The WOTS+ signature |
+| message | [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | The message used to sign |
+| address | [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | The WOTS+ address to verify against the signature |
+
+**Example**  
+```js
+const { Wots, TXSIGLEN, TRANLEN, TXADDRLEN } = require('mochimo');const signature = Buffer.alloc(TXSIGLEN); // 2144 byte arrayconst message = Buffer.alloc(TRANLEN); // 8792 byte arrayconst address = Buffer.alloc(TXADDRLEN); // 2208 byte arrayconsole.log('WOTS+ signature verification',  Wots.verify(signature, message, address) ? 'valid' : 'not valid');
 ```
 
 * * *
