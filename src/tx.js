@@ -2,7 +2,11 @@
 /* globals BigInt */
 
 /* requirements */
-const { array2string, sanitizeArray, sanitizeNumber } = require('./util.js');
+const {
+  array2string,
+  sanitizeUint8Array,
+  sanitizeNumber
+} = require('./util.js');
 const {
   HASHLEN, TXADDRLEN, TXSIGLEN, OP_TX,
   TXVERSIONp, TXCBITSp, TXNETWORKp, TXID1p, TXID2p, TXOPCODEp, TXCBLOCKp,
@@ -83,8 +87,8 @@ class Tx extends Uint8Array {
   }
 
   set cblockhash (cblockhash) {
-    this.set(sanitizeArray(cblockhash, 'Tx.cblockhash', HASHLEN, HASHLEN),
-      TXCBLOCKHASHp);
+    this.set(sanitizeUint8Array('Tx.cblockhash', { cblockhash }, HASHLEN,
+      HASHLEN), TXCBLOCKHASHp);
   }
 
   /**
@@ -116,8 +120,8 @@ class Tx extends Uint8Array {
   }
 
   set chgaddr (chgaddr) {
-    this.set(sanitizeArray(chgaddr, 'Tx.chgaddr', TXADDRLEN, TXADDRLEN),
-      TXCHGADDRp);
+    this.set(sanitizeUint8Array('Tx.chgaddr', { chgaddr }, TXADDRLEN,
+      TXADDRLEN), TXCHGADDRp);
   }
 
   /**
@@ -149,8 +153,8 @@ class Tx extends Uint8Array {
   }
 
   set dstaddr (dstaddr) {
-    this.set(sanitizeArray(dstaddr, 'Tx.dstaddr', TXADDRLEN, TXADDRLEN),
-      TXDSTADDRp);
+    this.set(sanitizeUint8Array('Tx.dstaddr', { dstaddr }, TXADDRLEN,
+      TXADDRLEN), TXDSTADDRp);
   }
 
   /**
@@ -241,8 +245,8 @@ class Tx extends Uint8Array {
   }
 
   set pblockhash (pblockhash) {
-    this.set(sanitizeArray(pblockhash, 'Tx.pblockhash', HASHLEN, HASHLEN),
-      TXPBLOCKHASHp);
+    this.set(sanitizeUint8Array('Tx.pblockhash', { pblockhash }, HASHLEN,
+      HASHLEN), TXPBLOCKHASHp);
   }
 
   /**
@@ -288,8 +292,8 @@ class Tx extends Uint8Array {
   }
 
   set srcaddr (srcaddr) {
-    this.set(sanitizeArray(srcaddr, 'Tx.srcaddr', TXADDRLEN, TXADDRLEN),
-      TXSRCADDRp);
+    this.set(sanitizeUint8Array('Tx.srcaddr', { srcaddr }, TXADDRLEN,
+      TXADDRLEN), TXSRCADDRp);
   }
 
   /**
@@ -336,7 +340,8 @@ class Tx extends Uint8Array {
   }
 
   set txsig (txsig) {
-    this.set(sanitizeArray(txsig, 'Tx.txsig', TXSIGLEN, TXSIGLEN), TXTXSIGp);
+    this.set(sanitizeUint8Array('Tx.txsig', { txsig }, TXSIGLEN, TXSIGLEN),
+      TXTXSIGp);
   }
 
   /**
@@ -353,7 +358,8 @@ class Tx extends Uint8Array {
   }
 
   set weight (weight) {
-    this.set(sanitizeArray(weight, 'Tx.weight', 32, 1, true), TXWEIGHTp);
+    this.set(sanitizeUint8Array('Tx.weight', { weight }, 32, 1, true),
+      TXWEIGHTp);
   }
 
   /**

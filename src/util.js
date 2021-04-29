@@ -183,36 +183,41 @@ const ntoa = (int) => {
 };
 
 /* Sanitization */
-const sanitizeArray = (value, source, max, min, le) => {
-  // sanitize and padd source string
-  source = `${source ? String(source) + ' ' : ''}cannot accept invalid`;
-  // convert hexadecimal String to Array
-  if (typeof value === 'string') {
-    // remove hexadecimal prefixed
-    value = value.replace(/^0x/g, '');
-    // validate hexadecimal
-    if (!value || value.replace(/[0-9A-Fa-f]/g, '')) {
-      throw new TypeError(`${source} hexadecimal String.`);
-    }
-    // prepend Zero if odd number of characters, so next step works as desired
-    if (value.length % 2) value = `0${value}`;
-    // convert to regular Array of bytes as hexadecimal strings
-    value = value.match(/../g).map(val => `0x${val}`);
-    // reverse Array if little endian is flagged
-    if (le) value = value.reverse();
-  }
-  // sanitize Array values
-  if (Array.isArray(value)) {
-    value.map(val => parseInt(val));
-  }
-  // sanitize Uint8Array
-  value = Uint8Array.from(value);
-  // validate min/max
-  if (value.byteLength < min || value.byteLength > max) {
-    throw new TypeError(`${source} value length.`);
-  }
-  // return sanitized Uint8Array
-  return value;
+const sanitizeUint8Array = (source, obj, max, min, le) => {
+  // obj parameter must be an object and must contain a parameter to sanitize
+  if (typeof obj === 'object') {
+    const entries = Object.entries(obj);
+    if (entries.length) {
+      // extract name:value pair from entries
+      let [name, value] = entries[0];
+      // sanitize and extend source with parameter name
+      source = `${String(source)}: ${name} parameter`;
+      // convert hexadecimal String to Array
+      if (typeof value === 'string') {
+        // remove hexadecimal prefixed
+        value = value.replace(/^0x/g, '');
+        // validate hexadecimal
+        if (!value || value.replace(/[0-9A-Fa-f]/g, '')) {
+          throw new TypeError(`${source} hexadecimal String.`);
+        }
+        // prepend Zero if odd number of characters, so next step works as desired
+        if (value.length % 2) value = `0${value}`;
+        // convert to regular Array of bytes as hexadecimal strings
+        value = value.match(/../g).map(val => `0x${val}`);
+        // reverse Array if little endian is flagged
+        if (le) value = value.reverse();
+      }
+      // sanitize Array values (as integers)
+      if (Array.isArray(value)) {
+        value.map(val => parseInt(val));
+      }
+      // validate min/max
+      if (value.length < min) throw new TypeError(`${source} length < ${min}`);
+      if (value.length > max) throw new TypeError(`${source} length > ${max}`);
+      // return sanitized Uint8Array (as hard copy)
+      return Uint8Array.from(value);
+    } else throw new TypeError('DevError (sanitizeArray): entries.length');
+  } else throw new TypeError('DevError (sanitizeArray): typeof obj');
 };
 const sanitizeIPv4 = (ipv4, source) => {
   // sanitize and padd source string
@@ -258,7 +263,7 @@ module.exports = {
   array2string,
   isPrivateIPv4,
   ntoa,
-  sanitizeArray,
+  sanitizeUint8Array,
   sanitizeIPv4,
   sanitizeNumber,
   sanitizePort

@@ -8,7 +8,7 @@ const {
   TXADDRLEN,
   TXSIGLEN
 } = require('./constants');
-const { array2string, sanitizeArray } = require('./util');
+const { array2string, sanitizeUint8Array } = require('./util');
 const Trigg = require('./trigg');
 
 /**
@@ -40,8 +40,8 @@ class LEntry extends Uint8Array {
   }
 
   set address (address) {
-    this.set(sanitizeArray(address, 'LEntry.address', TXADDRLEN, TXADDRLEN),
-      LEntry.ADDRESSp);
+    this.set(sanitizeUint8Array('LEntry.address', { address }, TXADDRLEN,
+      TXADDRLEN), LEntry.ADDRESSp);
   }
 
   /**
@@ -73,7 +73,8 @@ class LEntry extends Uint8Array {
   }
 
   set tag (tag) {
-    this.set(sanitizeArray(tag, 'LEntry.tag', TAGLEN, TAGLEN), LEntry.TAGp);
+    this.set(sanitizeUint8Array('LEntry.tag', { tag }, TAGLEN, TAGLEN),
+      LEntry.TAGp);
   }
 
   /**
