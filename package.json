@@ -4,8 +4,8 @@
   "description": "Integrate with the Mochimo Cryptocurrency Network",
   "main": "src/mochimo.js",
   "scripts": {
-    "test": "semistandard && echo \"No tests configured...\"",
-    "build:docs": "jsdoc2md --template docs/hbs/template --separators docs/hbs/sep --files src/blockchain.js src/tx.js src/node.js src/mochimo.js > docs/README.md"
+    "test": "semistandard && cd tests && node testall.js",
+    "build:docs": "jsdoc2md --template docs/hbs/template --separators docs/hbs/sep --files src/* > docs/README.md"
   },
   "repository": {
     "type": "git",
