@@ -12,8 +12,8 @@ const SIG_COUNT = 6648; /*
 const SIG_COUNT = TRANLEN - TXSIGLEN; */
 const TXNETWORK = 0x0539;
 const TXEOT = 0xabcd;
-const UNTAGGED_BYTES = [0x42, 0x00];
 const DEFAULT_TAG = '420000000e00000001000000';
+const UNTAGGED_BYTES = [0x42, 0];
 // socket...
 const INVALID_SOCKET = (-1);
 // status...
@@ -130,8 +130,8 @@ module.exports = {
   SIG_COUNT,
   TXNETWORK,
   TXEOT,
-  UNTAGGED_BYTES,
   DEFAULT_TAG,
+  UNTAGGED_BYTES,
   // socket...
   INVALID_SOCKET,
   // status...

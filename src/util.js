@@ -20,6 +20,7 @@ const LL = (() => {
 
 /**
  * @class
+ * @private
  * @classdesc Custom logging for primarily internal (asexual) use.
  * ```
  * Integers:             -2,       -1,      0,       1,          2

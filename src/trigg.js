@@ -381,12 +381,9 @@ const dict = [
 ];
 
 /**
- * a raindrop
- * on sunrise air--
- * drowned
- *
+ * @private
  * Emulate a PDP-10 running MACLISP (circa. 1971)...
- * @example
+ * <blockquote>a raindrop<br>on sunrise air--<br>drowned</blockquote>
  */
 class Trigg {
   /**
