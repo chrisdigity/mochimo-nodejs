@@ -1,9 +1,9 @@
 <h1 align="center">
-  Mochimo Cryptocurrency Network Integration<br><sup>for Node.js</sup><br>
-    <a href="https://www.npmjs.com/package/mochimo"><img alt="npm (latest)" src="https://img.shields.io/npm/v/mochimo/latest?style=plastic"></a>
-    <a href="https://www.npmjs.com/package/mochimo"><img alt="npm (downloads)" src="https://img.shields.io/npm/dw/mochimo?style=plastic"></a>
-    <a href="./LICENSE.PDF"><img alt="license" src="https://img.shields.io/badge/License-Modified%20MPL%202.0-06f"></a>
-    <a href="https://github.com/standard/semistandard"><img alt="js-semistandard-style" src="https://img.shields.io/badge/code%20style-semistandard-fff.svg?style=plastic"></a>
+  Mochimo Cryptocurrency Module<br><sup>for Node.js</sup><br>
+  <a href="https://travis-ci.org/chrisdigity/mochimo-nodejs"><img alt="build status" src="https://travis-ci.org/chrisdigity/mochimo-nodejs.svg?branch=master"></a>
+  <a href="https://www.npmjs.com/package/mochimo"><img alt="npm (latest)" src="https://img.shields.io/npm/v/mochimo/latest?style=plastic"></a>
+  <a href="./LICENSE.PDF"><img alt="license" src="https://img.shields.io/badge/License-Modified%20MPL%202.0-06f"></a>
+  <a href="https://github.com/standard/semistandard"><img alt="js-semistandard-style" src="https://img.shields.io/badge/code%20style-semistandard-fff.svg?style=plastic"></a>
 </h1>
 
 **This module is still under development.**<br>
