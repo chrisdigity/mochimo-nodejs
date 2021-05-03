@@ -987,7 +987,7 @@ class Block extends Uint8Array {
    * @constant_value `"neogenesis"`
    * @desc Represents a neogenesis block type */
   static get NEOGENESIS () {
-    return 'neogeneis';
+    return 'neogenesis';
   }
 
   /**
