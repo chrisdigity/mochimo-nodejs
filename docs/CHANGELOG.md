@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+### [v0.3.1](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.3.1) - 2021-05-03
+
+Typo fix for block type `Block.NEOGENESIS`
+
+```diff
+! Fixed Block.NEOGENESIS typo
+```
+
 ### [v0.3.0](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.3.0) - 2021-04-29
 
 Introduces address functions for the Winternitz One-Time Signature (WOTS+) scheme for generating, signing and verifying addresses on the Mochimo Blockchain. Also, introduces simple `getPeerlist()` and `getBalance` functions, as well as various improvements to the entire module and documentation.

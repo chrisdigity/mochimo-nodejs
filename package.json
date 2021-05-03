@@ -1,7 +1,7 @@
 {
   "name": "mochimo",
-  "version": "0.3.0",
-  "description": "Integrate with the Mochimo Cryptocurrency Network",
+  "version": "0.3.1",
+  "description": "The Mochimo Cryptocurrency Network Module for Node.js",
   "main": "src/mochimo.js",
   "scripts": {
     "test": "semistandard && cd tests && node testall.js",
