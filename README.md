@@ -1,9 +1,20 @@
 <h1 align="center">
   Mochimo Cryptocurrency Module<br><sup>for Node.js</sup><br>
-  <a href="https://github.com/chrisdigity/mochimo-nodejs/actions/workflows/test.yml"><img alt="build status" src="https://github.com/chrisdigity/mochimo-nodejs/actions/workflows/test.yml/badge.svg"></a>
-  <a href="https://www.npmjs.com/package/mochimo"><img alt="npm" src="https://img.shields.io/npm/v/mochimo?logo=npm&style=plastic"></a>
-  <a href="./LICENSE.PDF"><img alt="license" src="https://img.shields.io/badge/License-Modified%20MPL%202.0-06f"></a>
-  <a href="https://github.com/standard/semistandard"><img alt="js-semistandard-style" src="https://img.shields.io/badge/code%20style-semistandard-fff.svg?style=plastic"></a>
+  <a href="https://github.com/chrisdigity/mochimo-nodejs/actions/workflows/build.yml">
+    <img alt="build status" src="https://github.com/chrisdigity/mochimo-nodejs/actions/workflows/test.yml/badge.svg">
+  </a>
+  <a href="https://codecov.io/gh/chrisdigity/mochimo-nodejs">
+    <img src="https://codecov.io/gh/chrisdigity/mochimo-nodejs/branch/master/graph/badge.svg?token=WJHBP97NCH"/>
+  </a>
+  <a href="https://www.npmjs.com/package/mochimo">
+    <img alt="npm" src="https://img.shields.io/npm/v/mochimo?logo=npm&style=plastic">
+  </a>
+  <a href="./LICENSE.PDF">
+    <img alt="license" src="https://img.shields.io/badge/License-Modified%20MPL%202.0-06f">
+  </a>
+  <a href="https://github.com/standard/semistandard">
+    <img alt="js-semistandard-style" src="https://img.shields.io/badge/code%20style-semistandard-fff.svg?style=plastic">
+  </a>
 </h1>
 
 **This module is still under development.**<br>

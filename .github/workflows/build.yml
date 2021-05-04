@@ -1,7 +1,7 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Latest Build
+name: build
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  test-and-coverage:
 
     runs-on: ubuntu-latest
 
@@ -25,6 +25,7 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install  # installs devDependencies (particularly semistandard)
+    - run: npm install  # installs devDependencies
     - run: npm run build --if-present
     - run: npm test
+    - run: npm coverage-test && npm coverage report
