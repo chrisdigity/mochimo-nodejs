@@ -27,5 +27,5 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install  # installs devDependencies
     - run: npm run build --if-present
-    - run: npm test
-    - run: npm coverage-test && npm coverage report
+    - run: npm run test
+    - run: npm run coverage-test && npm run coverage-report
