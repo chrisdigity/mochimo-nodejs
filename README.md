@@ -1,7 +1,7 @@
 <h1 align="center">
   Mochimo Cryptocurrency Module<br><sup>for Node.js</sup><br>
   <a href="https://github.com/chrisdigity/mochimo-nodejs/actions/workflows/build.yml">
-    <img alt="build status" src="https://github.com/chrisdigity/mochimo-nodejs/actions/workflows/test.yml/badge.svg">
+    <img alt="build status" src="https://github.com/chrisdigity/mochimo-nodejs/actions/workflows/build.yml/badge.svg">
   </a>
   <a href="https://codecov.io/gh/chrisdigity/mochimo-nodejs">
     <img src="https://codecov.io/gh/chrisdigity/mochimo-nodejs/branch/master/graph/badge.svg?token=WJHBP97NCH"/>
