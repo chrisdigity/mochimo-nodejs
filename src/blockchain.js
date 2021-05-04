@@ -10,6 +10,7 @@ const {
 } = require('./constants');
 const { array2string, sanitizeUint8Array } = require('./util');
 const Trigg = require('./trigg');
+const { createHash } = require('crypto');
 
 /**
  * @typicalname lentry
@@ -956,6 +957,16 @@ class Block extends Uint8Array {
       if (!minify) json.ledger = this.ledger;
     }
     return json;
+  }
+
+  /**
+   * @desc Verify the block hash contained within a Block object.
+   * @param {external:String=} hash Optional hash to verify against
+   * @return {external:Boolean} Verified status of block hash */
+  verifyBlockHash (hash) {
+    const update = this.subarray(0, -32);
+    const sha256 = createHash('sha256').update(update).digest('hex');
+    return Boolean(sha256 === (hash || this.bhash));
   }
 
   /**

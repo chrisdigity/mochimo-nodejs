@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+### Latest - 2021-05-04
+
+New Block class function for verifying a block hash. Introduces (some) tests for the Block class.
+
+```diff
+! Added Block.verifyBlockHash()
++ Added test.block.js tests (not complete)
+```
+
 ### [v0.3.1](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.3.1) - 2021-05-03
 
 Typo fix for block type `Block.NEOGENESIS`
