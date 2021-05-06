@@ -253,6 +253,8 @@ class TXEntry extends Uint8Array {
    * @return {external:Object} TXEntry class object, in JSON format */
   toJSON (minify) {
     const json = {
+      txid: this.txid,
+      txsig: this.txsig,
       srcaddr: this.srcaddr,
       srctag: this.srctag,
       dstaddr: this.dstaddr,
@@ -261,15 +263,13 @@ class TXEntry extends Uint8Array {
       chgtag: this.chgtag,
       sendtotal: this.sendtotal,
       changetotal: this.changetotal,
-      txfee: this.txfee,
-      txsig: this.txsig,
-      txid: this.txid
+      txfee: this.txfee
     };
     if (minify) {
+      json.txsig = json.txsig.slice(0, 64);
       json.srcaddr = json.srcaddr.slice(0, 64);
       json.dstaddr = json.dstaddr.slice(0, 64);
       json.chgaddr = json.chgaddr.slice(0, 64);
-      json.txsig = json.txsig.slice(0, 64);
     }
     return json;
   }

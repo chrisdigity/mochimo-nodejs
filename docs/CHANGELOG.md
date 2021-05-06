@@ -9,6 +9,7 @@ New Block class function for verifying a block hash. Introduces (some) tests for
 ```diff
 ! Added Block.verifyBlockHash()
 + Added test.block.js tests (not complete)
+# Changed order of properties in TXEntry.toJSON()
 ```
 
 ### [v0.3.1](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.3.1) - 2021-05-03
