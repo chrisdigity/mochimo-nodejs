@@ -150,8 +150,8 @@ const Mochimo = {
    * @function getHash
    * @desc Download a Mochimo Block Hash from a network peer.
    * @param {external:String} peer IPv4 address of network peer
-   * @param {(external:BigInt|external:Number)} bnum Blockchain number of
-   * desired hash.
+   * @param {(external:BigInt|external:Number)=} bnum Blockchain number of
+   * desired hash<br><sup>Omit parameter to get peer's current block
    * @returns {external:Promise}
    * @fulfil {external:String} The block hash represented as a string
    * @reject {external:Error} Error indicating the failure
@@ -172,6 +172,8 @@ const Mochimo = {
       LOG.verbose(fid, 'handshake failed with status:', node.status);
       throw new Error(`${Constants.VENAME(node.status)} during handshake`);
     }
+    // set bnum to current block if undefined
+    if (typeof bnum === 'undefined') bnum = node.tx.cblock;
     // set I/O blocknumber to bnum
     node.tx.blocknum = bnum;
     // send operation code for hash request
@@ -182,6 +184,8 @@ const Mochimo = {
       LOG.verbose(fid, 'operation failed with status:', node.status);
       throw new Error(`${Constants.VENAME(node.status)} during operation`);
     } else LOG.verboseT(start, fid, 'operation finished');
+    // check operation result
+    if (node.data === null) throw new Error('Operation resulted in no data');
     // return hash string
     return Buffer.from(node.data).toString('hex');
   }, // end getHash() ...
