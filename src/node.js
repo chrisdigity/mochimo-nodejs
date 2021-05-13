@@ -62,7 +62,7 @@ class Node {
     this.opcode = OP_NULL;
     this.tx = new Tx();
     this.socket = new Socket();
-    this.data = new Uint8Array(this.tx.buffer, TXSRCADDRp, TRANLEN);
+    this.data = null;
     this.lastTouch = 0;
   }
 
@@ -127,17 +127,16 @@ class Node {
    * @param {external:Object} options callserver() options...
    * @param {external:String} options.ip IPv4 address for peer connection
    * @param {external:Number} options.port Port number for peer connection
+   * @param {external:Number} options.opcode Operation code to be used upon
+   * succesful connection handshake.<br><sup>*Executes sendop() on Node*
+   * @param {external:Object} options.tx Object containing Tx parameters to
+   * modify before executing sendop() with `options.opcode`.<br><sup>*Does
+   * nothing if `options.opcode` is not present*
    * @return {external:Promise}
    * @fulfil {external:Node} A Node object with the result of the connection
    * attempt to a network peer
    * @reject {external:Error} Error indicating a failure to create a Node object
    * or socket connection
-   * @todo Process the data received by <code>node.socket</code> in chunks
-   * rather than byte by byte
-   * @todo Add option to force `[protocol version, network, ...]` data within
-   * the Tx object sent to the node (for testing network upgrades, forks, etc.)
-   * @todo Detect operation failure, when an operation expects to receive data
-   * but instead doesn't receive any
    * @example
    * const Mochimo = require('mochimo');
    *
@@ -222,6 +221,11 @@ class Node {
                 node.status = VEOK;
                 // send operation code, otherwise resolve Promise with node
                 if (options && options.opcode) {
+                  if (options.tx && typeof options.tx === 'object') {
+                    for (const [key, value] of Object.entries(options.tx)) {
+                      node.tx[key] = value;
+                    }
+                  }
                   Node.sendop(node, options.opcode).catch(console.error);
                 } else resolve(node);
               }
