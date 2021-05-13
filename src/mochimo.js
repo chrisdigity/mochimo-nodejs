@@ -147,6 +147,45 @@ const Mochimo = {
     return new Blockchain.Block(node.data);
   }, // end getBlock() ...
   /**
+   * @function getHash
+   * @desc Download a Mochimo Block Hash from a network peer.
+   * @param {external:String} peer IPv4 address of network peer
+   * @param {(external:BigInt|external:Number)} bnum Blockchain number of
+   * desired hash.
+   * @returns {external:Promise}
+   * @fulfil {external:String} The block hash represented as a string
+   * @reject {external:Error} Error indicating the failure
+   * @example
+   * const Mochimo = require('mochimo');
+   *
+   * // download and write block data to file, else write error to stderr
+   * Mochimo.getBlock('127.0.0.1', 0).then(hash => {
+   *   console.log('Genesis block hash: ' + hash);
+   * }).catch(console.error); */
+  getHash: async (peer, bnum) => {
+    const fid = LOG.verbose(`Mochimo.getHash(${peer}, ${bnum})=>`);
+    const start = Date.now();
+    // begin network operation
+    const node = await Node.callserver({ ip: peer });
+    // check handshake operation status
+    if (node.status) {
+      LOG.verbose(fid, 'handshake failed with status:', node.status);
+      throw new Error(`${Constants.VENAME(node.status)} during handshake`);
+    }
+    // set I/O blocknumber to bnum
+    node.tx.blocknum = bnum;
+    // send operation code for hash request
+    LOG.verbose('%s requesting block hash 0x%s...', fid, bnum.toString(16));
+    await Node.sendop(node, Constants.OP_HASH);
+    // check operation status
+    if (node.status) {
+      LOG.verbose(fid, 'operation failed with status:', node.status);
+      throw new Error(`${Constants.VENAME(node.status)} during operation`);
+    } else LOG.verboseT(start, fid, 'operation finished');
+    // return hash string
+    return Buffer.from(node.data).toString('hex');
+  }, // end getHash() ...
+  /**
    * @function getNetworkPeers
    * @desc Get a list of available (non-busy) Mochimo Network peers.
    * @param {(Array.<external:String>|external:String)} startPeers Either a
