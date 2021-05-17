@@ -4,13 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ### Latest - 2021-05-13
 
-New Block class function for verifying a block hash. Introduces (some) tests for the Block class. New getHash() function for Mochimo module. Some improvements to the Node class.
+New Block class function for verifying a block hash. Introduces (some) tests for the Block class. New getHash() function for Mochimo module. Various improvements to the Node class.
 
 ```diff
 + Added getHash() to the Mochimo module
 + Added verifyBlockHash() to the Block class
 + Added test.block.js tests (not complete)
-! Improvments to node data handling and callserver versatility
+! Improvements to node data handling and callserver versatility
+# Changed order of properties in node.toJSON()
 # Changed order of properties in TXEntry.toJSON()
 ```
 
