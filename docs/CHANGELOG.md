@@ -4,12 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ### Latest - 2021-05-13
 
-New Block class function for verifying a block hash. Introduces (some) tests for the Block class. New getHash() function for Mochimo module. Various improvements/changes to the Node class.
+New Block class function for verifying a block hash. Introduces (some) tests for the Block class. New getHash() function for Mochimo module. Various improvements/changes to the Node class. Fixes for BigInt conversions in some files.
 
 ```diff
 + Added getHash() to the Mochimo module
 + Added verifyBlockHash() to the Block class
 + Added test.block.js tests (not complete)
+! Fix BigInt conversions in blockchain.js and tx.js
 ! Improvements to node data handling and callserver versatility
 ! Improvements to node ping/baud calculations
 # Change lastTouch to timestamp in Node class

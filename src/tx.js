@@ -40,8 +40,7 @@ class Tx extends Uint8Array {
   }
 
   set blocknum (blocknum) {
-    new DataView(this.buffer).setBigUint64(TXBLOCKNUMp, BigInt(blocknum,
-      'Tx.blocknum'), true);
+    new DataView(this.buffer).setBigUint64(TXBLOCKNUMp, BigInt(blocknum), true);
   }
 
   /**
@@ -69,8 +68,7 @@ class Tx extends Uint8Array {
   }
 
   set cblock (cblock) {
-    new DataView(this.buffer).setBigUint64(TXCBLOCKp, BigInt(cblock,
-      'Tx.cblock'), true);
+    new DataView(this.buffer).setBigUint64(TXCBLOCKp, BigInt(cblock), true);
   }
 
   /**
@@ -102,8 +100,8 @@ class Tx extends Uint8Array {
   }
 
   set changetotal (changetotal) {
-    new DataView(this.buffer).setBigUint64(TXCHANGETOTALp, BigInt(changetotal,
-      'Tx.changetotal'), true);
+    new DataView(this.buffer).setBigUint64(TXCHANGETOTALp, BigInt(changetotal),
+      true);
   }
 
   /**
@@ -274,8 +272,8 @@ class Tx extends Uint8Array {
   }
 
   set sendtotal (sendtotal) {
-    new DataView(this.buffer).setBigUint64(TXSENDTOTALp, BigInt(sendtotal,
-      'Tx.sendtotal'), true);
+    new DataView(this.buffer).setBigUint64(TXSENDTOTALp, BigInt(sendtotal),
+      true);
   }
 
   /**
@@ -322,8 +320,7 @@ class Tx extends Uint8Array {
   }
 
   set txfee (txfee) {
-    new DataView(this.buffer).setBigUint64(TXTXFEEp, BigInt(txfee,
-      'Tx.txfee'), true);
+    new DataView(this.buffer).setBigUint64(TXTXFEEp, BigInt(txfee), true);
   }
 
   /**

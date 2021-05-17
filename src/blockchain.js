@@ -56,8 +56,8 @@ class LEntry extends Uint8Array {
   }
 
   set balance (balance) {
-    new DataView(this.buffer).setBigUint64(LEntry.BALANCEp, BigInt(balance,
-      'LEntry.balance'), true);
+    new DataView(this.buffer).setBigUint64(LEntry.BALANCEp, BigInt(balance),
+      true);
   }
 
   /**
