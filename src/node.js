@@ -29,6 +29,8 @@ const Default = {
  * @typicalname node
  * @classdesc The Node class is primarily used to communicate with network peers
  * connected to the Mochimo Cryptocurrency Network.
+ * @property {external:Number} timestamp UTC Timestamp (in ms), updated on Node
+ * creation, after Socket connection and on Socket data event
  * @property {external:String} ip The IPv4 address used in the peer connection
  * @property {external:Number} port The port number used in the peer connection
  * @property {external:Number} ping The ping (in ms) associated with the peer
@@ -42,9 +44,7 @@ const Default = {
  * @property {external:Tx} tx The last transaction packet received from a peer
  * @property {external:Socket} socket A Socket object that handles communication
  * with the peer
- * @property {external:Uint8Array} data The transaction buffer data
- * @property {external:Number} lastTouch UTC Timestamp (in ms), updated on Node
- * creation, after Socket connection and on Socket data event */
+ * @property {external:Uint8Array} data The transaction buffer data */
 class Node {
   /**
    * *FOR ADVANCED USE ONLY!*<br>Although the Node class *can* be instantiated
@@ -52,9 +52,9 @@ class Node {
    * function {@link Node.callserver} to obtain a Node object.
    * @param {external:String} [options={}] ...see Node.callserver([options]) */
   constructor (options = {}) {
+    this.timestamp = Date.now();
     this.ip = options.ip || '0.0.0.0';
     this.port = options.port || Default.port;
-    this.lastTouch = Date.now();
     this.status = VEREJECTED;
     this.ping = undefined;
     this.baud = undefined;
@@ -68,22 +68,25 @@ class Node {
 
   /**
    *
+   * @property {external:Number} timestamp
    * @property {external:String} ip *refer to Node class properties*
    * @property {external:Number} port
    * @property {external:Number} status
-   * @property {external:Number} lastTouch
    * @property {external:Number} ping *present if status is `VEOK` or `VEBAD`*
    * @property {external:Number} baud *present if status is `VEOK` or `VEBAD`*
-   * @property {external:Object} tx  *present if status is `VEOK` or `VEBAD`*
-   * <br>... see {@link Tx.toJSON}, excluding properties: `id1`, `id2`,
-   * `opcode`, `len`, `srcaddr`, `dstaddr`, `chgaddr`, `sendtotal`,
-   * `changetotal`, `txfee`, `txsig`, `crc16`, `trailer`, `data`
+   * @property {external:Number} pversion *refer to Tx class properties*
+   * @property {external:Number} cbits
+   * @property {external:Number} network
+   * @property {external:BigInt} cblock
+   * @property {external:String} cblockhash
+   * @property {external:String} pblockhash
+   * @property {external:String} weight
    * @property {Array.<external:String>} peers *present if status is `VEOK` and
-   * tx.opcode is `OP_SEND_IP`*<br>Array of peers requested with `OP_GETIPL`
+   * tx.opcode wass `OP_SEND_IP`*<br>Array of peers requested with `OP_GETIPL`
    * @return {external:Object} Node class object, in JSON format */
   toJSON () {
-    const { ip, port, lastTouch, status } = this;
-    const json = { ip, port, lastTouch, status };
+    const { timestamp, ip, port, status } = this;
+    const json = { timestamp, ip, port, status };
     // include more details for following node statuses
     const statusMore = [VEOK, VEBAD];
     if (statusMore.includes(this.status)) {
@@ -174,8 +177,8 @@ class Node {
         if (!node.ping) node.ping = now - ping;
         // count total bits as they are received
         totalBits += 8 * data.length;
-        // update lastTouch
-        node.lastTouch = now;
+        // update timestamp
+        node.timestamp = now;
         // collect data from socket
         for (let i = 0; i < data.length; i++) {
           // process available data one byte at a time
@@ -283,7 +286,7 @@ class Node {
       // attempt connection to node on dstPort
       LOG.debug('%s connecting to %s:%d', fid, node.ip, node.port);
       node.socket.connect(node.port, node.ip);
-      node.lastTouch = Date.now();
+      node.timestamp = Date.now();
     });
   }
 
