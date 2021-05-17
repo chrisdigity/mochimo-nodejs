@@ -11,6 +11,7 @@ New Block class function for verifying a block hash. Introduces (some) tests for
 + Added verifyBlockHash() to the Block class
 + Added test.block.js tests (not complete)
 ! Improvements to node data handling and callserver versatility
+! Improvements to node ping/baud calculations
 # Changed order of properties in node.toJSON()
 # Changed order of properties in TXEntry.toJSON()
 ```
