@@ -56,8 +56,8 @@ class Node {
     this.port = options.port || Default.port;
     this.lastTouch = Date.now();
     this.status = VEREJECTED;
-    this.ping = 0;
-    this.baud = 0;
+    this.ping = undefined;
+    this.baud = undefined;
     this.id1 = 0;
     this.id2 = -1;
     this.opcode = OP_NULL;
@@ -163,19 +163,16 @@ class Node {
         node.socket.setTimeout(Default.timeout);
         node.opcode = OP_HELLO;
         node.id1 = rand16();
-        // send handshake
-        Node.sendtx(node);
-        // start recording ping
-        ping = Date.now();
+        // send handshake and record ping/baud "start" timestamp
+        ping = startBits = Node.sendtx(node);
       });
       node.socket.on('data', (data) => {
         const now = Date.now();
         LOG.debug('%s recv, id1=0x%s id2=0x%s bytes=%d',
           fid, node.id1.toString(16), node.id2.toString(16), data.length);
-        // record node ping
-        if (node.ping === null) node.ping = now - ping;
-        // mark start of bandwidth calculation and count total bytes
-        if (startBits === 0) startBits = now;
+        // record node ping as time to receive first packet of data
+        if (!node.ping) node.ping = now - ping;
+        // count total bits as they are received
         totalBits += 8 * data.length;
         // update lastTouch
         node.lastTouch = now;
@@ -263,7 +260,7 @@ class Node {
         }
         // invalidate socket and reduce total socket count
         node.socket = INVALID_SOCKET;
-        // calculate bandwidth
+        // calculate baudrate as total bits over time taken to receive
         node.baud = Math.ceil((totalBits / ((now - startBits) / 1000)));
         // convert node.data to single Uint8Array, or resolve Promise with node
         if (transactions.length) {
@@ -345,9 +342,13 @@ class Node {
     }
     node.tx.crc16 = node.tx.crc16compute();
     node.tx.trailer = TXEOT;
+    // record timestamp for ping calculation
+    const timestamp = Date.now();
     // send transaction buffer
     LOG.debug('%s sending %s...', fid, OP_TEXT[node.tx.opcode]);
     node.socket.write(node.tx);
+    // return timestamp for ping calculation
+    return timestamp;
   }
 }
 
