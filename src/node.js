@@ -54,16 +54,16 @@ class Node {
   constructor (options = {}) {
     this.ip = options.ip || '0.0.0.0';
     this.port = options.port || Default.port;
+    this.lastTouch = Date.now();
+    this.status = VEREJECTED;
     this.ping = 0;
     this.baud = 0;
-    this.status = VEREJECTED;
     this.id1 = 0;
     this.id2 = -1;
     this.opcode = OP_NULL;
     this.tx = new Tx();
     this.socket = new Socket();
     this.data = null;
-    this.lastTouch = 0;
   }
 
   /**
@@ -82,40 +82,32 @@ class Node {
    * tx.opcode is `OP_SEND_IP`*<br>Array of peers requested with `OP_GETIPL`
    * @return {external:Object} Node class object, in JSON format */
   toJSON () {
-    const json = {
-      ip: this.ip,
-      port: this.port,
-      status: this.status,
-      lastTouch: this.lastTouch
-    };
+    const { ip, port, lastTouch, status } = this;
+    const json = { ip, port, lastTouch, status };
     // include more details for following node statuses
     const statusMore = [VEOK, VEBAD];
     if (statusMore.includes(this.status)) {
-      // add ping and baudrate
-      json.ping = this.ping;
-      json.baud = this.baud;
-      // get tx json details
-      const tx = this.tx.toJSON();
-      const txExclude = [
-        'id1', 'id2', 'opcode', 'len', 'srcaddr', 'dstaddr', 'chgaddr',
-        'sendtotal', 'changetotal', 'txfee', 'txsig', 'crc16', 'trailer', 'data'
-      ];
-      // add tx json details to node
-      for (const property in tx) {
-        // skip exclusion properties
-        if (txExclude.includes(property)) continue;
-        json[property] = tx[property];
-      }
+      // get socket statistics
+      const { ping, baud } = this;
+      Object.json(json, { ping, baud });
+      // get network and blockchain details from tx
+      const txJSON = this.tx.toJSON();
+      const { pversion, cbits, network } = txJSON;
+      const { cblock, cblockhash, pblockhash, weight } = txJSON;
+      const moreNet = { pversion, cbits, network };
+      const moreBc = { cblock, cblockhash, pblockhash, weight };
+      Object.assign(json, moreNet, moreBc);
       // get peer details on OP_SEND_IP, if status is VEOK
       if (this.status === VEOK && this.tx.opcode === OP_SEND_IP) {
-        json.peers = [];
+        const peers = [];
         // iterate peer data from tx
         const len = this.data.byteLength;
         const dataView = new DataView(this.data.buffer);
         for (let i = 0; i < len; i += 4) {
           // get next peer from tx
-          json.peers.push(ntoa(dataView.getUint32(i, true)));
+          peers.push(ntoa(dataView.getUint32(i, true)));
         }
+        Object.assign(json, { peers });
       }
     }
     // return detailed node info
