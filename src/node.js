@@ -89,7 +89,7 @@ class Node {
     if (statusMore.includes(this.status)) {
       // get socket statistics
       const { ping, baud } = this;
-      Object.json(json, { ping, baud });
+      Object.assign(json, { ping, baud });
       // get network and blockchain details from tx
       const txJSON = this.tx.toJSON();
       const { pversion, cbits, network } = txJSON;
