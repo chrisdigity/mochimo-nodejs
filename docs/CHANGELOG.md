@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-### Latest - 2021-05-13
+### [v0.3.2](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.3.2) - 2021-05-18
 
 New Block class function for verifying a block hash. Introduces (some) tests for the Block class. New getHash() function for Mochimo module. Various improvements/changes to the Node class. Fixes for BigInt conversions in some files.
 

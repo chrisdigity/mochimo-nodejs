@@ -1,5 +1,5 @@
 # Documentation
-[![npm](https://img.shields.io/static/v1?label=npm&message=v0.3.1&color=orange)](https://www.npmjs.com/package/mochimo/v/0.3.1)
+[![npm](https://img.shields.io/static/v1?label=npm&message=v0.3.2&color=orange)](https://www.npmjs.com/package/mochimo/v/0.3.2)
 [![chrisdigity](https://img.shields.io/static/v1?label=%C2%A9%202019-2021&message=Chrisdigity&color=blue&style=plastic)](https://github.com/chrisdigity)
 
 ## Before you begin...
@@ -103,6 +103,7 @@ const Mochimo = require('mochimo');
     * [~constants](#module_Mochimo..constants) : [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
     * [~getBalance(peer, address, isTag)](#module_Mochimo..getBalance) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
     * [~getBlock(peer, [bnum])](#module_Mochimo..getBlock) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+    * [~getHash(peer, [bnum])](#module_Mochimo..getHash) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
     * [~getNetworkPeers(startPeers)](#module_Mochimo..getNetworkPeers) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
     * [~getPeerlist(peer)](#module_Mochimo..getPeerlist) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
     * [~getTfile(peer, [bnum], [count])](#module_Mochimo..getTfile) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
@@ -197,6 +198,27 @@ Download a Mochimo Block file from a network peer.
 **Example**  
 ```js
 const fsp = require('fs').promises;const Mochimo = require('mochimo');// download and write block data to file, else write error to stderrMochimo.getBlock('127.0.0.1', 123456).then(block => {  return fsp.writeFile('000000000001e240.bc', block);}).catch(console.error);
+```
+
+* * *
+
+<a name="module_Mochimo..getHash"></a>
+
+### Mochimo~getHash(peer, [bnum]) ⇒ [<code>Promise</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+Download a Mochimo Block Hash from a network peer.
+
+**Kind**: inner method of [<code>Mochimo</code>](#module_Mochimo)  
+**Fulfil**: [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) The block hash represented as a string  
+**Reject**: [<code>Error</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) Error indicating the failure  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| peer | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | IPv4 address of network peer |
+| [bnum] | [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) \| [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | Blockchain number of desired hash<br><sup>Omit parameter to get peer's current block |
+
+**Example**  
+```js
+const Mochimo = require('mochimo');// download and write block data to file, else write error to stderrMochimo.getBlock('127.0.0.1', 0).then(hash => {  console.log('Genesis block hash: ' + hash);}).catch(console.error);
 ```
 
 * * *
@@ -960,6 +982,7 @@ neogenesis block), or empty (for a pseudo block).
         * [.stime](#Block+stime) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.bhash](#Block+bhash) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
         * [.toJSON(minify)](#Block+toJSON) ⇒ [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects)
+        * [.verifyBlockHash([hash])](#Block+verifyBlockHash) ⇒ [<code>Boolean</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type)
     * _static_
         * [.INVALID](#Block.INVALID) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
         * [.NORMAL](#Block.NORMAL) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
@@ -1185,6 +1208,21 @@ A BlockTrailer object associated with the block
 
 * * *
 
+<a name="Block+verifyBlockHash"></a>
+
+### block.verifyBlockHash([hash]) ⇒ [<code>Boolean</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type)
+Verify the block hash contained within a Block object.
+
+**Kind**: instance method of [<code>Block</code>](#Block)  
+**Returns**: [<code>Boolean</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type) - Verified status of block hash  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [hash] | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | Optional hash to verify against |
+
+
+* * *
+
 <a name="Block.INVALID"></a>
 
 ### Block.INVALID : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
@@ -1293,6 +1331,7 @@ The Node class is primarily used to communicate with network peersconnected to 
 
 | Name | Type | Description |
 | --- | --- | --- |
+| timestamp | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | UTC Timestamp (in ms), updated on Node creation, after Socket connection and on Socket data event |
 | ip | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | The IPv4 address used in the peer connection |
 | port | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | The port number used in the peer connection |
 | ping | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | The ping (in ms) associated with the peer connection's response to an OP_HELLO request |
@@ -1304,7 +1343,6 @@ The Node class is primarily used to communicate with network peersconnected to 
 | tx | [<code>Tx</code>](#Tx) | The last transaction packet received from a peer |
 | socket | [<code>Socket</code>](https://nodejs.org/api/net.html#net_class_net_socket) | A Socket object that handles communication with the peer |
 | data | [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) | The transaction buffer data |
-| lastTouch | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | UTC Timestamp (in ms), updated on Node creation, after Socket connection and on Socket data event |
 
 
 * [Node](#Node)
@@ -1340,14 +1378,20 @@ The Node class is primarily used to communicate with network peersconnected to 
 
 | Name | Type | Description |
 | --- | --- | --- |
+| timestamp | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
 | ip | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | *refer to Node class properties* |
 | port | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
 | status | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
-| lastTouch | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
 | ping | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | *present if status is `VEOK` or `VEBAD`* |
 | baud | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | *present if status is `VEOK` or `VEBAD`* |
-| tx | [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects) | *present if status is `VEOK` or `VEBAD`* <br>... see [Tx.toJSON](Tx.toJSON), excluding properties: `id1`, `id2`, `opcode`, `len`, `srcaddr`, `dstaddr`, `chgaddr`, `sendtotal`, `changetotal`, `txfee`, `txsig`, `crc16`, `trailer`, `data` |
-| peers | [<code>Array.&lt;String&gt;</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | *present if status is `VEOK` and tx.opcode is `OP_SEND_IP`*<br>Array of peers requested with `OP_GETIPL` |
+| pversion | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | *refer to Tx class properties* |
+| cbits | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
+| network | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) |  |
+| cblock | [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) |  |
+| cblockhash | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
+| pblockhash | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
+| weight | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) |  |
+| peers | [<code>Array.&lt;String&gt;</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | *present if status is `VEOK` and tx.opcode wass `OP_SEND_IP`*<br>Array of peers requested with `OP_GETIPL` |
 
 
 * * *
@@ -1360,18 +1404,14 @@ Connect to a network peer and verify the Mochimo handshake protocol.
 **Kind**: static method of [<code>Node</code>](#Node)  
 **Fulfil**: [<code>Node</code>](#Node) A Node object with the result of the connectionattempt to a network peer  
 **Reject**: [<code>Error</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) Error indicating a failure to create a Node objector socket connection  
-**Todo**
-
-- [ ] Process the data received by <code>node.socket</code> in chunksrather than byte by byte
-- [ ] Add option to force `[protocol version, network, ...]` data withinthe Tx object sent to the node (for testing network upgrades, forks, etc.)
-- [ ] Detect operation failure, when an operation expects to receive databut instead doesn't receive any
-
 
 | Param | Type | Description |
 | --- | --- | --- |
 | options | [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects) | callserver() options... |
 | options.ip | [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type) | IPv4 address for peer connection |
 | options.port | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | Port number for peer connection |
+| options.opcode | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | Operation code to be used upon succesful connection handshake.<br><sup>*Executes sendop() on Node* |
+| options.tx | [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects) | Object containing Tx parameters to modify before executing sendop() with `options.opcode`.<br><sup>*Does nothing if `options.opcode` is not present* |
 
 **Example**  
 ```js
