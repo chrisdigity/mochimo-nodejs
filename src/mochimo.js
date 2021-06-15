@@ -360,6 +360,9 @@ const Mochimo = {
       LOG.verbose(fid, 'downloading Tfile...');
       await Node.sendop(node, Constants.OP_GET_TFILE);
     } else {
+      // check for negative bnum, ensuring positive outcome
+      if (bnum < 0) bnum += Number(node.tx.cblock);
+      if (bnum < 0) bnum = 0;
       // build 64bit number for partial Tfile download
       if (typeof count === 'undefined') count = 1;
       const buffer = new ArrayBuffer(8);
