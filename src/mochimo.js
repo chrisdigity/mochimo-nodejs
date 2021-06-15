@@ -360,17 +360,16 @@ const Mochimo = {
       LOG.verbose(fid, 'downloading Tfile...');
       await Node.sendop(node, Constants.OP_GET_TFILE);
     } else {
-      // check for negative bnum, ensuring positive outcome
+      // check for negative bnum
       if (bnum < 0) bnum += Number(node.tx.cblock);
-      if (bnum < 0) bnum = 0;
       // build 64bit number for partial Tfile download
       if (typeof count === 'undefined') count = 1;
       const buffer = new ArrayBuffer(8);
       const dataview = new DataView(buffer);
-      // set first 4 bytes as bnum
-      dataview.setUint32(0, bnum, true);
-      // set last 4 bytes as count
-      dataview.setUint32(4, count, true);
+      // set first 4 bytes as 32 bit unsigned bnum
+      dataview.setUint32(0, bnum | 0, true);
+      // set last 4 bytes as 32 bit unsigned count
+      dataview.setUint32(4, count | 0, true);
       // set I/O blocknumber as bnum/count dual value
       node.tx.blocknum = dataview.getBigUint64(0, true);
       // send operation code for partial Tfile download
