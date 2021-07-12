@@ -140,6 +140,13 @@ class LEntry extends Uint8Array {
  * all elements required for inclusion in a valid Mochimo Block or TX Object.
  * TXEntry is typically used for reading transactions from a Mochimo Block. */
 class TXEntry extends Uint8Array {
+  /**
+   * *FOR ADVANCED USE ONLY!*<br>Although the TXEntry class *can* be
+   * instantiated directly, it is **not recommended.**<br>Instead, consider
+   * using {@link #Block+transactions} to obtain a list of transactions directly
+   * from a Mochimo block.
+   * @param {(external:ArrayBuffer|external:TypedArray)} bytes TXEntry data
+   * @param {external:Number=} offset The starting byte of the exposed data */
   constructor (...args) {
     // force TXEntry.length (8824) array length
     super(args[0], args[1], TXEntry.length);
