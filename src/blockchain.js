@@ -136,8 +136,7 @@ class LEntry extends Uint8Array {
 /**
  * @typicalname txentry
  * @augments {external:Uint8Array}
- * @classdesc *TXEntry class objects are only accessible via the {@link Block}
- * class.*<br>The Transaction class is a Uint8Array of static size containing
+ * @classdesc The Transaction class is a Uint8Array of static size containing
  * all elements required for inclusion in a valid Mochimo Block or TX Object.
  * TXEntry is typically used for reading transactions from a Mochimo Block. */
 class TXEntry extends Uint8Array {
