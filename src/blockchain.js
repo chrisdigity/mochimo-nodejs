@@ -19,12 +19,25 @@ const { createHash } = require('crypto');
  * class.*<br>The Ledger Entry class is a Uint8Array of static size containing
  * a full WOTS+ address and a 64-bit balance. */
 class LEntry extends Uint8Array {
-  constructor (...args) {
-    // defaults
-    args[0] = args[0] || new ArrayBuffer(LEntry.length);
-    args[1] = args[1] || 0;
-    // force LEntry.length (2216) array length
-    super(args[0], args[1], LEntry.length);
+  /**
+   * Create a new Ledger Entry.<br><sup>*When `input` is a Buffer, a new
+   * underyling ArrayBuffer from which the contents of `input` is set.<br>When
+   * `input` is an ArrayBuffer, a new "view" of the ArrayBuffer is created.
+   * @param {(external:Buffer|external:ArrayBuffer)} [input] An existing ledger
+   * entry or wots address (as a Buffer only).
+   * @param {external:Number} [byteOffset=0] The byte offset of the ledger entry
+   * view, when `input` is an ArrayBuffer. Does nothing when `input` is not an
+   * ArrayBuffer. */
+  constructor (input, byteOffset) {
+    if (typeof input !== 'undefined' && input instanceof ArrayBuffer) {
+      // create a new Uint8Array view of `LEntry.length` bytes that views the
+      // memory range of the `input` starting at the specified `byteOffset`
+      super(input, byteOffset || 0, LEntry.length);
+    } else { // create a new Uint8Array
+      super(LEntry.length);
+      // set values of new array where input is defined
+      if (typeof input !== 'undefined') this.set(input);
+    }
   }
 
   /**
@@ -141,15 +154,24 @@ class LEntry extends Uint8Array {
  * TXEntry is typically used for reading transactions from a Mochimo Block. */
 class TXEntry extends Uint8Array {
   /**
-   * *FOR ADVANCED USE ONLY!*<br>Although the TXEntry class *can* be
-   * instantiated directly, it is **not recommended.**<br>Instead, consider
-   * using {@link #Block+transactions} to obtain a list of transactions directly
-   * from a Mochimo block.
-   * @param {(external:ArrayBuffer|external:TypedArray)} bytes TXEntry data
-   * @param {external:Number=} offset The starting byte of the exposed data */
-  constructor (...args) {
-    // force TXEntry.length (8824) array length
-    super(args[0], args[1], TXEntry.length);
+   * Create a new Transaction Entry.<br><sup>*When `input` is a Buffer, a new
+   * underyling ArrayBuffer from which the contents of `input` is set.<br>When
+   * `input` is an ArrayBuffer, a new "view" of the ArrayBuffer is created.
+   * @param {(external:Buffer|external:ArrayBuffer)} [input] An existing
+   * transaction entry.
+   * @param {external:Number} [byteOffset=0] The byte offset of the transaction
+   * entry view, when `input` is an ArrayBuffer. Does nothing when `input` is
+   * not an ArrayBuffer. */
+  constructor (input, byteOffset) {
+    if (typeof input !== 'undefined' && input instanceof ArrayBuffer) {
+      // create a new Uint8Array view of `TXEntry.length` bytes that views the
+      // memory range of the `input` starting at the specified `byteOffset`
+      super(input, byteOffset || 0, TXEntry.length);
+    } else { // create a new Uint8Array
+      super(TXEntry.length);
+      // set values of new array where input is defined
+      if (typeof input !== 'undefined') this.set(input);
+    }
   }
 
   /**
@@ -370,9 +392,25 @@ class TXEntry extends Uint8Array {
  * joined together in series to create a historically verifiable chain known as
  * a {@link Tfile}. */
 class BlockTrailer extends Uint8Array {
-  constructor (...args) {
-    // force BlockTrailer.length (160) array length
-    super(args[0], args[1], BlockTrailer.length);
+  /**
+   * Create a new Block Trailer.<br><sup>*When `input` is a Buffer, a new
+   * underyling ArrayBuffer from which the contents of `input` is set.<br>When
+   * `input` is an ArrayBuffer, a new "view" of the ArrayBuffer is created.
+   * @param {(external:Buffer|external:ArrayBuffer)} [input] An existing block
+   * trailer.
+   * @param {external:Number} [byteOffset=0] The byte offset of the transaction
+   * entry view, when `input` is an ArrayBuffer. Does nothing when `input` is
+   * not an ArrayBuffer. */
+  constructor (input, byteOffset) {
+    if (typeof input !== 'undefined' && input instanceof ArrayBuffer) {
+      // create a new Uint8Array view of `BlockTrailer.length` bytes that views
+      // the memory range of the `input` starting at the specified `byteOffset`
+      super(input, byteOffset || 0, BlockTrailer.length);
+    } else { // create a new Uint8Array
+      super(BlockTrailer.length);
+      // set values of new array where input is defined
+      if (typeof input !== 'undefined') this.set(input);
+    }
   }
 
   /**
