@@ -1,5 +1,5 @@
 # Documentation
-[![npm](https://img.shields.io/static/v1?label=npm&message=v0.3.2&color=orange)](https://www.npmjs.com/package/mochimo/v/0.3.2)
+[![npm](https://img.shields.io/static/v1?label=npm&message=v0.3.3&color=orange)](https://www.npmjs.com/package/mochimo/v/0.3.3)
 [![chrisdigity](https://img.shields.io/static/v1?label=%C2%A9%202019-2021&message=Chrisdigity&color=blue&style=plastic)](https://github.com/chrisdigity)
 
 ## Before you begin...
@@ -53,8 +53,7 @@ class.</em><br>The Ledger Entry class is a Uint8Array of static size containing
 a full WOTS+ address and a 64-bit balance.</p>
 </dd>
 <dt><a href="#TXEntry">TXEntry</a> ⇐ <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array">Uint8Array</a></code></dt>
-<dd><p><em>TXEntry class objects are only accessible via the <a href="#Block">Block</a>
-class.</em><br>The Transaction class is a Uint8Array of static size containing
+<dd><p>The Transaction class is a Uint8Array of static size containing
 all elements required for inclusion in a valid Mochimo Block or TX Object.
 TXEntry is typically used for reading transactions from a Mochimo Block.</p>
 </dd>
@@ -154,7 +153,9 @@ Mochimo constants, used throughout the ecosystem of Mochimo protocols.
 
 **Example**  
 ```js
-const Mochimo = require('mochimo');console.log(`The value of VEOK is available at ${Mochimo.constants.VEOK}`);console.log(`... and is also available at ${Mochimo.VEOK}`);
+const Mochimo = require('mochimo');
+console.log(`The value of VEOK is available at ${Mochimo.constants.VEOK}`);
+console.log(`... and is also available at ${Mochimo.VEOK}`);
 ```
 
 * * *
@@ -165,7 +166,9 @@ const Mochimo = require('mochimo');console.log(`The value of VEOK is available 
 Download a ledger entry from a network peer.
 
 **Kind**: inner method of [<code>Mochimo</code>](#module_Mochimo)  
-**Fulfil**: <code>?(external:Lentry)</code> When the address or tag is found, promiseresolves a `new Mochimo.Lentry()` object containing the ledger entry data.When the address or tag is NOT found, promise resolves null.  
+**Fulfil**: <code>?(external:Lentry)</code> When the address or tag is found, promise
+resolves a `new Mochimo.Lentry()` object containing the ledger entry data.
+When the address or tag is NOT found, promise resolves null.  
 **Reject**: [<code>Error</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) Error indicating the failure  
 
 | Param | Type | Description |
@@ -176,7 +179,18 @@ Download a ledger entry from a network peer.
 
 **Example**  
 ```js
-const Mochimo = require('mochimo');const taggedAddress = '696c6c616d616e7564690000';// request ledger entry balance and print resultsMochimo.getBalance('127.0.0.1', taggedAddress, true).then(lentry => {  if (lentry === null) console.error('address not found in ledger');  else {    console.log('Full address:', lentry.address);    console.log('Address tag:', lentry.tag);    console.log('Balance:', lentry.balance);  }}).catch(console.error);
+const Mochimo = require('mochimo');
+const taggedAddress = '696c6c616d616e7564690000';
+
+// request ledger entry balance and print results
+Mochimo.getBalance('127.0.0.1', taggedAddress, true).then(lentry => {
+  if (lentry === null) console.error('address not found in ledger');
+  else {
+    console.log('Full address:', lentry.address);
+    console.log('Address tag:', lentry.tag);
+    console.log('Balance:', lentry.balance);
+  }
+}).catch(console.error);
 ```
 
 * * *
@@ -187,7 +201,8 @@ const Mochimo = require('mochimo');const taggedAddress = '696c6c616d616e7564690
 Download a Mochimo Block file from a network peer.
 
 **Kind**: inner method of [<code>Mochimo</code>](#module_Mochimo)  
-**Fulfil**: [<code>Block</code>](#Block) A `new Mochimo.Block()` object containing thedownloaded block data  
+**Fulfil**: [<code>Block</code>](#Block) A `new Mochimo.Block()` object containing the
+downloaded block data  
 **Reject**: [<code>Error</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) Error indicating the failure  
 
 | Param | Type | Description |
@@ -197,7 +212,13 @@ Download a Mochimo Block file from a network peer.
 
 **Example**  
 ```js
-const fsp = require('fs').promises;const Mochimo = require('mochimo');// download and write block data to file, else write error to stderrMochimo.getBlock('127.0.0.1', 123456).then(block => {  return fsp.writeFile('000000000001e240.bc', block);}).catch(console.error);
+const fsp = require('fs').promises;
+const Mochimo = require('mochimo');
+
+// download and write block data to file, else write error to stderr
+Mochimo.getBlock('127.0.0.1', 123456).then(block => {
+  return fsp.writeFile('000000000001e240.bc', block);
+}).catch(console.error);
 ```
 
 * * *
@@ -218,7 +239,12 @@ Download a Mochimo Block Hash from a network peer.
 
 **Example**  
 ```js
-const Mochimo = require('mochimo');// download and write block data to file, else write error to stderrMochimo.getBlock('127.0.0.1', 0).then(hash => {  console.log('Genesis block hash: ' + hash);}).catch(console.error);
+const Mochimo = require('mochimo');
+
+// download and write block data to file, else write error to stderr
+Mochimo.getBlock('127.0.0.1', 0).then(hash => {
+  console.log('Genesis block hash: ' + hash);
+}).catch(console.error);
 ```
 
 * * *
@@ -238,7 +264,12 @@ Get a list of available (non-busy) Mochimo Network peers.
 
 **Example**  
 ```js
-const Mochimo = require('mochimo');// get list of peers and write to stdout, else write error to stderrMochimo.getNetworkPeers('127.0.0.1').then((list) => {  console.log('Found %d Network Peers:\n%O', value.length, value));}).catch(console.error);
+const Mochimo = require('mochimo');
+
+// get list of peers and write to stdout, else write error to stderr
+Mochimo.getNetworkPeers('127.0.0.1').then((list) => {
+  console.log('Found %d Network Peers:\n%O', value.length, value));
+}).catch(console.error);
 ```
 
 * * *
@@ -258,7 +289,12 @@ Download a peerlist from a network peer.
 
 **Example**  
 ```js
-const Mochimo = require('mochimo');// request peerlist from network peerMochimo.getPeerlist('127.0.0.1').then(peerlist => {  console.log('Peerlist: %O', peerlist);}).catch(console.error);
+const Mochimo = require('mochimo');
+
+// request peerlist from network peer
+Mochimo.getPeerlist('127.0.0.1').then(peerlist => {
+  console.log('Peerlist: %O', peerlist);
+}).catch(console.error);
 ```
 
 * * *
@@ -269,7 +305,8 @@ const Mochimo = require('mochimo');// request peerlist from network peerMochi
 Download partial or full Trailer file from a network peer.
 
 **Kind**: inner method of [<code>Mochimo</code>](#module_Mochimo)  
-**Fulfil**: [<code>Tfile</code>](#Tfile) A `new Mochimo.Tfile()` object containing thedownloaded trailer data  
+**Fulfil**: [<code>Tfile</code>](#Tfile) A `new Mochimo.Tfile()` object containing the
+downloaded trailer data  
 **Reject**: [<code>Error</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) Error indicating a failure  
 
 | Param | Type | Description |
@@ -280,7 +317,13 @@ Download partial or full Trailer file from a network peer.
 
 **Example**  
 ```js
-const fsp = require('fs').promises;const Mochimo = require('mochimo');// download and write partial tfile to file, else write error to stderrMochimo.getTfile('127.0.0.1', 0, 24).then(tfile => {  return fsp.writeFile('partialt_file.dat', tfile);}).catch(console.error);
+const fsp = require('fs').promises;
+const Mochimo = require('mochimo');
+
+// download and write partial tfile to file, else write error to stderr
+Mochimo.getTfile('127.0.0.1', 0, 24).then(tfile => {
+  return fsp.writeFile('partialt_file.dat', tfile);
+}).catch(console.error);
 ```
 
 * * *
@@ -296,6 +339,7 @@ a full WOTS+ address and a 64-bit balance.
 **Extends**: [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)  
 
 * [LEntry](#LEntry) ⇐ [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
+    * [new LEntry([input], [byteOffset])](#new_LEntry_new)
     * _instance_
         * [.address](#LEntry+address) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
         * [.balance](#LEntry+balance) : [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
@@ -306,6 +350,20 @@ a full WOTS+ address and a 64-bit balance.
         * [.ADDRESSp](#LEntry.ADDRESSp) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.TAGp](#LEntry.TAGp) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.BALANCEp](#LEntry.BALANCEp) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
+
+
+* * *
+
+<a name="new_LEntry_new"></a>
+
+### new LEntry([input], [byteOffset])
+Create a new Ledger Entry for the handling of an address-balance pair.
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [input] | [<code>Buffer</code>](https://nodejs.org/api/buffer.html) \| [<code>ArrayBuffer</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) |  | An existing ledger entry or wots address (as a Buffer only).<br><sup>*When `input` is a Buffer, a new underyling Uint8Array is created and set with the contents of `input`.<br>When `input` is an ArrayBuffer, a new "view" of the ArrayBuffer is created.* |
+| [byteOffset] | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | <code>0</code> | The byte offset of the ledger entry view, when `input` is an ArrayBuffer.<br><sup>*Does nothing when `input` is not an ArrayBuffer.* |
 
 
 * * *
@@ -421,8 +479,7 @@ Breakdown:
 <a name="TXEntry"></a>
 
 ## TXEntry ⇐ [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
-*TXEntry class objects are only accessible via the [Block](#Block)
-class.*<br>The Transaction class is a Uint8Array of static size containing
+The Transaction class is a Uint8Array of static size containing
 all elements required for inclusion in a valid Mochimo Block or TX Object.
 TXEntry is typically used for reading transactions from a Mochimo Block.
 
@@ -430,6 +487,7 @@ TXEntry is typically used for reading transactions from a Mochimo Block.
 **Extends**: [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)  
 
 * [TXEntry](#TXEntry) ⇐ [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
+    * [new TXEntry([input], [byteOffset])](#new_TXEntry_new)
     * _instance_
         * [.srcaddr](#TXEntry+srcaddr) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
         * [.srctag](#TXEntry+srctag) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
@@ -453,6 +511,20 @@ TXEntry is typically used for reading transactions from a Mochimo Block.
         * [.TXSIGp](#TXEntry.TXSIGp) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.TXIDp](#TXEntry.TXIDp) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.length](#TXEntry.length) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
+
+
+* * *
+
+<a name="new_TXEntry_new"></a>
+
+### new TXEntry([input], [byteOffset])
+Create a new Transaction Entry.
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [input] | [<code>Buffer</code>](https://nodejs.org/api/buffer.html) \| [<code>ArrayBuffer</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) |  | An existing transaction entry.<br><sup>*When `input` is a Buffer, a new underyling Uint8Array is created and set with the contents of `input`.<br>When `input` is an ArrayBuffer, a new "view" of the ArrayBuffer is created.* |
+| [byteOffset] | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | <code>0</code> | The byte offset of the transaction entry view, when `input` is an ArrayBuffer. Does nothing when `input` is not an ArrayBuffer. |
 
 
 * * *
@@ -694,6 +766,7 @@ a [Tfile](#Tfile).
 **Extends**: [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)  
 
 * [BlockTrailer](#BlockTrailer) ⇐ [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
+    * [new BlockTrailer([input], [byteOffset])](#new_BlockTrailer_new)
     * _instance_
         * [.phash](#BlockTrailer+phash) : [<code>String</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type)
         * [.bnum](#BlockTrailer+bnum) : [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
@@ -718,6 +791,20 @@ a [Tfile](#Tfile).
         * [.STIMEp](#BlockTrailer.STIMEp) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.BHASHp](#BlockTrailer.BHASHp) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
         * [.length](#BlockTrailer.length) : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
+
+
+* * *
+
+<a name="new_BlockTrailer_new"></a>
+
+### new BlockTrailer([input], [byteOffset])
+Create a new Block Trailer.
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [input] | [<code>Buffer</code>](https://nodejs.org/api/buffer.html) \| [<code>ArrayBuffer</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer) |  | An existing block trailer.<br><sup>*When `input` is a Buffer, a new underyling Uint8Array is created and set with the contents of `input`.<br>When `input` is an ArrayBuffer, a new "view" of the ArrayBuffer is created.* |
+| [byteOffset] | [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) | <code>0</code> | The byte offset of the transaction entry view, when `input` is an ArrayBuffer. Does nothing when `input` is not an ArrayBuffer. |
 
 
 * * *
@@ -1324,7 +1411,8 @@ data at the specified index.
 <a name="Node"></a>
 
 ## Node
-The Node class is primarily used to communicate with network peersconnected to the Mochimo Cryptocurrency Network.
+The Node class is primarily used to communicate with network peers
+connected to the Mochimo Cryptocurrency Network.
 
 **Kind**: global class  
 **Properties**
@@ -1359,7 +1447,9 @@ The Node class is primarily used to communicate with network peersconnected to 
 <a name="new_Node_new"></a>
 
 ### new Node([options])
-*FOR ADVANCED USE ONLY!*<br>Although the Node class *can* be instantiateddirectly, it is **not recommended.**<br>Instead, consider using the staticfunction [callserver](#Node.callserver) to obtain a Node object.
+*FOR ADVANCED USE ONLY!*<br>Although the Node class *can* be instantiated
+directly, it is **not recommended.**<br>Instead, consider using the static
+function [callserver](#Node.callserver) to obtain a Node object.
 
 
 | Param | Type | Default | Description |
@@ -1402,8 +1492,10 @@ The Node class is primarily used to communicate with network peersconnected to 
 Connect to a network peer and verify the Mochimo handshake protocol.
 
 **Kind**: static method of [<code>Node</code>](#Node)  
-**Fulfil**: [<code>Node</code>](#Node) A Node object with the result of the connectionattempt to a network peer  
-**Reject**: [<code>Error</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) Error indicating a failure to create a Node objector socket connection  
+**Fulfil**: [<code>Node</code>](#Node) A Node object with the result of the connection
+attempt to a network peer  
+**Reject**: [<code>Error</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) Error indicating a failure to create a Node object
+or socket connection  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1415,7 +1507,11 @@ Connect to a network peer and verify the Mochimo handshake protocol.
 
 **Example**  
 ```js
-const Mochimo = require('mochimo');Mochimo.Node.callserver('127.0.0.1').then((node) => {  console.log(`Handshake successful, connected to ${node.ip}`);}).catch(console.error);
+const Mochimo = require('mochimo');
+
+Mochimo.Node.callserver('127.0.0.1').then((node) => {
+  console.log(`Handshake successful, connected to ${node.ip}`);
+}).catch(console.error);
 ```
 
 * * *
@@ -1426,8 +1522,10 @@ const Mochimo = require('mochimo');Mochimo.Node.callserver('127.0.0.1').then((
 Send an operation code to a connected network peer.
 
 **Kind**: static method of [<code>Node</code>](#Node)  
-**Fulfil**: [<code>Node</code>](#Node) Reference to the Node object that was passed to thefunction, updated with the result of the request.  
-**Reject**: [<code>Error</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) Error indicating and invalid operation code or afailure during the requested operation  
+**Fulfil**: [<code>Node</code>](#Node) Reference to the Node object that was passed to the
+function, updated with the result of the request.  
+**Reject**: [<code>Error</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) Error indicating and invalid operation code or a
+failure during the requested operation  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1436,7 +1534,14 @@ Send an operation code to a connected network peer.
 
 **Example**  
 ```js
-const Mochimo = require('mochimo');Mochimo.Node.callserver('127.0.0.1').then((node) => {  console.log(`Handshake successful, connected to ${node.ip}`);  return Mochimo.sendop(node, Mochimo.constants.OP_GETIPL);}).then((node) => {  console.log(`OP_GETIPL operation result: ${node}`);}).catch(console.error);
+const Mochimo = require('mochimo');
+
+Mochimo.Node.callserver('127.0.0.1').then((node) => {
+  console.log(`Handshake successful, connected to ${node.ip}`);
+  return Mochimo.sendop(node, Mochimo.constants.OP_GETIPL);
+}).then((node) => {
+  console.log(`OP_GETIPL operation result: ${node}`);
+}).catch(console.error);
 ```
 
 * * *
@@ -1444,7 +1549,8 @@ const Mochimo = require('mochimo');Mochimo.Node.callserver('127.0.0.1').then((
 <a name="Tx"></a>
 
 ## Tx ⇐ [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
-The Tx class is a Uint8Array of static size representing theTransaction Buffer used to communicate with network peers.
+The Tx class is a Uint8Array of static size representing the
+Transaction Buffer used to communicate with network peers.
 
 **Kind**: global class  
 **Extends**: [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)  
@@ -1486,7 +1592,9 @@ The Tx class is a Uint8Array of static size representing theTransaction Buffer 
 <a name="new_Tx_new"></a>
 
 ### new Tx()
-*FOR ADVANCED USE ONLY!*<br>Although the Tx class *can* be instantiateddirectly, it is **not recommended.**<br>Instead, consider using the staticfunctions in the [Node](#Node) class.
+*FOR ADVANCED USE ONLY!*<br>Although the Tx class *can* be instantiated
+directly, it is **not recommended.**<br>Instead, consider using the static
+functions in the [Node](#Node) class.
 
 
 * * *
@@ -1543,8 +1651,11 @@ Get/Set the Current Block Hash of a Transaction Buffer.
 **Default**: <code>&quot;0000... &lt;64 characters&gt;&quot;</code>  
 **Throws**:
 
-- <code>TypeError</code> when set an invalid data type&ast;<br><sup>*Valid datatypes are hexadecimal [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type), [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) or[TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
-- <code>TypeError</code> when set a value of invalid length&ast;<br><sup>&ast;Must be 64 hexadecimal character String or 32 byte Array.
+- <code>TypeError</code> when set an invalid data type&ast;<br><sup>*Valid data
+types are hexadecimal [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type), [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) or
+[TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
+- <code>TypeError</code> when set a value of invalid length&ast;<br><sup>
+&ast;Must be 64 hexadecimal character String or 32 byte Array.
 
 
 * * *
@@ -1552,7 +1663,8 @@ Get/Set the Current Block Hash of a Transaction Buffer.
 <a name="Tx+changetotal"></a>
 
 ### tx.changetotal : [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
-Get/Set the Transaction Change Amount of a Transaction Buffer. Valuerepresents nanoMochimo.
+Get/Set the Transaction Change Amount of a Transaction Buffer. Value
+represents nanoMochimo.
 
 **Kind**: instance property of [<code>Tx</code>](#Tx)  
 **Default**: <code>0n</code>  
@@ -1572,8 +1684,11 @@ Get/Set the Transaction Change Address of a Transaction Buffer.
 **Default**: <code>&quot;0000... &lt;4408 characters&gt;&quot;</code>  
 **Throws**:
 
-- <code>TypeError</code> when set an invalid data type&ast;<br><sup>*Valid datatypes are hexadecimal [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type), [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) or[TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
-- <code>TypeError</code> when set a value of invalid length&ast;<br><sup>&ast;Must be 4416 hexadecimal character String or 2208 byte Array.
+- <code>TypeError</code> when set an invalid data type&ast;<br><sup>*Valid data
+types are hexadecimal [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type), [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) or
+[TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
+- <code>TypeError</code> when set a value of invalid length&ast;<br><sup>
+&ast;Must be 4416 hexadecimal character String or 2208 byte Array.
 
 
 * * *
@@ -1581,7 +1696,8 @@ Get/Set the Transaction Change Address of a Transaction Buffer.
 <a name="Tx+crc16"></a>
 
 ### tx.crc16 : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
-Get/Set the CRC16 Hash of a Transaction Buffer<br><sup>&ast;Setting this property is **NOT RECOMMENDED**
+Get/Set the CRC16 Hash of a Transaction Buffer<br><sup>
+&ast;Setting this property is **NOT RECOMMENDED**
 
 **Kind**: instance property of [<code>Tx</code>](#Tx)  
 **Default**: <code>0</code>  
@@ -1601,8 +1717,11 @@ Get/Set the Transaction Destination Address of a Transaction Buffer.
 **Default**: <code>&quot;0000... &lt;4408 characters&gt;&quot;</code>  
 **Throws**:
 
-- <code>TypeError</code> when set an invalid data type&ast;<br><sup>*Valid datatypes are hexadecimal [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type), [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) or[TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
-- <code>TypeError</code> when set a value of invalid length&ast;<br><sup>&ast;Must be 4416 hexadecimal character String or 2208 byte Array.
+- <code>TypeError</code> when set an invalid data type&ast;<br><sup>*Valid data
+types are hexadecimal [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type), [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) or
+[TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
+- <code>TypeError</code> when set a value of invalid length&ast;<br><sup>
+&ast;Must be 4416 hexadecimal character String or 2208 byte Array.
 
 
 * * *
@@ -1610,7 +1729,8 @@ Get/Set the Transaction Destination Address of a Transaction Buffer.
 <a name="Tx+id1"></a>
 
 ### tx.id1 : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
-Get/Set the first ID of a Transaction Buffer.<br><sup>&ast;Setting this property is **NOT RECOMMENDED**
+Get/Set the first ID of a Transaction Buffer.<br><sup>
+&ast;Setting this property is **NOT RECOMMENDED**
 
 **Kind**: instance property of [<code>Tx</code>](#Tx)  
 **Default**: <code>0</code>  
@@ -1624,7 +1744,8 @@ Get/Set the first ID of a Transaction Buffer.<br><sup>&ast;Setting this propert
 <a name="Tx+id2"></a>
 
 ### tx.id2 : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
-Get/Set the second ID of a Transaction Buffer.<br><sup>&ast;Setting this property is **NOT RECOMMENDED**
+Get/Set the second ID of a Transaction Buffer.<br><sup>
+&ast;Setting this property is **NOT RECOMMENDED**
 
 **Kind**: instance property of [<code>Tx</code>](#Tx)  
 **Default**: <code>-1</code>  
@@ -1652,7 +1773,8 @@ Get/Set the Transaction Length of a Transaction Buffer.
 <a name="Tx+network"></a>
 
 ### tx.network : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
-Get/Set&ast; the Network Version of a Transaction Buffer.<br><sup>&ast;Setting this property is **NOT RECOMMENDED**
+Get/Set&ast; the Network Version of a Transaction Buffer.<br><sup>
+&ast;Setting this property is **NOT RECOMMENDED**
 
 **Kind**: instance property of [<code>Tx</code>](#Tx)  
 **Default**: <code>0xABCD</code>  
@@ -1687,8 +1809,11 @@ Get/Set the Previous Block Hash of a Transaction Buffer.
 **Default**: <code>&quot;0000... &lt;64 characters&gt;&quot;</code>  
 **Throws**:
 
-- <code>TypeError</code> when set an invalid data type&ast;<br><sup>*Valid datatypes are hexadecimal [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type), [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) or[TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
-- <code>TypeError</code> when set a value of invalid length&ast;<br><sup>&ast;Must be 64 hexadecimal character String or 32 byte Array.
+- <code>TypeError</code> when set an invalid data type&ast;<br><sup>*Valid data
+types are hexadecimal [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type), [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) or
+[TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
+- <code>TypeError</code> when set a value of invalid length&ast;<br><sup>
+&ast;Must be 64 hexadecimal character String or 32 byte Array.
 
 
 * * *
@@ -1710,7 +1835,8 @@ Get/Set the Protocol Version of a Transaction Buffer.
 <a name="Tx+sendtotal"></a>
 
 ### tx.sendtotal : [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
-Get/Set the Transaction Send Amount of a Transaction Buffer. Valuerepresents nanoMochimo.
+Get/Set the Transaction Send Amount of a Transaction Buffer. Value
+represents nanoMochimo.
 
 **Kind**: instance property of [<code>Tx</code>](#Tx)  
 **Default**: <code>0n</code>  
@@ -1730,8 +1856,11 @@ Get/Set the Transaction Source Address of a Transaction Buffer.
 **Default**: <code>&quot;0000... &lt;4408 characters&gt;&quot;</code>  
 **Throws**:
 
-- <code>TypeError</code> when set an invalid data type&ast;<br><sup>*Valid datatypes are hexadecimal [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type), [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) or[TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
-- <code>TypeError</code> when set a value of invalid length&ast;<br><sup>&ast;Must be 4416 hexadecimal character String or 2208 byte Array.
+- <code>TypeError</code> when set an invalid data type&ast;<br><sup>*Valid data
+types are hexadecimal [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type), [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) or
+[TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
+- <code>TypeError</code> when set a value of invalid length&ast;<br><sup>
+&ast;Must be 4416 hexadecimal character String or 2208 byte Array.
 
 
 * * *
@@ -1739,7 +1868,8 @@ Get/Set the Transaction Source Address of a Transaction Buffer.
 <a name="Tx+trailer"></a>
 
 ### tx.trailer : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
-Get/Set the Trailer of a Transaction Buffer.<br><sup>&ast;Setting this property is **NOT RECOMMENDED**
+Get/Set the Trailer of a Transaction Buffer.<br><sup>
+&ast;Setting this property is **NOT RECOMMENDED**
 
 **Kind**: instance property of [<code>Tx</code>](#Tx)  
 **Default**: <code>0</code>  
@@ -1753,7 +1883,8 @@ Get/Set the Trailer of a Transaction Buffer.<br><sup>&ast;Setting this property
 <a name="Tx+txfee"></a>
 
 ### tx.txfee : [<code>BigInt</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
-Get/Set the Transaction Fee Amount of a Transaction Buffer. Valuerepresents nanoMochimo.
+Get/Set the Transaction Fee Amount of a Transaction Buffer. Value
+represents nanoMochimo.
 
 **Kind**: instance property of [<code>Tx</code>](#Tx)  
 **Default**: <code>0n</code>  
@@ -1773,8 +1904,11 @@ Get/Set the Transaction Signature of a Transaction Buffer.
 **Default**: <code>0n</code>  
 **Throws**:
 
-- <code>TypeError</code> when set an invalid data type&ast;<br><sup>*Valid datatypes are hexadecimal [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type), [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) or[TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
-- <code>TypeError</code> when set a value of invalid length&ast;<br><sup>&ast;Must be 4288 hexadecimal character String or 2144 byte Array.
+- <code>TypeError</code> when set an invalid data type&ast;<br><sup>*Valid data
+types are hexadecimal [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type), [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) or
+[TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
+- <code>TypeError</code> when set a value of invalid length&ast;<br><sup>
+&ast;Must be 4288 hexadecimal character String or 2144 byte Array.
 
 
 * * *
@@ -1788,8 +1922,11 @@ Get/Set the Blockchain Weight of a Transaction Buffer.
 **Default**: <code>&quot;0... &lt;up to 64 characters&gt;&quot;</code>  
 **Throws**:
 
-- <code>TypeError</code> when set an invalid data type&ast;<br><sup>*Valid datatypes are hexadecimal [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type), [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) or[TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
-- <code>TypeError</code> when set a value of invalid length&ast;<br><sup>&ast;Must be 1-64 hexadecimal character String or 1-32 byte Array.
+- <code>TypeError</code> when set an invalid data type&ast;<br><sup>*Valid data
+types are hexadecimal [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type), [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) or
+[TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray).
+- <code>TypeError</code> when set a value of invalid length&ast;<br><sup>
+&ast;Must be 1-64 hexadecimal character String or 1-32 byte Array.
 
 
 * * *
@@ -1797,7 +1934,9 @@ Get/Set the Blockchain Weight of a Transaction Buffer.
 <a name="Tx+crc16compute"></a>
 
 ### tx.crc16compute() ⇒ [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
-Perform a CRC16 hash on 8916 bytes of the underlying transaction buffer.<br><sup>*This function was ported directly from the Mochimo Codebasecrc16.c file*
+Perform a CRC16 hash on 8916 bytes of the underlying transaction buffer.
+<br><sup>*This function was ported directly from the Mochimo Codebase
+crc16.c file*
 
 **Kind**: instance method of [<code>Tx</code>](#Tx)  
 **Returns**: [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type) - The CRC16 hash value (16 bit unsigned)  
@@ -1817,7 +1956,8 @@ Validate the CRC16 hash value of the Tx this function is called.
 <a name="Tx+getTxData"></a>
 
 ### tx.getTxData() ⇒ [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
-Obtain the Transaction Data of a Transaction Buffer (Tx) in a new typedarray (with a new underlying buffer).
+Obtain the Transaction Data of a Transaction Buffer (Tx) in a new typed
+array (with a new underlying buffer).
 
 **Kind**: instance method of [<code>Tx</code>](#Tx)  
 
@@ -1861,7 +2001,14 @@ Obtain the Transaction Data of a Transaction Buffer (Tx) in a new typedarray (w
 <a name="Tx.length"></a>
 
 ### Tx.length : [<code>Number</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type)
-Breakdown:- 2x Bytes (8bit), 2 bytes- 6x Words (16bit), 12 bytes- 2x Blocknumbers (64bit), 16bytes- 3x WOTS+ (inc. tag), 6624 bytes- 3x Amounts (64bit), 24 bytes- 1x Signature (WOTS+), 2144 bytes- 3x Hashes (sha256), 96 bytes
+Breakdown:
+- 2x Bytes (8bit), 2 bytes
+- 6x Words (16bit), 12 bytes
+- 2x Blocknumbers (64bit), 16bytes
+- 3x WOTS+ (inc. tag), 6624 bytes
+- 3x Amounts (64bit), 24 bytes
+- 1x Signature (WOTS+), 2144 bytes
+- 3x Hashes (sha256), 96 bytes
 
 **Kind**: static property of [<code>Tx</code>](#Tx)  
 **Constant_value**: `8920`  
@@ -1871,7 +2018,9 @@ Breakdown:- 2x Bytes (8bit), 2 bytes- 6x Words (16bit), 12 bytes- 2x Blocknum
 <a name="Wots"></a>
 
 ## Wots
-The Wots class provides utility functions to generate, sign andverify WOTS+ addresses used by the Mochimo Network Blockchain, as well as afew pointer constants for positions of intra-address components.
+The Wots class provides utility functions to generate, sign and
+verify WOTS+ addresses used by the Mochimo Network Blockchain, as well as a
+few pointer constants for positions of intra-address components.
 
 **Kind**: global class  
 
@@ -1923,7 +2072,8 @@ The byte length of a WOTS+ Signature
 Generate a WOTS+ address and secret pair, with or without a seed.
 
 **Kind**: static method of [<code>Wots</code>](#Wots)  
-**Returns**: [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects) - <br>`Object.address`: The generated WOTS+ address,<br>`Object.secret`: The secret key associated with the address  
+**Returns**: [<code>Object</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Objects) - <br>`Object.address`: The generated WOTS+ address,
+<br>`Object.secret`: The secret key associated with the address  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1931,7 +2081,13 @@ Generate a WOTS+ address and secret pair, with or without a seed.
 
 **Example**  
 ```js
-example fileconst { Wots } = require('mochimo');const { randomBytes } = require('crypto');const wots = Wots.generate(randomBytes(32));console.log('WOTS+ address:', Buffer.from(wots.address).toString('hex'));console.log('WOTS+ secret:', wots.secret);
+example file
+const { Wots } = require('mochimo');
+const { randomBytes } = require('crypto');
+
+const wots = Wots.generate(randomBytes(32));
+console.log('WOTS+ address:', Buffer.from(wots.address).toString('hex'));
+console.log('WOTS+ secret:', wots.secret);
 ```
 
 * * *
@@ -1939,7 +2095,9 @@ example fileconst { Wots } = require('mochimo');const { randomBytes } = requir
 <a name="Wots.pkFromSig"></a>
 
 ### Wots.pkFromSig(signature, message, pubSeed, addr) ⇒ [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array)
-Generate&ast; a WOTS+ public address key from a WOTS+ signature.<br><sup>&astMust have access to signed message, and Public Seed and ADDRportions of the full WOTS+ address.
+Generate&ast; a WOTS+ public address key from a WOTS+ signature.
+<br><sup>&astMust have access to signed message, and Public Seed and ADDR
+portions of the full WOTS+ address.
 
 **Kind**: static method of [<code>Wots</code>](#Wots)  
 **Returns**: [<code>Uint8Array</code>](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array) - Public key portion of WOTS+ address  
@@ -1959,7 +2117,17 @@ Generate&ast; a WOTS+ public address key from a WOTS+ signature.<br><sup>&astMu
 
 **Example**  
 ```js
-const { Wots, constants } = require('mochimo');const { randomBytes } = require('crypto');const pkSecret = Wots.generate();const message = randomBytes(constants.TRANLEN);const signature = Wots.sign(message, pkSecret.secret);const pubSeed = pkSecret.address.subarray(Wots.PUBSEEDp, 32);const addr = pkSecret.address.subarray(Wots.ADDRp, 32);const pkFromSig = Wots.pkFromSig(signature, message, pubSeed, addr);console.log(pkFromSig.some((curr, i) => curr !== pkSecret.address[i]  ? 'result is different' : 'result is identical');
+const { Wots, constants } = require('mochimo');
+const { randomBytes } = require('crypto');
+
+const pkSecret = Wots.generate();
+const message = randomBytes(constants.TRANLEN);
+const signature = Wots.sign(message, pkSecret.secret);
+const pubSeed = pkSecret.address.subarray(Wots.PUBSEEDp, 32);
+const addr = pkSecret.address.subarray(Wots.ADDRp, 32);
+const pkFromSig = Wots.pkFromSig(signature, message, pubSeed, addr);
+console.log(pkFromSig.some((curr, i) => curr !== pkSecret.address[i]
+  ? 'result is different' : 'result is identical');
 ```
 
 * * *
@@ -1979,7 +2147,13 @@ Generate a WOTS+ Signature from a message and secret.
 
 **Example**  
 ```js
-const { Wots, TRANLEN } = require('mochimo');const { randomBytes } = require('crypto');const pkSecret = Wots.generate();const message = randomBytes(TRANLEN);const signature = Wots.sign(message, pkSecret.secret);console.log('WOTS+ Signature: ' + Buffer.from(signature).toString('hex'));
+const { Wots, TRANLEN } = require('mochimo');
+const { randomBytes } = require('crypto');
+
+const pkSecret = Wots.generate();
+const message = randomBytes(TRANLEN);
+const signature = Wots.sign(message, pkSecret.secret);
+console.log('WOTS+ Signature: ' + Buffer.from(signature).toString('hex'));
 ```
 
 * * *
@@ -2005,7 +2179,13 @@ Verify a WOTS+ signature against a known message and WOTS+ address.
 
 **Example**  
 ```js
-const { Wots, TXSIGLEN, TRANLEN, TXADDRLEN } = require('mochimo');const signature = Buffer.alloc(TXSIGLEN); // 2144 byte arrayconst message = Buffer.alloc(TRANLEN); // 8792 byte arrayconst address = Buffer.alloc(TXADDRLEN); // 2208 byte arrayconsole.log('WOTS+ signature verification',  Wots.verify(signature, message, address) ? 'valid' : 'not valid');
+const { Wots, TXSIGLEN, TRANLEN, TXADDRLEN } = require('mochimo');
+
+const signature = Buffer.alloc(TXSIGLEN); // 2144 byte array
+const message = Buffer.alloc(TRANLEN); // 8792 byte array
+const address = Buffer.alloc(TXADDRLEN); // 2208 byte array
+console.log('WOTS+ signature verification',
+  Wots.verify(signature, message, address) ? 'valid' : 'not valid');
 ```
 
 * * *

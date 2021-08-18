@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+### [v0.3.3](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.3.3) - 2021-08-18
+
+Improvements to getTfile() and documentation fixes. Fixed an issue with some blockchain.js classes causing a RangeError after constructing instances using inputs of incompatible lengths.
+
+```diff
++ Added option for negative bnum in Mochimo.getTfile()
+! Fixed explanations of some incorrect documentation
+! Fixed RangeError in blockchain.js constructors
+```
+
 ### [v0.3.2](https://github.com/chrisdigity/mochimo-nodejs/releases/tag/v0.3.2) - 2021-05-18
 
 New Block class function for verifying a block hash. Introduces (some) tests for the Block class. New getHash() function for Mochimo module. Various improvements/changes to the Node class. Fixes for BigInt conversions in some files.
