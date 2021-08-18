@@ -20,14 +20,15 @@ const { createHash } = require('crypto');
  * a full WOTS+ address and a 64-bit balance. */
 class LEntry extends Uint8Array {
   /**
-   * Create a new Ledger Entry.<br><sup>*When `input` is a Buffer, a new
-   * underyling ArrayBuffer from which the contents of `input` is set.<br>When
-   * `input` is an ArrayBuffer, a new "view" of the ArrayBuffer is created.
+   * Create a new Ledger Entry for the handling of an address-balance pair.
    * @param {(external:Buffer|external:ArrayBuffer)} [input] An existing ledger
-   * entry or wots address (as a Buffer only).
+   * entry or wots address (as a Buffer only).<br><sup>*When `input` is a
+   * Buffer, a new underyling Uint8Array is created and set with the contents of
+   * `input`.<br>When `input` is an ArrayBuffer, a new "view" of the ArrayBuffer
+   * is created.*
    * @param {external:Number} [byteOffset=0] The byte offset of the ledger entry
-   * view, when `input` is an ArrayBuffer. Does nothing when `input` is not an
-   * ArrayBuffer. */
+   * view, when `input` is an ArrayBuffer.<br><sup>*Does nothing when `input` is not an
+   * ArrayBuffer.* */
   constructor (input, byteOffset) {
     if (typeof input !== 'undefined' && input instanceof ArrayBuffer) {
       // create a new Uint8Array view of `LEntry.length` bytes that views the
@@ -154,11 +155,11 @@ class LEntry extends Uint8Array {
  * TXEntry is typically used for reading transactions from a Mochimo Block. */
 class TXEntry extends Uint8Array {
   /**
-   * Create a new Transaction Entry.<br><sup>*When `input` is a Buffer, a new
-   * underyling ArrayBuffer from which the contents of `input` is set.<br>When
-   * `input` is an ArrayBuffer, a new "view" of the ArrayBuffer is created.
+   * Create a new Transaction Entry.
    * @param {(external:Buffer|external:ArrayBuffer)} [input] An existing
-   * transaction entry.
+   * transaction entry.<br><sup>*When `input` is a Buffer, a new underyling
+   * Uint8Array is created and set with the contents of `input`.<br>When `input`
+   * is an ArrayBuffer, a new "view" of the ArrayBuffer is created.*
    * @param {external:Number} [byteOffset=0] The byte offset of the transaction
    * entry view, when `input` is an ArrayBuffer. Does nothing when `input` is
    * not an ArrayBuffer. */
@@ -393,11 +394,11 @@ class TXEntry extends Uint8Array {
  * a {@link Tfile}. */
 class BlockTrailer extends Uint8Array {
   /**
-   * Create a new Block Trailer.<br><sup>*When `input` is a Buffer, a new
-   * underyling ArrayBuffer from which the contents of `input` is set.<br>When
-   * `input` is an ArrayBuffer, a new "view" of the ArrayBuffer is created.
+   * Create a new Block Trailer.
    * @param {(external:Buffer|external:ArrayBuffer)} [input] An existing block
-   * trailer.
+   * trailer.<br><sup>*When `input` is a Buffer, a new underyling Uint8Array is
+   * created and set with the contents of `input`.<br>When `input` is an
+   * ArrayBuffer, a new "view" of the ArrayBuffer is created.*
    * @param {external:Number} [byteOffset=0] The byte offset of the transaction
    * entry view, when `input` is an ArrayBuffer. Does nothing when `input` is
    * not an ArrayBuffer. */
