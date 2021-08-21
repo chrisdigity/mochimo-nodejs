@@ -20,6 +20,9 @@
 **This module is still under development.**<br>
 *Please report issues here on Github...*
 
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fchrisdigity%2Fmochimo-nodejs.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fchrisdigity%2Fmochimo-nodejs?ref=badge_large)
+
 ### Prerequisites
  - Latest version of [NodeJS](https://nodejs.org/)
 
@@ -38,7 +41,8 @@ const Mochimo = require('mochimo')
  - [documentation](docs/README.md)... also contains minor usage examples
  - for an extensive usage example, checkout the [MochiMap](https://github.com/chrisdigity/mochimap.com) codebase
 
-## Need to get in contact? ~ [![Discord](https://img.shields.io/discord/460867662977695765?logo=discord&style=plastic)](https://discord.mochimap.com)
+## Need to get in contact? ~ [![Discord](https://img.shields.io/discord/460867662977695765?logo=discord&style=plastic)](https://discord.mochimap.com)[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fchrisdigity%2Fmochimo-nodejs.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fchrisdigity%2Fmochimo-nodejs?ref=badge_shield)
+
 More often than not, you can find me online in the [Mochimo Official](https://discord.mochimap.com) Discord Server.<br>
 Otherwise, checkout my [Github profile](https://github.com/chrisdigity) for other forms of contact.
 
